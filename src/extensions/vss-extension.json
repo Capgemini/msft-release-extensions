@@ -1,0 +1,33 @@
+{
+    "manifestVersion": 1,
+    "id": "build-release-task",
+    "name": "Capgemini Microsoft UK Build and Release Tools",
+    "version": "1.0.0",
+    "publisher": "capgemini-msft-uk",
+    "targets": [
+        {
+            "id": "Microsoft.VisualStudio.Services"
+        }
+    ],    
+    "description": "Tools for helping the release process.",
+    "categories": [
+        "Azure Pipelines"
+    ],
+    "files": [
+        {
+            "path": "tasks/release-notes" 
+        }
+    ],
+    "contributions": [
+        {
+            "id": "releasenotes",
+            "type": "ms.vss-distributed-task.task",
+            "targets": [
+                "ms.vss-distributed-task.tasks"
+            ],
+            "properties": {
+                "name": "tasks/release-notes"
+            }
+        }
+        ]
+}

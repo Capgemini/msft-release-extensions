@@ -1,0 +1,19 @@
+{
+  "name": "msft-release-extensions",
+  "version": "1.0.0",
+  "description": "A set of release extensions for automating day to day work.",
+  "main": "index.js",
+  "scripts": {
+    "test": "run"
+  },
+  "author": "capgemini-uk",
+  "license": "MIT",
+  "dependencies": {
+    "azure-pipelines-task-lib": "^3.0.6-preview.1"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.22",
+    "@types/q": "^1.5.4",
+    "typescript": "^4.0.2"
+  }
+}
