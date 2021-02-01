@@ -6,3 +6,4 @@
 .vs/msft-release-extensions/v16/TestStore/0/testlog.manifest
 src/extensions/node_modules/*
 *.vsix
+/.vs/msft-release-extensions/config
