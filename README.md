@@ -1,3 +1,5 @@
+[![Build Status](https://capgeminiuk.visualstudio.com/GitHub%20Support/_apis/build/status/CI-Builds/Azure%20DevOps%20Extensions/Capgemini.msft-release-extensions?branchName=master)](https://capgeminiuk.visualstudio.com/GitHub%20Support/_build/latest?definitionId=218&branchName=master)
+
 ## Table of contents
 
 - [Table of contents](#table-of-contents)
