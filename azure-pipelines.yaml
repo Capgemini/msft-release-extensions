@@ -1,0 +1,88 @@
+trigger:
+  - master
+  
+  pool:
+    vmImage: 'windows-latest'
+  
+  variables:
+    solution: '**/*.sln'
+    buildPlatform: 'Any CPU'
+    buildConfiguration: 'Release'
+    publisher: 'capgemini-msft-uk'
+  
+  stages:
+    - stage: Build
+      jobs:
+      - job: BuildJob
+        displayName: Build
+        steps:
+        - task: NuGetToolInstaller@0
+          displayName: 'Use NuGet 5.2.0'
+          inputs:
+            versionSpec: 5.2.0
+  
+        - task: TfxInstaller@3
+          inputs:
+            version: 'v0.7.x'
+            
+        - task: PackageAzureDevOpsExtension@3
+          inputs:
+            rootFolder: '$(system.defaultworkingdirectory)/src/extensions'
+            updateTasksVersion: false
+            extensionVisibility: 'private'
+            extensionPricing: 'free'
+  
+        - task: CopyFiles@2
+          displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+          inputs:
+            SourceFolder: '$(system.defaultworkingdirectory)'
+            Contents: '**.vsix'
+            TargetFolder: '$(build.artifactstagingdirectory)'
+  
+        - task: PublishBuildArtifacts@1
+          displayName: 'Publish Artifact: drop'
+          inputs:
+            PathtoPublish: '$(build.artifactstagingdirectory)'
+  
+    - stage: PublishtoPrivateMarketPlace
+      displayName: Publish to Private MarketPlace
+      jobs:
+        - job: PublishPrivateJob
+          displayName: Publish to Private MarketPlace        
+          steps:
+          - checkout: none
+          - download: current
+  
+          - task: PublishExtension@1
+            inputs:
+              connectTo: 'VsTeam'
+              connectedServiceName: 'Capgemini MarketPlace Publishers'
+              fileType: 'vsix'
+              vsixFile: '$(Pipeline.Workspace)/drop/**.vsix'
+              publisherId: '$(publisher)-dev'
+              extensionName: 'Capgemini Release Extensions for Azure'
+              updateTasksVersion: false
+              extensionVisibility: 'private'
+              extensionPricing: 'free'
+  
+    - stage: PublishToPublicMarketPlace
+      displayName: Publish to Public Feed
+      condition: succeeded()
+      jobs:
+        - deployment:
+          environment: Public Visual Studio MarketPlace
+          strategy:
+            runOnce:
+              deploy:
+                steps:
+                - task: PublishExtension@1
+                  inputs:
+                    connectTo: 'VsTeam'
+                    connectedServiceName: 'Capgemini MarketPlace Publishers'
+                    fileType: 'vsix'
+                    vsixFile: '$(Pipeline.Workspace)/drop/**.vsix'
+                    publisherId: '$(publisher)'
+                    extensionName: 'Capgemini Release Extensions for Azure'
+                    updateTasksVersion: false
+                    extensionVisibility: 'private'
+                    extensionPricing: 'free'
