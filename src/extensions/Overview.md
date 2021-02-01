@@ -6,10 +6,10 @@ Azure.DevOps.Extension.Xrm.Release provides tasks for use in Azure DevOps releas
 
 ### Create Release Notes
 
-Creates a release note page for each release to a specific environment. You must provide a wiki structure with the following hierarchy
-  Release Notes
-  -Environment/Stage Name
-    -Latest
+Creates a release note page for each release to a specific environment. You must provide a wiki structure that matches the WikiPath property in the task.
+
+Please remember to give the build agent service contributor permissions to the Wiki. On installation you must provide the organisation name as a parameter to
+
 
 ### More Information
 

@@ -84,5 +84,5 @@ stages:
                   publisherId: '$(publisher)'
                   extensionName: 'Capgemini Release Extensions for Azure'
                   updateTasksVersion: false
-                  extensionVisibility: 'private'
+                  extensionVisibility: 'public'
                   extensionPricing: 'free'

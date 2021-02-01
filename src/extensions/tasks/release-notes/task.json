@@ -10,7 +10,7 @@
     "version": {
         "Major": 1,
         "Minor": 0,
-        "Patch": 0
+        "Patch": 1
     },
     "inputs": [
         {
@@ -25,7 +25,7 @@
           "name": "AdoProjectName",
           "type": "string",
           "label": "Project Name",
-          "defaultValue": "",
+          "defaultValue": "$(System.TeamProject)",
           "required": true,
           "helpMarkDown": "The project name."
         },      
@@ -33,7 +33,7 @@
           "name": "AdoUser",
           "type": "string",
           "label": "User Name",
-          "defaultValue": "",
+          "defaultValue": "Service Account",
           "required": true,
           "helpMarkDown": "The user used to create the release notes."
         },
