@@ -13,7 +13,7 @@ param(
 [string][Parameter(Mandatory=$true)] $WikiId,
 [string][Parameter(Mandatory=$true)] $WikiPagePath,
 [string][Parameter(Mandatory=$true)] $StageName,
-[string][Parameter(Mandatory=$true)] $ReleaseNoteField
+[string][Parameter(Mandatory=$false)] $ReleaseNoteField
 )
 
 Import-Module "$PSScriptRoot\powershell\Modules\AdoHelpers.psm1" -force
