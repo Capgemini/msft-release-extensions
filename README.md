@@ -16,6 +16,9 @@ You will need an Azure Devops instance. The following configurations are support
 
 You can install the extensions from the Azure DevOps MarketPlace https://marketplace.visualstudio.com/azuredevops 
 
+##Variable Setup
+The variables are preconfigured with suggested values. If you have a custom release notes field, you must supply the field name e.g. Custom.ReleaseNoteField. This field is optional.
+
 ## Contributing
 
 Refer to the contributing [guide](./CONTRIBUTING.md).
