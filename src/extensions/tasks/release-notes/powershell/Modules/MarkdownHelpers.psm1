@@ -170,11 +170,17 @@ function Write-MdTableFromWorkItems {
 	[CmdletBinding()] 
 	[OutputType([string])]
 	param (
-		[Parameter(Mandatory=$true)][Object]$WorkItems
+		[Parameter(Mandatory=$true)][Object]$WorkItems,
+		[Parameter(Mandatory=$false)][Object]$ReleaseNoteField
 	)
 
 	$pageContent = "`r`n## Included WorkItems ($($WorkItems.count)): `r`n"
 	[System.Collections.ArrayList]$headers = "Type", "Details"
+
+	if ($null -ne $ReleaseNoteField)
+	{
+		$headers.Add("Release Notes")
+	}	
 
 	[System.Collections.ArrayList]$tableData =  New-Object 'System.Collections.ArrayList'
 	$tableData.Add($headers) | Out-Null
@@ -185,13 +191,16 @@ function Write-MdTableFromWorkItems {
 		$fields =  $workItem.fields
 		$row.Add("$($fields.'System.WorkItemType')") | Out-Null
 		$row.Add(" #$($workItem.id) ") | Out-Null
+		if ($null -ne $ReleaseNoteField)
+		{
+			$row.Add("$($fields.$ReleaseNoteField)") | Out-Null
+		}
 		
 		$tableData.Add($row) | Out-Null
 	}
 
 	$pageContent += Write-MdTable -TableData $tableData
 	return $pageContent
-
 } 
 
 function Write-MdTableFromArtifacts {

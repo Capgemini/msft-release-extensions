@@ -357,7 +357,9 @@ function Get-WorkitemsForDeployment{
 		 [Parameter(Mandatory=$true)] [string]$ReleaseId,
 		 [Parameter(Mandatory=$true)] [string]$DefinitionId,
 		 [Parameter(Mandatory=$true)] [string]$DefinitionEnvironmentId,
-		 [Parameter(Mandatory=$true)] [string]$SourceBuildId
+		 [Parameter(Mandatory=$true)] [string]$SourceBuildId,
+		 [Parameter(Mandatory=$false)] [string]$ReleaseNoteField
+
 		)
 
 		$authHeader = @{Authorization=($($AdoConnection.AdoAuthorizationToken))}
@@ -367,15 +369,32 @@ function Get-WorkitemsForDeployment{
 							-DefinitionId $DefinitionId `
 							-DefinitionEnvironmentId $DefinitionEnvironmentId `
 							-SourceBuildId $SourceBuildId
-	
+				
+		$baseDeployId = 0 
+		if ($null -ne $deploymentsInfo.lastSucesfullDeployment)
+		{
+			$baseDeployId = $deploymentsInfo.lastSucesfullDeployment.release.id 
+		}
+
 		#Get the work Items using the baseId of the Environment stage (BaseRelease) id
-		$workItemsUrl = "$apiUrl/Release/releases/$ReleaseId/workitems" #?baseReleaseId=$baseDeployId&`$top=200"
+		$workItemsUrl = "$apiUrl/Release/releases/$ReleaseId/workitems?baseReleaseId=$baseDeployId&`$top=200"
 		$workitemIds = Invoke-RestMethod -Uri $workItemsUrl -Method Get -ContentType "application/json" -Headers $authHeader
 
+		if ($null -eq $workitemIds)
+		{
+			return $null
+		}
+		
 		$results = $workitemIds.value.id -Join ","
 
-		#Go and Get the Details for the work Items Passing in the ID Array
-		$WorkItemDetails = "https://$($AdoConnection.AdoAccountName).visualstudio.com/$SourceBuildId/_apis/wit/workItems?ids=$results&`$expand=4" #Gets the workitems and links / related
+		if ($ReleaseNoteField -ne $null)
+		{
+			$WorkItemDetails = "https://dev.azure.com/$($AdoConnection.AdoAccountName)/$($AdoConnection.AdoProjectName)/_apis/wit/workItems?ids=$results&`$&fields=$ReleaseNoteField,System.WorkItemType"
+		}
+		else {
+			$WorkItemDetails = "https://dev.azure.com/$($AdoConnection.AdoAccountName)/$($AdoConnection.AdoProjectName)/_apis/wit/workItems?ids=$results&`$expand=4" #Gets the workitems and links / related
+		}
+		
 		$fullWorkItem = Invoke-RestMethod -Uri $WorkItemDetails -Method Get -ContentType "application/json" -Headers $authHeader
 		
 		return @{

@@ -10,7 +10,7 @@
     "version": {
         "Major": 1,
         "Minor": 0,
-        "Patch": 1
+        "Patch": 2
     },
     "inputs": [
         {
@@ -85,14 +85,22 @@
           "required": true,
           "helpMarkDown": "Path to the WIKI."
         },
-        {
-          "name": "StageName",
-          "type": "string",
-          "label": "Stage Name",
-          "defaultValue": "$(Release.EnvironmentName)",
-          "required": true,
-          "helpMarkDown": "."
-        }
+      {
+        "name": "StageName",
+        "type": "string",
+        "label": "Stage Name",
+        "defaultValue": "$(Release.EnvironmentName)",
+        "required": true,
+        "helpMarkDown": "."
+      },
+      {
+        "name": "ReleaseNoteField",
+        "type": "string",
+        "label": "Release Note Field Name e.g Custom.ReleaseNoteField",
+        "defaultValue": "",
+        "required": false,
+        "helpMarkDown": "Required for custom release note field."
+      }
     ],
     "instanceNameFormat": "Create Release Notes",
     "execution": {
