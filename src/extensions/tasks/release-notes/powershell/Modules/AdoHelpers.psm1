@@ -387,7 +387,7 @@ function Get-WorkitemsForDeployment{
 		
 		$results = $workitemIds.value.id -Join ","
 
-		if ($ReleaseNoteField -ne $null)
+		if ($ReleaseNoteField -ne "")
 		{
 			$WorkItemDetails = "https://dev.azure.com/$($AdoConnection.AdoAccountName)/$($AdoConnection.AdoProjectName)/_apis/wit/workItems?ids=$results&`$&fields=$ReleaseNoteField,System.WorkItemType"
 		}

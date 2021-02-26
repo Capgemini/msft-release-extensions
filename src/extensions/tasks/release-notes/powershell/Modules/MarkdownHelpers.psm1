@@ -177,7 +177,7 @@ function Write-MdTableFromWorkItems {
 	$pageContent = "`r`n## Included WorkItems ($($WorkItems.count)): `r`n"
 	[System.Collections.ArrayList]$headers = "Type", "Details"
 
-	if ($null -ne $ReleaseNoteField)
+	if ("" -ne $ReleaseNoteField)
 	{
 		$headers.Add("Release Notes")
 	}	
@@ -191,7 +191,7 @@ function Write-MdTableFromWorkItems {
 		$fields =  $workItem.fields
 		$row.Add("$($fields.'System.WorkItemType')") | Out-Null
 		$row.Add(" #$($workItem.id) ") | Out-Null
-		if ($null -ne $ReleaseNoteField)
+		if ("" -ne $ReleaseNoteField)
 		{
 			$row.Add("$($fields.$ReleaseNoteField)") | Out-Null
 		}
