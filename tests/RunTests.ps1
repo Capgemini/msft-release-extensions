@@ -32,7 +32,7 @@ Get-Childitem *.Tests.ps1 -recurse -exclude "CreateReleaseNotesTest.tests.ps1"  
         TestResult   = @{
             Enabled      = $true
             OutputFormat = "NUnitXml"
-            OutputPath   = "$scriptPath\TestResults\Pester-Coverage.xml"
+            OutputPath   = "$scriptPath\TestResults\Pester-Tests.xml"
         }
         CodeCoverage = @{
             Enabled      = $true
