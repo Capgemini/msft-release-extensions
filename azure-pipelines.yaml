@@ -105,6 +105,10 @@ stages:
         - checkout: none
         - download: current
 
+        - task: TfxInstaller@3
+          inputs:
+            version: 'v0.9.x'
+
         - task: PublishExtension@1
           inputs:
             connectTo: 'VsTeam'
@@ -127,6 +131,11 @@ stages:
           runOnce:
             deploy:
               steps:
+
+              - task: TfxInstaller@3
+                inputs:
+                  version: 'v0.9.x'
+
               - task: PublishExtension@1
                 inputs:
                   connectTo: 'VsTeam'
