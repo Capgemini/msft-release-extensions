@@ -17,14 +17,21 @@
       "id": "Microsoft.VisualStudio.Services"
     }
   ],
-  "description": "Tools for helping the release process.",
+  "description": "Tools for helping the release and testing process.",
   "categories": [
     "Azure Pipelines"
   ],
   "files": [
     {
       "path": "tasks/release-notes"
-    }
+    },
+    {
+			"path": "tasks/owasp-scan"
+		},
+		{
+			"path": "images",
+			"addressable": true     
+		}
   ],
   "contributions": [
     {
@@ -36,6 +43,16 @@
       "properties": {
         "name": "tasks/release-notes"
       }
-    }
+    },
+    {
+			"id": "owaspapiscan",
+			"type": "ms.vss-distributed-task.task",
+			"targets": [
+				"ms.vss-distributed-task.tasks"
+			],
+			"properties": {
+				"name": "tasks/owasp-scan"
+			}
+		}
   ]
 }

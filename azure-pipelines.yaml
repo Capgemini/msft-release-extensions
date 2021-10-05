@@ -4,11 +4,26 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
+parameters:
+  - name: publishFromFeature
+    displayName: 'Publish from feature branch to Private MarketPlace?'
+    type: boolean
+    default: false
+
+  - name: publishToPublicMarketPlace
+    displayName: 'Publish to the Public MarketPlace?'
+    type: boolean
+    default: false
+
 variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   publisher: 'capgemini-msft-uk'
+  deploymentBranch: 'refs/heads/master'
+  extensionId: 'build-release-task'
+  extensionName: 'Capgemini Microsoft UK Build and Release Tools'
+  vstsMktPlaceServiceConnName: 'Capgemini MarketPlace Publishers'
 
 stages:
   - stage: Build
@@ -21,14 +36,50 @@ stages:
         inputs:
           versionSpec: 5.2.0
 
-      - task: TfxInstaller@3
+      - task: PowerShell@2
+        displayName: 'Run Pester Tests'
         inputs:
-          version: 'v0.7.x'
+          targetType: filePath
+          filePath: '$(System.DefaultWorkingDirectory)/tests/RunTests.ps1'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/tests'
+
+      - task: PublishTestResults@2
+        displayName: 'Publish Pester Results **/Pester-Tests.xml'
+        inputs:
+          testResultsFormat: NUnit
+          testResultsFiles: '**/Pester-Tests.xml'
+          testRunTitle: 'OWASP API Tests'
+          searchFolder: '$(System.DefaultWorkingDirectory)\tests\TestResults'
+      
+      - task: PublishCodeCoverageResults@1
+        inputs:
+          codeCoverageTool: 'JaCoCo'
+          summaryFileLocation: '**/Pester-Coverage.xml'
+          pathToSources: '$(System.DefaultWorkingDirectory)\tests\TestResults'          
+
+      - task: TfxInstaller@3
+        displayName: 'Use Node CLI for Azure DevOps'
+        inputs:
+          version: 'v0.9.x'
+
+      - task: QueryAzureDevOpsExtensionVersion@3
+        inputs:
+          connectTo: 'VsTeam'
+          connectedServiceName: '$(vstsMktPlaceServiceConnName)'
+          publisherId: '$(publisher)-dev'
+          extensionId: '$(extensionId)'
+          versionAction: 'Patch'
+          outputVariable: 'Task.Extension.Version' 
           
       - task: PackageAzureDevOpsExtension@3
         inputs:
           rootFolder: '$(system.defaultworkingdirectory)/src/extensions'
-          updateTasksVersion: false
+          publisherId: '$(publisher)'
+          extensionId: '$(extensionId)'
+          extensionName: '$(extensionName)'
+          extensionVersion: '$(Task.Extension.Version)'
+          updateTasksVersion: true
+          updateTasksVersionType: 'patch'
           extensionVisibility: 'private'
           extensionPricing: 'free'
 
@@ -46,6 +97,7 @@ stages:
 
   - stage: PublishtoPrivateMarketPlace
     displayName: Publish to Private MarketPlace
+    condition: and(succeeded(), or(eq(${{ parameters.publishFromFeature }}, true), eq(variables['Build.SourceBranch'], variables['deploymentBranch'])))
     jobs:
       - job: PublishPrivateJob
         displayName: Publish to Private MarketPlace        
@@ -56,18 +108,18 @@ stages:
         - task: PublishExtension@1
           inputs:
             connectTo: 'VsTeam'
-            connectedServiceName: 'Capgemini MarketPlace Publishers'
+            connectedServiceName: '$(vstsMktPlaceServiceConnName)'
             fileType: 'vsix'
             vsixFile: '$(Pipeline.Workspace)/drop/**.vsix'
             publisherId: '$(publisher)-dev'
-            extensionName: 'Capgemini Release Extensions for Azure'
+            extensionName: '$(extensionName)'
             updateTasksVersion: false
             extensionVisibility: 'private'
             extensionPricing: 'free'
 
   - stage: PublishToPublicMarketPlace
     displayName: Publish to Public Feed
-    condition: succeeded()
+    condition: and(succeeded(), eq(${{ parameters.publishToPublicMarketPlace }}, true), eq(variables['Build.SourceBranch'], variables['deploymentBranch']))
     jobs:
       - deployment:
         environment: Public Visual Studio MarketPlace
@@ -78,11 +130,11 @@ stages:
               - task: PublishExtension@1
                 inputs:
                   connectTo: 'VsTeam'
-                  connectedServiceName: 'Capgemini MarketPlace Publishers'
+                  connectedServiceName: '$(vstsMktPlaceServiceConnName)'
                   fileType: 'vsix'
                   vsixFile: '$(Pipeline.Workspace)/drop/**.vsix'
                   publisherId: '$(publisher)'
-                  extensionName: 'Capgemini Release Extensions for Azure'
+                  extensionName: '$(extensionName)'
                   updateTasksVersion: false
                   extensionVisibility: 'public'
                   extensionPricing: 'free'
