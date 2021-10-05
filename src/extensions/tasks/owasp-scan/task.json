@@ -1,6 +1,6 @@
 {
     "$schema": "https://raw.githubusercontent.com/Microsoft/azure-pipelines-task-lib/master/tasks.schema.json",
-    "id": "cd39f607-4f0d-40d8-b180-1dffa1ac64b0",
+    "id": "c44e1234-ce0c-42cd-8e38-8c2615571a52",
     "name": "capgemini-uk-msft-owaspscan-extensions",
     "friendlyName": "OWASP API Scan",
     "description": "Runs security scan on API using OWASP zap and publish result to pipeline",
