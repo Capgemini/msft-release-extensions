@@ -1,0 +1,12 @@
+replacer.full_list(0).description=ContentTypeHeader 
+replacer.full_list(0).enabled=true 
+replacer.full_list(0).matchtype=REQ_HEADER 
+replacer.full_list(0).matchstr=Content-Type 
+replacer.full_list(0).regex=false 
+replacer.full_list(0).replacement=application/json 
+replacer.full_list(1).description=AccceptHeader 
+replacer.full_list(1).enabled=true 
+replacer.full_list(1).matchtype=REQ_HEADER 
+replacer.full_list(1).matchstr=Accept 
+replacer.full_list(1).regex=false 
+replacer.full_list(1).replacement=application/json

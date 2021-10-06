@@ -7,3 +7,6 @@
 src/extensions/node_modules/*
 *.vsix
 /.vs/msft-release-extensions/config
+
+# Test Results
+[Tt]est[Rr]esult*/

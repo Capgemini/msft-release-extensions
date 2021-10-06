@@ -4,7 +4,15 @@
 
 - [Table of contents](#table-of-contents)
 - [Prerequisites](#prerequisites)
+    - [Azure PaaS :](#azure-paas-)
+    - [Others :](#others-)
 - [Installation](#installation)
+  - [Tasks](#tasks)
+    - [Release Note Generator (Classic Pipelines)](#release-note-generator-classic-pipelines)
+    - [OWASP API Scan (YAML Pipeline)](#owasp-api-scan-yaml-pipeline)
+      - [Prerequisites](#prerequisites-1)
+      - [Azure PaaS :](#azure-paas--1)
+    - [Others :](#others--1)
 - [Contributing](#contributing)
 
 ## Prerequisites
@@ -12,6 +20,13 @@ You will need an Azure Devops instance. The following configurations are support
 - Azure DevOps Online
 - Hosted Azure DevOps on Premise
 
+
+#### Azure PaaS :
+- Storage Account, File Share, Virtual Network and Subnet for the running an Azure Container Instance.
+
+#### Others :
+- Option File (.prop) - You will need to provide option file which contains configurations that require for API Scanning. You can refer below example to understand how to use it.
+  
 ## Installation
 
 You can install the extensions from the Azure DevOps MarketPlace https://marketplace.visualstudio.com/azuredevops 
@@ -31,6 +46,29 @@ The rest of the fields are pre-populated to make the installation much easier.
 
 ![release-notes-extension](https://user-images.githubusercontent.com/22330376/129528879-1d752e28-5866-48be-9329-66989fc6d8e3.png)
 
+
+#### OWASP API Scan (YAML Pipeline)
+
+Using this task, you can run security scan on API using OWASP zap and publish result to pipeline. Upon adding a task to your pipeline, few variables are preconfigured with suggested values.
+You must supply:
+- Azure Subscription (Azure Resource Manager subscription for the deployment)
+- Name of the resource group (The name of the resource group that contains the storage account)
+- Location (Location for deploying the container)
+- Api Swagger endpoint url (Api Swagger endpoint url to scan)
+- Name of the storage account (The name of the Storage Account to be used by the OWASP container to store the results of the OWASP Scan)
+- Name of the File Share (The name of the file share in the Storage Account where results of the OWASP Scan will be stored)
+- Name of the OWASP Image (OWASP Scan image)
+- Path to Option file (The path to option file which will be use to prepare request headers require for the api scan)
+
+The rest of the fields are pre-populated to make the installation much easier.
+
+##### Prerequisites
+In addition to the =an Azure Devops instance. You will require the following pre-requisities listed below to use this task.
+##### Azure PaaS :
+- Storage Account, File Share
+#### Others :
+- Option File (.prop) - You will need to provide option file which contains configurations that require for API Scanning. You can refer below example to understand how to use it.
+- Virtual Network and Subnet for the running an Azure Container Instance.
 
 ## Contributing
 
