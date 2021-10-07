@@ -91,13 +91,13 @@ You will also need to use **PublishTestResults@2** task with this extension in o
 ```
 - task: capgemini-uk-msft-owaspscan-extensions@0
       inputs:
-        azureSubscription: 'Visual Studio Enterprise(87151172-d1e4-4872-97de-bbfef17fa048)'
+        azureSubscription: '{subscription}'
         ResourceGroupName: 'owasp-demos-rg'
         Location: 'UK South'
         VNet: 'aci-vnet'
         Subnet: 'aci-subnet'
-        ApiEndpoint: 'https://weatherapiowaspdemo.azurewebsites.net/swagger/v1/swagger.json'
-        StorageAccountName: 'apitestsdemost'
+        ApiEndpoint: 'https:{<api base url}/swagger/v1/swagger.json'
+        StorageAccountName: '{storage account name}'
         ShareName: 'owaspresults'
         ImageName: 'owasp/zap2docker-weekly'
         OptionFilePath: '$(System.ArtifactsDirectory)/drop/Options/options.prop'
