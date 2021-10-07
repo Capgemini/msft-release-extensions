@@ -82,7 +82,7 @@
         {
             "name": "Subnet",
             "type": "string",
-            "label": "Virtual Network",
+            "label": "Subnet",
             "groupName": "azureDetails",
             "required": true,
             "helpMarkDown": "The name of the Subnet in which to deploy the container instance to.",
