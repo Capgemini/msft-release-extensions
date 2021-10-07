@@ -52,13 +52,13 @@ You will also need to use **PublishTestResults@2** task with this extension in o
 ```
 - task: capgemini-uk-msft-owaspscan-extensions@0
       inputs:
-        azureSubscription: 'Visual Studio Enterprise(87151172-d1e4-4872-97de-bbfef17fa048)'
+        azureSubscription: '{subscription}'
         ResourceGroupName: 'owasp-demos-rg'
         Location: 'UK South'
         VNet: 'aci-vnet'
         Subnet: 'aci-subnet'
-        ApiEndpoint: 'https://weatherapiowaspdemo.azurewebsites.net/swagger/v1/swagger.json'
-        StorageAccountName: 'apitestsdemost'
+        ApiEndpoint: 'https://{api base url}/swagger/v1/swagger.json'
+        StorageAccountName: '{storage account name}'
         ShareName: 'owaspresults'
         ImageName: 'owasp/zap2docker-weekly'
         OptionFilePath: '$(System.ArtifactsDirectory)/drop/Options/options.prop'
@@ -100,7 +100,7 @@ Below are the different stages that will require to setup in order to perform AP
 3. Store result to Storage account - FileShare - Once Scan is finished store result in XML and HTML format in storage account.
 4. Delete Container - Delete the ACI
 5. Copy Results from Storage Account - Get the result from storage account to publish it to pipeline.
-6. Publish Results​ - Publich the result and view it in pipeline test tab.
+6. Publish Results - Publich the result and view it in pipeline test tab.
 
 
 Good news is, Our Exetension abstract above components and provides you simple to use Azure devops extension which anyone can use in their pipelines as a Task to perform API Scan effortlessly.
