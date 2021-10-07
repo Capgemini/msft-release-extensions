@@ -4,15 +4,15 @@
 
 - [Table of contents](#table-of-contents)
 - [Prerequisites](#prerequisites)
-    - [Azure PaaS :](#azure-paas-)
-    - [Others :](#others-)
+    - [Azure PaaS](#azure-paas)
+    - [Others](#others)
 - [Installation](#installation)
   - [Tasks](#tasks)
     - [Release Note Generator (Classic Pipelines)](#release-note-generator-classic-pipelines)
     - [OWASP API Scan (YAML Pipeline)](#owasp-api-scan-yaml-pipeline)
       - [Prerequisites](#prerequisites-1)
-      - [Azure PaaS :](#azure-paas--1)
-    - [Others :](#others--1)
+      - [Azure PaaS](#azure-paas-1)
+      - [Others](#others-1)
 - [Contributing](#contributing)
 
 ## Prerequisites
@@ -21,10 +21,10 @@ You will need an Azure Devops instance. The following configurations are support
 - Hosted Azure DevOps on Premise
 
 
-#### Azure PaaS :
+#### Azure PaaS
 - Storage Account, File Share, Virtual Network and Subnet for the running an Azure Container Instance.
 
-#### Others :
+#### Others
 - Option File (.prop) - You will need to provide option file which contains configurations that require for API Scanning. You can refer below example to understand how to use it.
   
 ## Installation
@@ -64,10 +64,25 @@ The rest of the fields are pre-populated to make the installation much easier.
 
 ##### Prerequisites
 In addition to the =an Azure Devops instance. You will require the following pre-requisities listed below to use this task.
-##### Azure PaaS :
+##### Azure PaaS
 - Storage Account, File Share
-#### Others :
-- Option File (.prop) - You will need to provide option file which contains configurations that require for API Scanning. You can refer below example to understand how to use it.
+##### Others
+- Option File (options.prop) - You will need to provide option file (options.prop) which contains configurations that require for your API Scanning. Below example shows the how this file looks like. Basically these are the request header paraemters to API which OWASP requires for scanning. You will have to modify this file (for e.g. You might need to send authentication header in it for authorizing apis during the OWASP run.) This is the mandatory file which you can generate dnamically during the build stage as a artifact and will need to provide to this extension task and 
+```
+replacer.full_list(0).description=ContentTypeHeader 
+replacer.full_list(0).enabled=true 
+replacer.full_list(0).matchtype=REQ_HEADER 
+replacer.full_list(0).matchstr=Content-Type 
+replacer.full_list(0).regex=false 
+replacer.full_list(0).replacement=application/json 
+replacer.full_list(1).description=AccceptHeader 
+replacer.full_list(1).enabled=true 
+replacer.full_list(1).matchtype=REQ_HEADER 
+replacer.full_list(1).matchstr=Accept 
+replacer.full_list(1).regex=false 
+replacer.full_list(1).replacement=application/json
+
+```
 - Virtual Network and Subnet for the running an Azure Container Instance.
 
 ## Contributing
