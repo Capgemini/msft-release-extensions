@@ -19,7 +19,7 @@ You will need an Azure Devops instance. The following configurations are support
 - Azure DevOps Online
 - Hosted Azure DevOps on Premise
 
-Additional prerequisites for each task are specified below in each Task's section.
+Additional prerequisites for each task are specified below in each task's section.
 
 ## Installation
 
@@ -61,7 +61,12 @@ In addition to the an Azure Devops instance, you will require the following pre-
 ###### Azure PaaS
 - Storage Account, File Share
 ###### Others
-- Option File (options.prop) - You will need to provide an option file (options.prop) that contains API Header Request configurations. The example below shows what the contents of this file looks like. These are the request header parameters that will be included in the API requests when the OWASP API scan is running. You should modify this file to include any additional headers (e.g. include an Authorization Request Header that contains a bearer token and one for an API Management Subscription Header key 'Ocp-Apim-Subscription-Key' if you are using Azure API Management.) This is a mandatory file, which you can generate dynamically during the build stage as a artifact. 
+
+- Virtual Network and Subnet for the running an Azure Container Instance. A Virtual Network and Subnet is used to ensure that access to the Storage account that stores the results of OWASP Scan can be restricted. You can either use Service End points enabled on the Subnet or use a Private Endpoint for the Storage account. Note that build agent will need to be able to connect to the storage account to retrieve the results of the OWASP API Scan. 
+
+- Option File (options.prop) - You will need to provide an option file (options.prop) that contains API Header Request configurations. The example below shows what the contents of this file looks like. These are the request header parameters that will be included in the API requests when the OWASP API scan is running. 
+
+You should modify this file to include any additional headers (e.g. include an Authorization Request Header that contains a bearer token and one for an API Management Subscription Header key 'Ocp-Apim-Subscription-Key' if you are using Azure API Management.) This is a mandatory file, which you can generate dynamically during the build stage as a artifact. 
 
 ```
 replacer.full_list(0).description=ContentTypeHeader 
@@ -78,7 +83,7 @@ replacer.full_list(1).regex=false
 replacer.full_list(1).replacement=application/json
 
 ```
-- Virtual Network and Subnet for the running an Azure Container Instance. A Virtual Network and Subnet is used to ensure that access to the Storage account that stores the results of OWASP Scan can be restricted. You can either use Service End points enabled on the Subnet or use a Private Endpoint for the Storage account. Note that build agent will need to be able to connect to the storage account to retrieve the results of the OWASP API Scan. 
+
 
 #####  Use the extension as a pipeline task in your azure devops yaml pipeline to run Security Scan on API's
 You will also need to use **PublishTestResults@2** task with this extension in order to publish test result after scan is completed. below is the example which shows how to use it in YAML pipeline.
