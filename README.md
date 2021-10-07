@@ -13,6 +13,7 @@
       - [Prerequisites](#prerequisites-1)
       - [Azure PaaS](#azure-paas-1)
       - [Others](#others-1)
+      - [Use the extension as a pipeline task in your azure devops yaml pipeline to run Security Scan on API's](#use-the-extension-as-a-pipeline-task-in-your-azure-devops-yaml-pipeline-to-run-security-scan-on-apis)
 - [Contributing](#contributing)
 
 ## Prerequisites
@@ -29,7 +30,7 @@ You will need an Azure Devops instance. The following configurations are support
   
 ## Installation
 
-You can install the extensions from the Azure DevOps MarketPlace https://marketplace.visualstudio.com/azuredevops 
+You can install the extensions from the Azure DevOps MarketPlace https://marketplace.visualstudio.com/items?itemName=capgemini-msft-uk.build-release-task 
 
 ### Tasks
 
@@ -57,8 +58,8 @@ You must supply:
 - Api Swagger endpoint url (Api Swagger endpoint url to scan)
 - Name of the storage account (The name of the Storage Account to be used by the OWASP container to store the results of the OWASP Scan)
 - Name of the File Share (The name of the file share in the Storage Account where results of the OWASP Scan will be stored)
-- Name of the OWASP Image (OWASP Scan image)
-- Path to Option file (The path to option file which will be use to prepare request headers require for the api scan)
+- Name of the OWASP Image (OWASP Scan image. It should be 'owasp/zap2docker-weekly')
+- Path to Option file (The path to option file which will be use to prepare request headers require for the api scan. The name of the file must be 'options.prop')
 
 The rest of the fields are pre-populated to make the installation much easier.
 
@@ -84,6 +85,32 @@ replacer.full_list(1).replacement=application/json
 
 ```
 - Virtual Network and Subnet for the running an Azure Container Instance.
+#####  Use the extension as a pipeline task in your azure devops yaml pipeline to run Security Scan on API's
+You will also need to use **PublishTestResults@2** task with this extension in order to publish test result after scan is completed. below is the example which shows how to use it in YAML pipeline.
+
+```
+- task: capgemini-uk-msft-owaspscan-extensions@0
+      inputs:
+        azureSubscription: 'Visual Studio Enterprise(87151172-d1e4-4872-97de-bbfef17fa048)'
+        ResourceGroupName: 'owasp-demos-rg'
+        Location: 'UK South'
+        VNet: 'aci-vnet'
+        Subnet: 'aci-subnet'
+        ApiEndpoint: 'https://weatherapiowaspdemo.azurewebsites.net/swagger/v1/swagger.json'
+        StorageAccountName: 'apitestsdemost'
+        ShareName: 'owaspresults'
+        ImageName: 'owasp/zap2docker-weekly'
+        OptionFilePath: '$(System.ArtifactsDirectory)/drop/Options/options.prop'
+
+- task: PublishTestResults@2
+      displayName: 'Publish Test Results **/Converted*.xml'
+      inputs:
+        testResultsFormat: NUnit
+        testResultsFiles: '**/Converted*.xml'
+        testRunTitle: 'OWASP API Tests'
+        searchFolder: '$(System.ArtifactsDirectory)'  
+```
+You can read more about this extension and its usage on https://marketplace.visualstudio.com/items?itemName=capgemini-msft-uk.build-release-task  
 
 ## Contributing
 
