@@ -4,15 +4,13 @@
 
 - [Table of contents](#table-of-contents)
 - [Prerequisites](#prerequisites)
-    - [Azure PaaS](#azure-paas)
-    - [Others](#others)
 - [Installation](#installation)
   - [Tasks](#tasks)
     - [Release Note Generator (Classic Pipelines)](#release-note-generator-classic-pipelines)
     - [OWASP API Scan (YAML Pipeline)](#owasp-api-scan-yaml-pipeline)
       - [Prerequisites](#prerequisites-1)
-      - [Azure PaaS](#azure-paas-1)
-      - [Others](#others-1)
+        - [Azure PaaS](#azure-paas)
+        - [Others](#others)
       - [Use the extension as a pipeline task in your azure devops yaml pipeline to run Security Scan on API's](#use-the-extension-as-a-pipeline-task-in-your-azure-devops-yaml-pipeline-to-run-security-scan-on-apis)
 - [Contributing](#contributing)
 
@@ -21,13 +19,8 @@ You will need an Azure Devops instance. The following configurations are support
 - Azure DevOps Online
 - Hosted Azure DevOps on Premise
 
+Additional prerequisites for each task are specified below in each Task's section.
 
-#### Azure PaaS
-- Storage Account, File Share, Virtual Network and Subnet for the running an Azure Container Instance.
-
-#### Others
-- Option File (.prop) - You will need to provide option file which contains configurations that require for API Scanning. You can refer below example to understand how to use it.
-  
 ## Installation
 
 You can install the extensions from the Azure DevOps MarketPlace https://marketplace.visualstudio.com/items?itemName=capgemini-msft-uk.build-release-task 
@@ -64,11 +57,12 @@ You must supply:
 The rest of the fields are pre-populated to make the installation much easier.
 
 ##### Prerequisites
-In addition to the =an Azure Devops instance. You will require the following pre-requisities listed below to use this task.
-##### Azure PaaS
+In addition to the an Azure Devops instance, you will require the following pre-requisities listed below to use this task.
+###### Azure PaaS
 - Storage Account, File Share
-##### Others
-- Option File (options.prop) - You will need to provide option file (options.prop) which contains configurations that require for your API Scanning. Below example shows the how this file looks like. Basically these are the request header paraemters to API which OWASP requires for scanning. You will have to modify this file (for e.g. You might need to send authentication header in it for authorizing apis during the OWASP run.) This is the mandatory file which you can generate dnamically during the build stage as a artifact and will need to provide to this extension task and 
+###### Others
+- Option File (options.prop) - You will need to provide an option file (options.prop) that contains API Header Request configurations. The example below shows what the contents of this file looks like. These are the request header parameters that will be included in the API requests when the OWASP API scan is running. You should modify this file to include any additional headers (e.g. include an Authorization Request Header that contains a bearer token and one for an API Management Subscription Header key 'Ocp-Apim-Subscription-Key' if you are using Azure API Management.) This is a mandatory file, which you can generate dynamically during the build stage as a artifact. 
+
 ```
 replacer.full_list(0).description=ContentTypeHeader 
 replacer.full_list(0).enabled=true 
@@ -84,19 +78,20 @@ replacer.full_list(1).regex=false
 replacer.full_list(1).replacement=application/json
 
 ```
-- Virtual Network and Subnet for the running an Azure Container Instance.
+- Virtual Network and Subnet for the running an Azure Container Instance. A Virtual Network and Subnet is used to ensure that access to the Storage account that stores the results of OWASP Scan can be restricted. You can either use Service End points enabled on the Subnet or use a Private Endpoint for the Storage account. Note that build agent will need to be able to connect to the storage account to retrieve the results of the OWASP API Scan. 
+
 #####  Use the extension as a pipeline task in your azure devops yaml pipeline to run Security Scan on API's
 You will also need to use **PublishTestResults@2** task with this extension in order to publish test result after scan is completed. below is the example which shows how to use it in YAML pipeline.
 
 ```
 - task: capgemini-uk-msft-owaspscan-extensions@0
       inputs:
-        azureSubscription: '{subscription}'
+        azureSubscription: '{azure connection name}'
         ResourceGroupName: 'owasp-demos-rg'
         Location: 'UK South'
         VNet: 'aci-vnet'
         Subnet: 'aci-subnet'
-        ApiEndpoint: 'https:{<api base url}/swagger/v1/swagger.json'
+        ApiEndpoint: 'https:{api base url}/swagger/v1/swagger.json'
         StorageAccountName: '{storage account name}'
         ShareName: 'owaspresults'
         ImageName: 'owasp/zap2docker-weekly'
