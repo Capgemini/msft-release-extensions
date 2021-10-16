@@ -1,0 +1,44 @@
+[
+    {
+        "name" : "Folder0", 
+        "permissions" : [
+                {
+                    "type" : "application",
+                    "name" : "ADO-DefraGovUK-AZR-TRD-DEV1",
+                    "permissions" : "rw-"   
+                }
+            ],
+        "directories" : [
+            {
+                "name" : "FSA",
+                "directories" : [
+                    {
+                        "name" : "ApprovedFoodEstablishments"
+                    }
+                ]
+            },
+            {
+                "name" : "ISO3166-1"                
+            }
+         ] 
+    },
+    {
+        "name" : "Folder1", 
+        "directories" : [
+            {
+                "name" : "FSA",
+                "directories" : [
+                    {
+                        "name" : "ApprovedFoodEstablishment"
+                    },
+                     {
+                        "name" : "Data"
+                    }
+                ]
+            },
+            {
+                "name" : "Country"               
+            }
+         ] 
+    }
+]

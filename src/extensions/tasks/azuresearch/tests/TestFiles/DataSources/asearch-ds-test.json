@@ -1,0 +1,16 @@
+{
+	"name": "test_ds",
+	"description": null,
+	"type": "azureblob",
+	"subtype": null,
+	"credentials": {
+	  "connectionString": "ResourceId=/subscriptions/xxxxxx/resourceGroups/xxxx/providers/Microsoft.Storage/storageAccounts/xxxx;"
+	},
+	"container": {
+	  "name": "defraanalyticsdata",
+	  "query": "POC/CarsPOC"
+	},
+	"dataChangeDetectionPolicy": null,
+	"dataDeletionDetectionPolicy": null,
+	"encryptionKey": null
+  }
