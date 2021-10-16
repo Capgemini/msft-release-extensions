@@ -28,6 +28,24 @@
     {
 			"path": "tasks/owasp-scan"
 		},
+    {
+			"path": "tasks/azuresearch/ConfigureAzureSearch"
+		},
+    {
+			"path": "tasks/azuresearch/ConfigureAzureSearchAccessLevel"
+		},
+    {
+			"path": "tasks/storage/CopyFilesToStorageAccount"
+		},
+    {
+			"path": "tasks/storage/CreateDataLakeFolderStructure"
+		},
+    {
+			"path": "tasks/synapse/SetPipeLineTriggers"
+		},
+    {
+			"path": "tasks/synapse/UploadPackagesToSynapse"
+		},
 		{
 			"path": "images",
 			"addressable": true     
@@ -52,6 +70,66 @@
 			],
 			"properties": {
 				"name": "tasks/owasp-scan"
+			}
+		},
+    {
+			"id": "azuresearchconfigure",
+			"type": "ms.vss-distributed-task.task",
+			"targets": [
+				"ms.vss-distributed-task.tasks"
+			],
+			"properties": {
+				"name": "tasks/azuresearch/ConfigureAzureSearch"
+			}
+		},
+    {
+			"id": "azuresearchaccesslevel",
+			"type": "ms.vss-distributed-task.task",
+			"targets": [
+				"ms.vss-distributed-task.tasks"
+			],
+			"properties": {
+				"name": "tasks/azuresearch/ConfigureAzureSearchAccessLevel"
+			}
+		},
+    {
+			"id": "storagecopyfiles",
+			"type": "ms.vss-distributed-task.task",
+			"targets": [
+				"ms.vss-distributed-task.tasks"
+			],
+			"properties": {
+				"name": "tasks/storage/CopyFilesToStorageAccount"
+			}
+		},
+    {
+			"id": "storagecreatedatalakefolders",
+			"type": "ms.vss-distributed-task.task",
+			"targets": [
+				"ms.vss-distributed-task.tasks"
+			],
+			"properties": {
+				"name": "tasks/storage/CreateDataLakeFolderStructure "
+			}
+		},
+    {
+			"id": "synapsepipelinetriggers",
+			"type": "ms.vss-distributed-task.task",
+			"targets": [
+				"ms.vss-distributed-task.tasks"
+			],
+			"properties": {
+				"name": "tasks/synapse/SetPipeLineTriggers "
+			}
+		},
+    {
+			"id": "synapseuploadpackages",
+			"type": "ms.vss-distributed-task.task",
+			"targets": [
+				"ms.vss-distributed-task.tasks"
+			],
+			"properties": {
+				"name": "tasks/synapse/CreateDataLakeFolderStructure "
 			}
 		}
   ]

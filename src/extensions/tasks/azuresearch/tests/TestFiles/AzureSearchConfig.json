@@ -1,0 +1,14 @@
+{
+  "ApiVersion": "2020-06-30",
+  "AzureSearchConfigs":[
+    {
+      "IndexFilePath": "Indexes/asearch-index-test.json",
+      "IndexName": "test-index1",
+      "DataSourceFilePath": "DataSources/asearch-ds-test.json",
+      "DataSourceName": "test-ds1",
+      "DataSourceConnectionString": "To overwrite",
+      "IndexerName": "test-indexer1",
+      "IndexerFilePath": "Indexers/asearch-indexer-test.json"
+      }
+  ]
+}

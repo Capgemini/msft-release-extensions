@@ -1,0 +1,20 @@
+{
+  "name": "test_indexer",
+  "description": null,
+  "dataSourceName": "test_ds",
+  "skillsetName": null,
+  "targetIndexName": "test_index",
+  "disabled": null,
+  "schedule": null,
+  "parameters": {
+    "batchSize": null,
+    "maxFailedItems": null,
+    "maxFailedItemsPerBatch": null,
+    "base64EncodeKeys": null,
+    "configuration": {
+      "parsingMode": "jsonLines",
+      "indexedFileNameExtensions": ".json",
+      "documentRoot": ""
+    }
+  }
+}
