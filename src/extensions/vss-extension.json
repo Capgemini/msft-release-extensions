@@ -97,14 +97,14 @@
 		}
 	  },
 	  {
-		"id": "synapseuploadpackages",
+		"id": "synapsepackages",
 		"type": "ms.vss-distributed-task.task",
 		"targets": [
 		  "ms.vss-distributed-task.tasks"
 		],
 		"properties": {
-		  "name": "tasks/synapse/CreateDataLakeFolderStructure"
+		  "name": "tasks/synapse/UploadPackagesToSynapse"
 		}
-	  }
+	  }	 
 	]
   }
