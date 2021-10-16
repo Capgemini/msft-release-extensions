@@ -1,136 +1,110 @@
 {
-  "manifestVersion": 1,
-  "id": "build-release-task",
-  "name": "Capgemini Microsoft UK Build and Release Tools",
-  "version": "1.0.2",
-  "publisher": "capgemini-msft-uk",
-  "content": {
-    "details": {
-      "path": "overview.md"
-    }
-  },
-  "icons": {
-    "default": "logo.png"
-  },
-  "targets": [
-    {
-      "id": "Microsoft.VisualStudio.Services"
-    }
-  ],
-  "description": "Tools for helping the release and testing process.",
-  "categories": [
-    "Azure Pipelines"
-  ],
-  "files": [
-    {
-      "path": "tasks/release-notes"
-    },
-    {
-			"path": "tasks/owasp-scan"
-		},
-    {
-			"path": "tasks/azuresearch/ConfigureAzureSearch"
-		},
-    {
-			"path": "tasks/azuresearch/ConfigureAzureSearchAccessLevel"
-		},
-    {
-			"path": "tasks/storage/CopyFilesToStorageAccount"
-		},
-    {
-			"path": "tasks/storage/CreateDataLakeFolderStructure"
-		},
-    {
-			"path": "tasks/synapse/SetPipeLineTriggers"
-		},
-    {
-			"path": "tasks/synapse/UploadPackagesToSynapse"
-		},
-		{
-			"path": "images",
-			"addressable": true     
+	"manifestVersion": 1,
+	"id": "build-release-task",
+	"name": "Capgemini Microsoft UK Build and Release Tools",
+	"version": "1.0.2",
+	"publisher": "capgemini-msft-uk",
+	"content": {
+	  "details": {
+		"path": "overview.md"
+	  }
+	},
+	"icons": {
+	  "default": "logo.png"
+	},
+	"targets": [
+	  {
+		"id": "Microsoft.VisualStudio.Services"
+	  }
+	],
+	"description": "Tools for helping the release and testing process.",
+	"categories": [
+	  "Azure Pipelines"
+	],
+	"files": [
+	  {
+		"path": "tasks/release-notes"
+	  },
+	  {
+		"path": "tasks/owasp-scan"
+	  },
+	  {
+		"path": "tasks/azuresearch/ConfigureAzureSearch"
+	  },
+	  {
+		"path": "tasks/azuresearch/ConfigureAzureSearchAccessLevel"
+	  },
+	  {
+		"path": "tasks/synapse/SetPipeLineTriggers"
+	  },
+	  {
+		"path": "tasks/synapse/UploadPackagesToSynapse"
+	  },
+	  {
+		"path": "images",
+		"addressable": true
+	  }
+	],
+	"contributions": [
+	  {
+		"id": "releasenotes",
+		"type": "ms.vss-distributed-task.task",
+		"targets": [
+		  "ms.vss-distributed-task.tasks"
+		],
+		"properties": {
+		  "name": "tasks/release-notes"
 		}
-  ],
-  "contributions": [
-    {
-      "id": "releasenotes",
-      "type": "ms.vss-distributed-task.task",
-      "targets": [
-        "ms.vss-distributed-task.tasks"
-      ],
-      "properties": {
-        "name": "tasks/release-notes"
-      }
-    },
-    {
-			"id": "owaspapiscan",
-			"type": "ms.vss-distributed-task.task",
-			"targets": [
-				"ms.vss-distributed-task.tasks"
-			],
-			"properties": {
-				"name": "tasks/owasp-scan"
-			}
-		},
-    {
-			"id": "azuresearchconfigure",
-			"type": "ms.vss-distributed-task.task",
-			"targets": [
-				"ms.vss-distributed-task.tasks"
-			],
-			"properties": {
-				"name": "tasks/azuresearch/ConfigureAzureSearch"
-			}
-		},
-    {
-			"id": "azuresearchaccesslevel",
-			"type": "ms.vss-distributed-task.task",
-			"targets": [
-				"ms.vss-distributed-task.tasks"
-			],
-			"properties": {
-				"name": "tasks/azuresearch/ConfigureAzureSearchAccessLevel"
-			}
-		},
-    {
-			"id": "storagecopyfiles",
-			"type": "ms.vss-distributed-task.task",
-			"targets": [
-				"ms.vss-distributed-task.tasks"
-			],
-			"properties": {
-				"name": "tasks/storage/CopyFilesToStorageAccount"
-			}
-		},
-    {
-			"id": "storagecreatedatalakefolders",
-			"type": "ms.vss-distributed-task.task",
-			"targets": [
-				"ms.vss-distributed-task.tasks"
-			],
-			"properties": {
-				"name": "tasks/storage/CreateDataLakeFolderStructure"
-			}
-		},
-    {
-			"id": "synapsepipelinetriggers",
-			"type": "ms.vss-distributed-task.task",
-			"targets": [
-				"ms.vss-distributed-task.tasks"
-			],
-			"properties": {
-				"name": "tasks/synapse/SetPipeLineTriggers"
-			}
-		},
-    {
-			"id": "synapseuploadpackages",
-			"type": "ms.vss-distributed-task.task",
-			"targets": [
-				"ms.vss-distributed-task.tasks"
-			],
-			"properties": {
-				"name": "tasks/synapse/CreateDataLakeFolderStructure"
-			}
+	  },
+	  {
+		"id": "owaspapiscan",
+		"type": "ms.vss-distributed-task.task",
+		"targets": [
+		  "ms.vss-distributed-task.tasks"
+		],
+		"properties": {
+		  "name": "tasks/owasp-scan"
 		}
-  ]
-}
+	  },
+	  {
+		"id": "azuresearchconfigure",
+		"type": "ms.vss-distributed-task.task",
+		"targets": [
+		  "ms.vss-distributed-task.tasks"
+		],
+		"properties": {
+		  "name": "tasks/azuresearch/ConfigureAzureSearch"
+		}
+	  },
+	  {
+		"id": "azuresearchaccesslevel",
+		"type": "ms.vss-distributed-task.task",
+		"targets": [
+		  "ms.vss-distributed-task.tasks"
+		],
+		"properties": {
+		  "name": "tasks/azuresearch/ConfigureAzureSearchAccessLevel"
+		}
+	  },
+	  {
+		"id": "synapsepipelinetriggers",
+		"type": "ms.vss-distributed-task.task",
+		"targets": [
+		  "ms.vss-distributed-task.tasks"
+		],
+		"properties": {
+		  "name": "tasks/synapse/SetPipeLineTriggers"
+		}
+	  },
+	  {
+		"id": "synapseuploadpackages",
+		"type": "ms.vss-distributed-task.task",
+		"targets": [
+		  "ms.vss-distributed-task.tasks"
+		],
+		"properties": {
+		  "name": "tasks/synapse/CreateDataLakeFolderStructure"
+		}
+	  }
+	]
+  }
