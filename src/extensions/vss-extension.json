@@ -109,7 +109,7 @@
 				"ms.vss-distributed-task.tasks"
 			],
 			"properties": {
-				"name": "tasks/storage/CreateDataLakeFolderStructure "
+				"name": "tasks/storage/CreateDataLakeFolderStructure"
 			}
 		},
     {
@@ -119,7 +119,7 @@
 				"ms.vss-distributed-task.tasks"
 			],
 			"properties": {
-				"name": "tasks/synapse/SetPipeLineTriggers "
+				"name": "tasks/synapse/SetPipeLineTriggers"
 			}
 		},
     {
@@ -129,7 +129,7 @@
 				"ms.vss-distributed-task.tasks"
 			],
 			"properties": {
-				"name": "tasks/synapse/CreateDataLakeFolderStructure "
+				"name": "tasks/synapse/CreateDataLakeFolderStructure"
 			}
 		}
   ]
