@@ -10,11 +10,6 @@ parameters:
     type: boolean
     default: false
 
-  - name: publishToPublicMarketPlace
-    displayName: 'Publish to the Public MarketPlace?'
-    type: boolean
-    default: false
-
 variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
@@ -123,7 +118,7 @@ stages:
 
   - stage: PublishToPublicMarketPlace
     displayName: Publish to Public Feed
-    condition: and(succeeded(), eq(${{ parameters.publishToPublicMarketPlace }}, true), eq(variables['Build.SourceBranch'], variables['deploymentBranch']))
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], variables['deploymentBranch']))
     jobs:
       - deployment:
         environment: Public Visual Studio MarketPlace
