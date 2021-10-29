@@ -12,6 +12,8 @@
         - [Azure PaaS](#azure-paas)
         - [Others](#others)
       - [Use the extension as a pipeline task in your azure devops yaml pipeline to run Security Scan on API's](#use-the-extension-as-a-pipeline-task-in-your-azure-devops-yaml-pipeline-to-run-security-scan-on-apis)
+     - [Azure Synapse Package Upload (Classic and YAML Pipeline)](#azure-synapse-package-upload-classic-and-yaml-pipeline)
+     - [Azure Synapse Enable Disable Pipeline Triggers (Classic and YAML Pipeline)](#azure-synapse-enable-disable-pipeline-triggers-classic-and-yaml-pipeline)
 - [Contributing](#contributing)
 
 ## Prerequisites
@@ -109,6 +111,14 @@ You will also need to use **PublishTestResults@2** task with this extension in o
         searchFolder: '$(System.ArtifactsDirectory)'  
 ```
 You can read more about this extension and its usage on https://marketplace.visualstudio.com/items?itemName=capgemini-msft-uk.build-release-task  
+
+#### Azure Synapse Package Upload (Classic and YAML Pipeline)
+Upload whl files from a specified location to a Synapse workspace and apply it to all spark pools.
+![image](https://user-images.githubusercontent.com/22330376/139492579-6149e952-4cdd-4221-94a1-e0ff162991c1.png)
+
+#### Azure Synapse Enable Disable Pipeline Triggers (Classic and YAML Pipeline)
+Allows you to enable and disable triggers before and after a release. Recommended by Microsoft.
+![image](https://user-images.githubusercontent.com/22330376/139492737-37b286ab-70c8-4e6a-b3e1-208dea0033be.png)
 
 ## Contributing
 
