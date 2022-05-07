@@ -1,0 +1,41 @@
+trigger:
+  batch: true
+  branches:
+    include:
+    - 'master'
+  paths:
+    include:
+    - src/azure-devops/Project/*
+
+pool:
+  vmImage: windows-latest
+
+parameters:
+  - name: ProjectName
+    type: string
+    default: CUSTOMER-PROJECT-NAME
+  - name: AdoAccountName
+    type: string
+    description: E.g Capgeminiuk
+  - name: InheritedProcessName
+    type: string
+    values:
+      - Agile
+    default: Agile
+  - name: Template
+    type: string
+    values:
+      - Agile
+    default: Agile
+
+steps:
+- task: PowerShell@2
+  inputs:
+    filePath: $(system.defaultworkingdirectory)/src/scaffolders/azure-devops/Project/setup.ps1
+    arguments: 
+        -AdoAccountName ${{ parameters.AdoAccountName}} 
+        -AdoToken $(PATToken)
+        -InheritedProcessName ${{ parameters.InheritedProcessName}} 
+        -ConfigurationType ${{ parameters.Template}}
+        -ProjectName ${{ parameters.ProjectName}}
+    

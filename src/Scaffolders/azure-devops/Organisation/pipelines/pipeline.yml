@@ -1,0 +1,28 @@
+trigger:
+  batch: true
+  branches:
+    include:
+    - 'master'
+  paths:
+    include:
+    - src/azure-devops/Organisation/*
+
+pool:
+  vmImage: windows-latest
+
+parameters:
+  - name: AdoAccountName
+    type: string
+    description: E.g Capgeminiuk
+  - name: NameOfCustomisedProcess
+    type: string
+
+steps:
+- task: PowerShell@2
+  inputs:
+    filePath: $(system.defaultworkingdirectory)/src/scaffolders/azure-devops/Organisation/setup.ps1
+    arguments: 
+        -AdoAccountName ${{ parameters.AdoAccountName}} 
+        -AdoToken $(PATToken)
+        -NameOfCustomisedProcess ${{ parameters.NameOfCustomisedProcess}}
+    
