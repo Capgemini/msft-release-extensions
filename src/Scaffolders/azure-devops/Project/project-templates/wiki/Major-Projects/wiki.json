@@ -1,0 +1,60 @@
+{
+    "pages" : 
+    [
+        {
+            "title" : "HomePage",
+            "path" : "Home",
+            "file" : "HomePage.md"
+        },
+        {
+            "title" : "Delivery",
+            "path" : "Home/Delivery",
+            "file" : "Delivery.md"
+        },
+        {
+            "title" : "Standards and Tooling",
+            "path" : "Home/Delivery/Standards and Tooling",
+            "file" : "Standards.md"
+        },
+        {
+            "title" : "Accelerators",
+            "path" : "Home/Delivery/Accelerators",
+            "file" : "Accelerators.md"
+        },       
+        {
+            "title" : "Onboarding",
+            "path" : "Home/Delivery/Onboarding",
+            "file" : "Onboarding.md"
+        },
+        {
+            "title" : "Service Requests",
+            "path" : "Home/Delivery/Service Requests",
+            "file" : "Service Requests.md"
+        },
+        {
+            "title" : "Agile Delivery",
+            "path" : "Home/Delivery/Agile",
+            "file" : "Agile Delivery.md"
+        },
+        {
+            "title" : "Team Roles and Members",
+            "path" : "Home/Delivery/Teams",
+            "file" : "Team Roles and Members.md"
+        },        
+        {
+            "title" : "Software Engineering",
+            "path" : "Home/Delivery/Standards and Tooling/Software Engineering",
+            "file" : "Software Engineering.md"
+        },
+        {
+            "title" : "DevOps",
+            "path" : "Home/Delivery/Standards and Tooling/DevOps",
+            "file" : "DevOps.md"
+        },
+        {
+            "title" : "Testing",
+            "path" : "Home/Delivery/Standards and Tooling/Testing",
+            "file" : "Testing.md"
+        }            
+    ]
+}
