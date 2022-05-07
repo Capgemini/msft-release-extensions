@@ -13,7 +13,6 @@ pool:
 parameters:
   - name: AdoAccountName
     type: string
-    description: E.g Capgeminiuk
   - name: NameOfCustomisedProcess
     type: string
 
