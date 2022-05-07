@@ -16,7 +16,6 @@ parameters:
     default: CUSTOMER-PROJECT-NAME
   - name: AdoAccountName
     type: string
-    description: E.g Capgeminiuk
   - name: InheritedProcessName
     type: string
     values:
@@ -24,9 +23,6 @@ parameters:
     default: Agile
   - name: Template
     type: string
-    values:
-      - Agile
-    default: Agile
 
 steps:
 - task: PowerShell@2
