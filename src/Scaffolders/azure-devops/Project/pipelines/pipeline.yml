@@ -23,9 +23,6 @@ parameters:
     default: Agile
   - name: Template
     type: string
-    values:
-      - Agile
-    default: Agile
 
 steps:
 - task: PowerShell@2
