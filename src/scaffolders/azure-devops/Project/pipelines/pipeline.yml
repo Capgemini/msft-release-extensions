@@ -18,11 +18,10 @@ parameters:
     type: string
   - name: InheritedProcessName
     type: string
-    values:
-      - Agile
     default: Agile
   - name: Template
     type: string
+    default: capgemini
 
 steps:
 - task: PowerShell@2
