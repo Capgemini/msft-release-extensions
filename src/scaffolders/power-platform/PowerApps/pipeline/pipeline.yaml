@@ -1,0 +1,46 @@
+trigger:
+  batch: true
+  branches:
+    include:
+    - 'master'
+  paths:
+    include:
+    - src/scaffolders/power-platform/*
+
+pool:
+  vmImage: windows-latest
+
+parameters:
+  - name: adoAccountName
+    type: string
+  - name: adoProjectName
+    type: string
+  - name: namespace
+    type: string
+
+steps:
+- checkout: self
+  persistCredentials: true
+  
+- task: PowerShell@2
+  displayName : 'Install Template'
+  inputs:
+    targetType: 'inline'
+    script: 'dotnet new --install .'
+    workingDirectory: '$(system.defaultworkingdirectory)/src/scaffolders/power-platform/PowerApps/template'
+
+- task: PowerShell@2
+  displayName : 'Create Scaffold temporary directory'
+  inputs:
+    targetType: 'inline'
+    script: 'mkdir ScaffoldTemp'
+    workingDirectory: '$(system.defaultworkingdirectory)'
+
+- task: PowerShell@2
+  displayName : 'Run Scaffold from temp directory'
+  inputs:
+    targetType: 'inline'
+    script: 'dotnet new Capgemini.PowerApps.Scaffolder -n ${{ parameters.namespace}} --patToken $(PATToken) --adoAccountName ${{ parameters.adoAccountName}} --adoProjectName ${{ parameters.adoProjectName}} --allow-scripts yes'
+    pwsh: true
+    workingDirectory: '$(system.defaultworkingdirectory)/ScaffoldTemp'
+    runScriptInSeparateScope: true

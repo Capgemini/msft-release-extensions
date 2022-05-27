@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Capgemini",
+  "classifications": [ "Common", "Console" ],
+  "identity": "Capgemini.PowerApps.Scaffolder",
+  "name": "Power Apps Project Scaffolder",
+  "shortName": "Capgemini.PowerApps.Scaffolder",
+  "sourceName": "XXXXXXXXX.YYYYYYYYY",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "symbols": {
+    "adoAccountName": {
+      "type": "parameter",
+      "datatype": "text",
+      "replaces": "__adoAccountName__",
+      "defaultValue": "XXX"
+    },
+    "patToken": {
+      "type": "parameter",
+      "datatype": "text",
+      "replaces": "__patToken__",
+      "defaultValue": "XXX"
+    },
+    "adoProjectName": {
+      "type": "parameter",
+      "datatype": "text",
+      "replaces": "__adoProjectName__",
+      "defaultValue": "XXX"
+    }
+  },
+  "postActions": [
+    {
+      "actionId": "3A7C4B45-1F5D-4A30-959A-51B88E82B5D2",
+      "args": {
+        "executable": "powershell",
+        "args": "-File setup.ps1",
+        "redirectStandardOutput": false,
+        "redirectStandardError": false
+      },
+      "manualInstructions": [
+        {
+          "text": "Run 'setup.ps1'"
+        }
+      ],
+      "continueOnError": false,
+      "description ": "setups the project by calling setup.ps1"
+    }
+  ]
+}
