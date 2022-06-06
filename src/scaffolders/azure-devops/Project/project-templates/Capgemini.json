@@ -36,9 +36,8 @@
         }
     ],
     "workItems" : [
-        { "title" : "Example NFR1.0", "type" : "User Story", "description" : "Remember to onboard users" },
+        { "title" : "Example NFR1.0", "type" : "User Story", "description" : "Example NFR1" },
         { "title" : "Onboard New Team Members", "type" : "User Story", "description" : "Remember to onboard users" },        
-        { "title" : "Approved Tooling Review", "type" : "User Story", "description" : "Remember to get tooling Approved" },
-        { "title" : "Update WIKI", "type" : "User Story", "description" : "Remember to get tooling Approved" }
+        { "title" : "Update WIKI", "type" : "User Story", "description" : "Remember to update WIKI" }
     ]  
 }
