@@ -37,9 +37,7 @@
     ],
     "workItems" : [
         { "title" : "Example NFR1.0", "type" : "User Story", "description" : "Remember to onboard users" },
-        { "title" : "Onboard New Team Members", "type" : "User Story", "description" : "Remember to onboard users" },
-        { "title" : "Solution Overview", "type" : "User Story", "description" : "Remember to produce a solution overview" },
-        { "title" : "ADA Approval", "type" : "User Story", "description" : "Remember ADA Approval" },
+        { "title" : "Onboard New Team Members", "type" : "User Story", "description" : "Remember to onboard users" },        
         { "title" : "Approved Tooling Review", "type" : "User Story", "description" : "Remember to get tooling Approved" },
         { "title" : "Update WIKI", "type" : "User Story", "description" : "Remember to get tooling Approved" }
     ]  
