@@ -47,7 +47,7 @@
       "replaces": "__serviceClientUrl__",
       "defaultValue": "XXX"
     },
-    "serviceEndPointTentantId": {
+    "serviceEndPointTenantId": {
       "type": "parameter",
       "datatype": "text",
       "replaces": "__serviceEndPointTentantId__",
