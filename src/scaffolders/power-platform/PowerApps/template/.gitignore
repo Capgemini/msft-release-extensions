@@ -366,3 +366,5 @@ FodyWeavers.xsd
 
 #Powershell default files
 Setup.ps1
+
+serviceendpoint.json
