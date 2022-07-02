@@ -1,0 +1,22 @@
+{
+    "administratorsGroup": null,
+    "authorization": {
+        "scheme": "None",
+        "parameters": {
+            "tenantId": "__serviceEndPointTentantId__",
+            "applicationId": "__serviceClientId__",
+            "clientSecret": "__serviceClientSecret__"
+        }
+    },
+    "createdBy": null,
+    "data": {},
+    "description": "testme",
+    "groupScopeId": null,
+    "name": "Extract",
+    "operationStatus": null,
+    "readersGroup": null,   
+    "type": "powerplatform-spn",
+    "url": "__serviceClientUrl__",
+    "isShared": false,
+    "owner": "library"
+}

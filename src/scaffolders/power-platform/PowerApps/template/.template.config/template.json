@@ -28,6 +28,30 @@
       "datatype": "text",
       "replaces": "__adoProjectName__",
       "defaultValue": "XXX"
+    },
+    "serviceEndPointClientId": {
+      "type": "parameter",
+      "datatype": "text",
+      "replaces": "__serviceEndPointClientId__",
+      "defaultValue": "XXX"
+    },
+    "serviceEndPointSecret": {
+      "type": "parameter",
+      "datatype": "text",
+      "replaces": "__serviceEndPointSecret__",
+      "defaultValue": "XXX"
+    },
+    "serviceClientUrl": {
+      "type": "parameter",
+      "datatype": "text",
+      "replaces": "__serviceClientUrl__",
+      "defaultValue": "XXX"
+    },
+    "serviceEndPointTentantId": {
+      "type": "parameter",
+      "datatype": "text",
+      "replaces": "__serviceEndPointTentantId__",
+      "defaultValue": "XXX"
     }
   },
   "postActions": [
@@ -36,8 +60,8 @@
       "args": {
         "executable": "powershell",
         "args": "-File setup.ps1",
-        "redirectStandardOutput": false,
-        "redirectStandardError": false
+        "redirectStandardOutput": "false",
+        "redirectStandardError": "false"
       },
       "manualInstructions": [
         {
