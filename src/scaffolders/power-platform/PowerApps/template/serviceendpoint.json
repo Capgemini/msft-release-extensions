@@ -4,8 +4,8 @@
         "scheme": "None",
         "parameters": {
             "tenantId": "__serviceEndPointTentantId__",
-            "applicationId": "__serviceClientId__",
-            "clientSecret": "__serviceClientSecret__"
+            "applicationId": "__serviceEndPointClientId__",
+            "clientSecret": "__serviceEndPointSecret__"
         }
     },
     "createdBy": null,
