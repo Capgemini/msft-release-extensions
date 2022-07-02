@@ -17,6 +17,8 @@ parameters:
     type: string
   - name: namespace
     type: string
+  - name: serviceEndPointTenantId
+    type: string
   - name: serviceEndPointClientId
     type: string
   - name: serviceEndPointSecret
@@ -48,7 +50,7 @@ steps:
     targetType: 'inline'
     script: 'dotnet new Capgemini.PowerApps.Scaffolder -n ${{ parameters.namespace}}
      --patToken $(PATToken) --adoAccountName ${{ parameters.adoAccountName}} --adoProjectName ${{ parameters.adoProjectName}} 
-     --serviceEndPointClientId ${{serviceEndPointClientId}} --serviceEndPointSecret $(serviceEndPointSecret) --serviceClientUrl ${{ parameters.serviceClientUrl}} 
+     --serviceEndPointClientId ${{serviceEndPointClientId}} --serviceEndPointSecret $(serviceEndPointSecret) --serviceClientUrl ${{ parameters.serviceClientUrl}} --serviceEndPointTenantId ${{ parameters.serviceEndPointTenantId }}
      --allow-scripts yes'
     pwsh: true
     workingDirectory: '$(system.defaultworkingdirectory)/ScaffoldTemp'
