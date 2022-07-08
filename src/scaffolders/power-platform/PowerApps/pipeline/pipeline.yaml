@@ -25,7 +25,9 @@ parameters:
     type: string
   - name: serviceClientUrl
     type: string
- 
+  - name: releaseEnvironments
+    type: string
+
 steps:
 - checkout: self
   persistCredentials: true

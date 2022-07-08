@@ -36,18 +36,25 @@ az pipelines create --name 'CI Build' --folder-path 'CI' --description 'Pipeline
 
 az devops service-endpoint create --service-endpoint-configuration serviceendpoint.json
 
-$envBody = @{
-	name = "Dev1"
-	description = "My dev environment"
-  }
-  $infile = "envbody.json"
-  Set-Content -Path $infile -Value ($envBody | ConvertTo-Json)
-  az devops invoke `
-	 --area distributedtask --resource environments `
-	 --route-parameters project=$ProjectName --org $orgUrl `
-	 --http-method POST --in-file $infile `
-	 --api-version "6.0-preview"
-  rm $infile -f
+$ReleaseEnvironments = $string.Split("__releaseEnvironments__")
+
+foreach($environmentItem in $ReleaseEnvironments)
+{
+	$envBody = @{
+		name = $environmentItem
+		description = "$environmentItem"
+	  }
+	  $infile = "envbody.json"
+	  Set-Content -Path $infile -Value ($envBody | ConvertTo-Json)
+	  az devops invoke `
+		 --area distributedtask --resource environments `
+		 --route-parameters project=$ProjectName --org $orgUrl `
+		 --http-method POST --in-file $infile `
+		 --api-version "6.0-preview"
+	  rm $infile -f
+}	
+
+
 
 return 0
 
