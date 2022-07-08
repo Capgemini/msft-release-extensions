@@ -36,7 +36,7 @@ az pipelines create --name 'CI Build' --folder-path 'CI' --description 'Pipeline
 
 az devops service-endpoint create --service-endpoint-configuration serviceendpoint.json
 
-$environmentNames = "__releaseEnvironments__";
+$environmentNames = "__releaseEnvironments__"
 $ReleaseEnvironments = $environmentNames.Split(",")
 
 $infile = "envbody.json"
