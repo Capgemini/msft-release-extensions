@@ -52,6 +52,12 @@
       "datatype": "text",
       "replaces": "__serviceEndPointTentantId__",
       "defaultValue": "XXX"
+    },
+    "releaseEnvironments":{
+      "type": "parameter",
+      "datatype": "text",
+      "replaces": "__releaseEnvironments__",
+      "defaultValue": "TST,PRE,PROD"
     }
   },
   "postActions": [
