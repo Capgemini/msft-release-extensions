@@ -31,10 +31,23 @@ git remote add origin https://__patToken__@dev.azure.com/__adoAccountName__/__ad
 git push -u origin --all
 
 Write-Host "Create ADO pipelines"
-az pipelines create --name '1 Company - PR' --folder-path 'PR' --description 'PR Pipeline for Project' --repository "$orgUrl/$ProjectName/_git/CDSRepo" --branch master --yml-path "/pipelines/azure-pipelines-pull-request.yml" --project $ProjectName --org $orgUrl
-az pipelines create --name '1 Company - Main' --folder-path 'CI' --description 'Pipeline for Project' --repository "$orgUrl/$ProjectName/_git/CDSRepo" --branch master --yml-path "/pipelines/azure-pipelines.yml" --project $ProjectName --org $orgUrl
+az pipelines create --name 'PR' --folder-path 'PR' --description 'PR Pipeline for Project' --repository "$orgUrl/$ProjectName/_git/CDSRepo" --branch master --yml-path "/pipelines/azure-pipelines-pull-request.yml" --project $ProjectName --org $orgUrl
+az pipelines create --name 'CI Build' --folder-path 'CI' --description 'Pipeline for Project' --repository "$orgUrl/$ProjectName/_git/CDSRepo" --branch master --yml-path "/pipelines/azure-pipelines.yml" --project $ProjectName --org $orgUrl
 
 az devops service-endpoint create --service-endpoint-configuration serviceendpoint.json
+
+$envBody = @{
+	name = "Dev1"
+	description = "My dev environment"
+  }
+  $infile = "envbody.json"
+  Set-Content -Path $infile -Value ($envBody | ConvertTo-Json)
+  az devops invoke `
+	 --area distributedtask --resource environments `
+	 --route-parameters project=$ProjectName --org $orgUrl `
+	 --http-method POST --in-file $infile `
+	 --api-version "6.0-preview"
+  rm $infile -f
 
 return 0
 
