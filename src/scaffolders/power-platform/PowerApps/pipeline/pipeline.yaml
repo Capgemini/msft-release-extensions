@@ -17,7 +17,9 @@ parameters:
     type: string
   - name: adoProjectName
     type: string
-  - name: namespace
+  - name: customer
+    type: string
+  - name: customerProject
     type: string
   - name: serviceEndPointTenantId
     type: string
@@ -52,7 +54,7 @@ steps:
   displayName : 'Run Scaffold from temp directory'
   inputs:
     targetType: 'inline'
-    script: 'dotnet new Capgemini.PowerApps.Scaffolder -n ${{ parameters.namespace}} --patToken $(PATToken) --repositoryName ${{ parameters.repositoryName}} --adoAccountName ${{ parameters.adoAccountName}} --adoProjectName ${{ parameters.adoProjectName}} --serviceEndPointClientId ${{ parameters.serviceEndPointClientId }} --serviceEndPointSecret ${{ parameters.serviceEndPointSecret }} --serviceClientUrl ${{ parameters.serviceClientUrl }} --serviceEndPointTenantId ${{ parameters.serviceEndPointTenantId }} --allow-scripts yes'
+    script: 'dotnet new Capgemini.PowerApps.Scaffolder -n "${{ parameters.customer}}.$ {{ parameters.customerProject }}" --patToken $(PATToken) --repositoryName ${{ parameters.repositoryName}} --adoAccountName ${{ parameters.adoAccountName}} --adoProjectName ${{ parameters.adoProjectName}} --serviceEndPointClientId ${{ parameters.serviceEndPointClientId }} --serviceEndPointSecret ${{ parameters.serviceEndPointSecret }} --serviceClientUrl ${{ parameters.serviceClientUrl }} --serviceEndPointTenantId ${{ parameters.serviceEndPointTenantId }} --allow-scripts yes'
     pwsh: true
     workingDirectory: '$(system.defaultworkingdirectory)/ScaffoldTemp'
     runScriptInSeparateScope: true
