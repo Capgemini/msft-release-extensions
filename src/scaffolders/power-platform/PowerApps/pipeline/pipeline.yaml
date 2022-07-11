@@ -11,30 +11,29 @@ pool:
   vmImage: windows-latest
 
 parameters:
-
   - name: adoAccountName
-    displayName : The domain name of the Azure DevOps instance Name e.g. CapgeminiUk
+    displayName : The domain name of the Azure DevOps instance
     type: string
   - name: adoProjectName
-    displayName : The name of the Project to scaffold onto within Azure DevOps
+    displayName : The name of the Project to scaffold within Azure DevOps
     type: string
   - name: customer
-    displayName : The Name of the Customer excluding spaces e.g Customer
+    displayName : The name of the Customer
     type: string
   - name: customerProject
-    displayName : The Name of the Customer Internal project or program name e.g RenovationProject
+    displayName : The name of the customer internal project
     type: string
   - name: serviceEndPointTenantId
-    displayName : The TenantId (Guid) of where the tenant sits
+    displayName : The tenantId (Guid)
     type: string
   - name: serviceEndPointClientId
-    displayName : The ClientId / Application Id from the App Registration from Azure AD (Guid)
+    displayName : The clientId / applicationId from the application registration in Azure AD (Guid)
     type: string
   - name: serviceEndPointSecret
-    displayName : The Secret for Client / Application Register App from Azure AD (Guid)
+    displayName : The secret for client / application registered app from Azure AD (Guid)
     type: string
   - name: serviceClientUrl
-    displayName : The url of the extract environment to run the solution checker e.g https:\\org123.crm4.dynamics.com
+    displayName : The url of the extract environment to run the solution
     type: string
   - name: releaseEnvironments
     displayName : The comma seperated list of environments for releases e.g TST,PRE,PRD
