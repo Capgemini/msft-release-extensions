@@ -1,9 +1,13 @@
 $AdoAccountName = "__adoAccountName__"
 $ProjectName = "__adoProjectName__"
+#$ProjectName = "PP-SCAFFOLDER1"
 $AdoToken = "__patToken__"
+#$AdoToken = "nkojuuhritiml6qobf2ajpiwuju5lpv4yrduvmvah7ipyxebs5lq"
 $RepoName = "__repositoryName__"
 
-$orgUrl = "https://dev.azure.com/$AdoAccountName"
+#$orgUrl = "https://dev.azure.com/$AdoAccountName"
+
+$orgUrl = "https://dev.azure.com/markcunningham"
 
 $env:AZURE_DEVOPS_EXT_PAT = $AdoToken
 
@@ -15,6 +19,12 @@ if($null -eq $existingProject)
 	return -1
 }
 
+#EXTENSIONS
+az devops extension install --extension-id "gittools"  --publisher-id "gittools" --org $orgUrl
+az devops extension install --extension-id "PowerPlatform-BuildTools"  --publisher-id "microsoft-IsvExpTools" --org $orgUrl
+az devops extension install --extension-id "sarif-viewer-build-tab" --publisher-id "sariftools" --org $orgUrl
+
+#REPO
 Write-Host "Create git repo and push to ADO"
 
 git config --global user.email "agent@scaffold.com"
