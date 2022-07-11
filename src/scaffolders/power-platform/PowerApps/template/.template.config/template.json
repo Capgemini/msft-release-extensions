@@ -29,6 +29,12 @@
       "replaces": "__adoProjectName__",
       "defaultValue": "XXX"
     },
+    "repoName": {
+      "type": "parameter",
+      "datatype": "text",
+      "replaces": "__repoName__",
+      "defaultValue": "XXX"
+    },
     "serviceEndPointClientId": {
       "type": "parameter",
       "datatype": "text",
