@@ -17,14 +17,14 @@ if($null -eq $existingProject)
 
 
 
-$projectWiki = az devops wiki list --project $ProjectName --scope project --org $orgUrl | ConvertFrom-Json
+$projectWiki = az devops wiki list --project $ProjectName --scope project --org $orgUrl --name "WIKI" | ConvertFrom-Json
 
 if ($null -eq $projectWiki)
 {
 	az devops wiki create --name "WIKI" --project $ProjectName --type 'projectwiki'
 }
 
-az devops wiki page create --path 'PowerApps ALM' --wiki myprojectwiki --content "Hello World" --org $orgUrl --project $ProjectName
+az devops wiki page create --path 'PowerApps ALM' --wiki $projectWiki --content "Hello World" --org $orgUrl --project $ProjectName
 
 
 return 0
