@@ -1,13 +1,13 @@
 $AdoAccountName = "__adoAccountName__"
 $ProjectName = "__adoProjectName__"
-#$ProjectName = "PP-SCAFFOLDER1"
 $AdoToken = "__patToken__"
-#$AdoToken = "nkojuuhritiml6qobf2ajpiwuju5lpv4yrduvmvah7ipyxebs5lq"
 $RepoName = "__repositoryName__"
 
-#$orgUrl = "https://dev.azure.com/$AdoAccountName"
+$orgUrl = "https://dev.azure.com/$AdoAccountName"
 
-$orgUrl = "https://dev.azure.com/markcunningham"
+#$ProjectName = "PP-SCAFFOLDER1"
+#$AdoToken = "nkojuuhritiml6qobf2ajpiwuju5lpv4yrduvmvah7ipyxebs5lq"
+#$orgUrl = "https://dev.azure.com/markcunningham"
 
 $env:AZURE_DEVOPS_EXT_PAT = $AdoToken
 
@@ -40,10 +40,12 @@ az repos create --name $RepoName --project $ProjectName --org $orgUrl
 git remote add origin "https://__patToken__@dev.azure.com/__adoAccountName__/__adoProjectName__/_git/$RepoName"
 git push -u origin --all
 
+#PIPELINES
 Write-Host "Create ADO pipelines"
 az pipelines create --name 'PR' --folder-path 'PR' --description 'PR Pipeline for Project' --repository "$orgUrl/$ProjectName/_git/$RepoName" --branch master --yml-path "/pipelines/azure-pipelines-pull-request.yml" --project $ProjectName --org $orgUrl
 az pipelines create --name 'CI Build' --folder-path 'CI' --description 'Pipeline for Project' --repository "$orgUrl/$ProjectName/_git/$RepoName" --branch master --yml-path "/pipelines/azure-pipelines.yml" --project $ProjectName --org $orgUrl
 
+#SERVICE ENDPOINT
 az devops service-endpoint create --service-endpoint-configuration serviceendpoint.json
 
 $environmentNames = "__releaseEnvironments__"
