@@ -1,10 +1,10 @@
 [CmdletBinding()] 
 param(
-[string][Parameter(Mandatory=$true)] $AdoAccountName,
-[string][Parameter(Mandatory=$true)] $AdoToken,
-[string][Parameter(Mandatory=$true)] $InheritedProcessName,
-[string][Parameter(Mandatory=$true)] $ProjectName,
-[string][Parameter(Mandatory=$true)] $ConfigurationType
+[string][Parameter(Mandatory=$true)] $AdoAccountName = "markcunningham",
+[string][Parameter(Mandatory=$true)] $AdoToken= "ijkecujgn5g2qd6lksfejo4wuk5q3um2czdnioxexrdwksjfipzq",
+[string][Parameter(Mandatory=$true)] $InheritedProcessName= "Capgemini",
+[string][Parameter(Mandatory=$true)] $ProjectName="DEMO-TEST-1",
+[string][Parameter(Mandatory=$true)] $ConfigurationType ="Capgemini"
 )
 
 Import-Module "$PSScriptRoot\..\..\..\powershell_modules\AdoHelpers.psm1" -force
@@ -17,7 +17,8 @@ $adoConnection = New-Object PSObject -Property @{
 			};
 
 $configContent = Get-Content -Path "$PSScriptRoot\..\Project\project-templates\$ConfigurationType.json" | ConvertFrom-Json
-$dashboardConfig = Get-Content -Path "$PSScriptRoot\..\Project\project-templates\dashboards\$ConfigurationType\dashboards.json" | ConvertFrom-Json
+$projectDashboardConfig = Get-Content -Path "$PSScriptRoot\..\Project\project-templates\dashboards\$ConfigurationType\Project\dashboards.json" | ConvertFrom-Json
+$dashboardConfig = Get-Content -Path "$PSScriptRoot\..\Project\project-templates\dashboards\$ConfigurationType\Team\dashboards.json" | ConvertFrom-Json
 $wikiConfig = Get-Content -Path "$PSScriptRoot\..\Project\project-templates\wiki\$ConfigurationType\wiki.json" | ConvertFrom-Json
 
 Write-Host "Connecting to" $adoConnection.AdoAccountName;
@@ -56,7 +57,7 @@ $dashboards = Get-TeamDashboard -AdoConnection $adoConnection -ProjectName $Proj
 
 $sharedQueryBugs = Set-SharedQuery  -AdoConnection $adoConnection -ProjectName $ProjectName  -QueryName "Defects" -Wiql "SELECT [System.Id],[System.WorkItemType],[System.Title],[System.AssignedTo],[System.State],[System.Tags] FROM WorkItems WHERE [System.TeamProject] = '$ProjectName' AND ( [System.WorkItemType] = 'Bug' AND [System.State] IN ('Active') OR [System.State] = 'Accepted')"
 
-foreach($widget in $dashboardConfig.widgets)
+foreach($widget in $projectDashboardConfig.widgets)
 {
 	#tokenise settings
 	if( $null -ne $widget.settings)
@@ -71,13 +72,28 @@ foreach($widget in $dashboardConfig.widgets)
 }
 
 #Set the team dashboard
-#$teamDashboard = Set-ProjectDashboard -ProjectName $ProjectName -AdoConnection $adoConnection
+$teamDashboard = Set-ProjectDashboard -ProjectName $ProjectName -AdoConnection $adoConnection
 #Set-ProjectDashboardWidgets -DashboardId $teamDashboard.id -AdoConnection $adoConnection -ProjectId $project.id -Widgets $dashboardConfig.widgets -ExistingDashboard $teamDashboard
 
-#Create Teams
+#Create Teams and default dashboards for each
 foreach ($team in $configContent.teams)
 {
-	 az devops team create --name $team.name --project $ProjectName --org $orgUrl
+	 $teamid = az devops team create --name $team.name --project $ProjectName --org $orgUrl | ConvertFrom-Json
+	 Write-Host "Created Team with id $teamid.id"
+	 $teamdasboardid = Set-TeamDashboard -AdoConnection $adoConnection -ProjectName $ProjectName -TeamName $team.name
+	
+	 foreach($widget in $dashboardConfig.widgets)
+		{
+			if( $null -ne $widget.settings)
+			{
+				$widget.settings = $widget.settings.Replace("__TEAMID__", $teamid.id);
+				$widget.settings = $widget.settings.Replace("__PROJECTID__", $project.id);
+				$widget.settings = $widget.settings.Replace("__TECH_DEBT_QUERY_ID__", $sharedQueryTechDebt.id);
+				$widget.settings = $widget.settings.Replace("__DEFECTS_QUERY_ID__", $sharedQueryBugs.id);
+			}
+
+			Set-DashboardWidget -AdoConnection $adoConnection -ProjectName $ProjectName -TeamName $team.name -DashboardId $teamdasboardid.id -Widget $widget
+		}	 
 }
 
 #Create Area
@@ -117,7 +133,7 @@ foreach ($iteration in $configContent.iterations)
 }
 
 #WorkItems
-foreach ($workItem in $configContent.workItems)
-{
-	az boards work-item create --title $workItem.title --project $ProjectName --org $orgUrl --description $workItem.description --type $workItem.type
-}
+#foreach ($workItem in $configContent.workItems)
+#{
+#	az boards work-item create --title $workItem.title --project $ProjectName --org $orgUrl --description $workItem.description --type $workItem.type
+#}

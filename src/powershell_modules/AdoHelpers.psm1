@@ -23,21 +23,6 @@ function Set-WikiPageContent{
 	}
 	
 
-
-function Get-TeamDashboard{
-    [CmdletBinding()]
-    param(
-       [Parameter(Mandatory=$true)][PSObject]$AdoConnection,
-	   [Parameter(Mandatory=$true)][PSObject]$ProjectName
-    )
-
-	$uri = "https://dev.azure.com/$($AdoConnection.AdoAccountName)/$ProjectName/_apis/dashboard/dashboards?api-version=6.0-preview.3"
-
-    $result = Invoke-RestMethod -Uri $uri -Method GET -ContentType "application/json" -Headers @{Authorization=($($AdoConnection.AdoAuthorizationToken))}
-
-	return $result
-}
-
 function Set-ProjectWiki{
     [CmdletBinding()]
     param(
@@ -58,6 +43,22 @@ function Set-ProjectWiki{
 
 	return $result
 }
+
+function Get-TeamDashboard{
+    [CmdletBinding()]
+    param(
+       [Parameter(Mandatory=$true)][PSObject]$AdoConnection,
+	   [Parameter(Mandatory=$true)][PSObject]$ProjectName
+    )
+
+	$uri = "https://dev.azure.com/$($AdoConnection.AdoAccountName)/$ProjectName/_apis/dashboard/dashboards?api-version=6.0-preview.3"
+
+    $result = Invoke-RestMethod -Uri $uri -Method GET -ContentType "application/json" -Headers @{Authorization=($($AdoConnection.AdoAuthorizationToken))}
+
+	return $result
+}
+
+#https://dev.azure.com/markcunningham/dd209b33-fba2-48f3-adf3-398a7acf3a65/_apis/Dashboard/Dashboards
 
 
 function Set-ProjectDashboard{
@@ -80,6 +81,47 @@ function Set-ProjectDashboard{
 	return $result
 }
 
+function Set-TeamDashboard{
+    [CmdletBinding()]
+    param(
+       [Parameter(Mandatory=$true)][PSObject]$AdoConnection,
+	   [Parameter(Mandatory=$true)][string]$ProjectName,
+	   [Parameter(Mandatory=$true)][string]$TeamName
+    )
+
+	$uri = "https://dev.azure.com/$($AdoConnection.AdoAccountName)/$ProjectName/$TeamName/_apis/dashboard/dashboards?api-version=6.0-preview.3"
+
+	$myObject = [PSCustomObject]@{
+		name = "$TeamName Dashboard"
+		description = "Dashboard for Team $TeamName"
+		refreshInterval =  $5
+	}
+
+	$json = ConvertTo-Json -InputObject $myObject
+
+    $result = Invoke-RestMethod -Uri $uri -Method POST -ContentType "application/json" -Headers @{Authorization=($($AdoConnection.AdoAuthorizationToken))} -Body $json
+
+	return $result
+}
+
+function Set-DashboardWidget{
+    [CmdletBinding()]
+    param(
+       [Parameter(Mandatory=$true)][PSObject]$AdoConnection,
+	   [Parameter(Mandatory=$true)][string]$ProjectName,
+	   [Parameter(Mandatory=$true)][string]$TeamName,
+	   [Parameter(Mandatory=$true)][string]$DashboardId,
+	   [Parameter(Mandatory=$true)][psobject]$Widget
+    )
+
+	$uri = "https://dev.azure.com/$($AdoConnection.AdoAccountName)/$ProjectName/$TeamName/_apis/dashboard/dashboards/$DashboardId/widgets?api-version=6.0-preview.2"
+
+	$json = ConvertTo-Json -InputObject $Widget
+	
+    $result = Invoke-RestMethod -Uri $uri -Method POST -ContentType "application/json" -Headers @{Authorization=($($AdoConnection.AdoAuthorizationToken))} -Body $json
+
+	return $result
+}
 
   function Set-SharedQuery{
     [CmdletBinding()]
@@ -101,58 +143,6 @@ function Set-ProjectDashboard{
 	}
 
 	$json = ConvertTo-Json -InputObject $myObject
-	
-    $result = Invoke-RestMethod -Uri $uri -Method POST -ContentType "application/json" -Headers @{Authorization=($($AdoConnection.AdoAuthorizationToken))} -Body $json
-
-	return $result
-}
-
-#TODO
-function Set-ProjectDashboardWidgets{
-    [CmdletBinding()]
-    param(
-       [Parameter(Mandatory=$true)][PSObject]$AdoConnection,
-	   [Parameter(Mandatory=$true)][string]$ProjectId,
-	   [Parameter(Mandatory=$true)][string]$DashboardId,
-	   [Parameter(Mandatory=$true)][psobject]$Widgets,
-	   [Parameter(Mandatory=$true)][psobject]$existingDashboard	   
-    )
-
- 	$uri = "https://dev.azure.com/$($AdoConnection.AdoAccountName)/$ProjectId/_apis/Dashboard/Dashboards/$DashboardId?api-version=6.0-preview.2"
-
-	 $myObject = [PSCustomObject]@{
-		name = "Project Dashboard"
-		color = "E60017"
-		icon = "icon_flame"
-		description =  "Technical Debt type to help track specific tech debt tasks"
-		inheritsFrom = $null
-		isDisabled= $false
-	}
-
-
-
-	$existingDashboard.widgets = $Widgets
-
-    $json = ConvertTo-Json -InputObject $existingDashboard
-	
-    $result = Invoke-RestMethod -Uri $uri -Method PUT -ContentType "application/json" -Headers @{Authorization=($($AdoConnection.AdoAuthorizationToken))} -Body $json
-
-	return $result
-}
-
-function Set-DashboardWidget{
-    [CmdletBinding()]
-    param(
-       [Parameter(Mandatory=$true)][PSObject]$AdoConnection,
-	   [Parameter(Mandatory=$true)][string]$ProjectName,
-	   [Parameter(Mandatory=$true)][string]$TeamName,
-	   [Parameter(Mandatory=$true)][string]$DashboardId,
-	   [Parameter(Mandatory=$true)][psobject]$Widget
-    )
-
-	$uri = "https://dev.azure.com/$($AdoConnection.AdoAccountName)/$ProjectName/$TeamName/_apis/dashboard/dashboards/$DashboardId/widgets?api-version=6.0-preview.2"
-
-	$json = ConvertTo-Json -InputObject $Widget
 	
     $result = Invoke-RestMethod -Uri $uri -Method POST -ContentType "application/json" -Headers @{Authorization=($($AdoConnection.AdoAuthorizationToken))} -Body $json
 

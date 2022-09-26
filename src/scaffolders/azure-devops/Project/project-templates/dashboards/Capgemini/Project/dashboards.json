@@ -1,0 +1,29 @@
+{
+"widgets" : 
+[
+	{
+	  "id": "LOCAL0000000000000000000000000000001",
+	  "name": "Sprint Capacity",
+	  "size": {
+		"rowSpan": 1,
+		"columnSpan": 2
+	  },
+	  "position": {
+		"row": 1,
+		"column": 5
+	  },
+	  "settings": "{\"teamId\":\"__TEAMID__\"}",
+	  "settingsVersion": {
+		"major": 1,
+		"minor": 0,
+		"patch": 0
+	  },
+	  "contributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.SprintCapacityWidget",
+	  "configurationContributionId": null,
+	  "isNameConfigurable": false,
+	  "isEnabled": true,
+	  "eTag": "4"
+	}
+  ]
+}
+
