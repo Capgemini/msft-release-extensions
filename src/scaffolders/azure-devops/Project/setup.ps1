@@ -16,26 +16,26 @@ $adoConnection = New-Object PSObject -Property @{
 				AdoAuthorizationToken = $AdoAuthorizationToken
 			};
 
+		
+
+#LOAD JSON FILES
 $configContent = Get-Content -Path "$PSScriptRoot\..\Project\project-templates\$ConfigurationType.json" | ConvertFrom-Json
-#$projectDashboardConfig = Get-Content -Path "$PSScriptRoot\..\Project\project-templates\dashboards\$ConfigurationType\Project\dashboards.json" 
+$projectDashboardConfig = Get-Content -Path "$PSScriptRoot\..\Project\project-templates\dashboards\$ConfigurationType\Project\dashboards.json" | ConvertFrom-Json
 $dashboardConfig = Get-Content -Path "$PSScriptRoot\..\Project\project-templates\dashboards\$ConfigurationType\Team\dashboards.json" | ConvertFrom-Json
 $wikiConfig = Get-Content -Path "$PSScriptRoot\..\Project\project-templates\wiki\$ConfigurationType\wiki.json" | ConvertFrom-Json
 
-Write-Host "Connecting to" $adoConnection.AdoAccountName;
-		
+Write-Host "Connecting to" $adoConnection.AdoAccountName;		
 $orgUrl = "https://dev.azure.com/$($adoConnection.AdoAccountName)"
-
 $env:AZURE_DEVOPS_EXT_PAT = $AdoToken
-
 $project = az devops project show --project $ProjectName --org $orgUrl | ConvertFrom-Json 
 
-#Create Project
+#PROJECT CREATION
 if($null -eq $project)
 {
 	$project = az devops project create --org $orgUrl --name $ProjectName --process $InheritedProcessName | ConvertFrom-Json
 }
 
-#Wiki
+#WIKI
 Set-ProjectWiki -ProjectId $project.id -AdoConnection $adoConnection
 $projectWiki = az devops wiki list --project $ProjectName --scope project --org $orgUrl | ConvertFrom-Json
 
@@ -46,27 +46,27 @@ foreach ($wikiPage in $wikiConfig.pages)
 	Set-WikiPageContent -AdoConnection $adoConnection -WikiId $projectWiki.id -PagePath $wikiPage.path -PageContent $wikicontent -ProjectName $ProjectName
 }
 
-#Shared Queries
+#SHARED QUERIES
 $sharedQueryTechDebt = Set-SharedQuery  -AdoConnection $adoConnection -ProjectName $ProjectName  -QueryName "Technical Debt" -Wiql "SELECT [System.Id],[System.WorkItemType],[System.Title],[System.AssignedTo],[System.State],[System.Tags] FROM WorkItems WHERE [System.TeamProject] = '$ProjectName' AND ( [System.WorkItemType] = 'Technical Debt' AND [System.State] IN ('Active') OR [System.State] = 'Accepted')"
 
-Set-SharedQuery  -AdoConnection $adoConnection -ProjectName $ProjectName  -QueryName "Work Item Overview" -Wiql "SELECT [System.Id],[System.WorkItemType],[System.Title],[System.State],[System.AreaPath],[System.IterationPath] FROM workitems WHERE [System.TeamProject] = @project AND System.State NOT IN ('Closed','Resolved')"
-
-#Default Team
-#$defaultteam = az devops team list --project $project.id --org $orgUrl | ConvertFrom-Json
-
-#Dashboards and queries
-#$dashboards = Get-TeamDashboard -AdoConnection $adoConnection -ProjectName $ProjectName
+$witOverview = Set-SharedQuery -AdoConnection $adoConnection -ProjectName $ProjectName  -QueryName "Work Item Overview" -Wiql "SELECT [System.Id],[System.WorkItemType],[System.Title],[System.State],[System.AreaPath],[System.IterationPath] FROM workitems WHERE [System.TeamProject] = @project AND System.State NOT IN ('Closed','Resolved')"
 
 $sharedQueryBugs = Set-SharedQuery  -AdoConnection $adoConnection -ProjectName $ProjectName  -QueryName "Defects" -Wiql "SELECT [System.Id],[System.WorkItemType],[System.Title],[System.AssignedTo],[System.State],[System.Tags] FROM WorkItems WHERE [System.TeamProject] = '$ProjectName' AND ( [System.WorkItemType] = 'Bug' AND [System.State] IN ('Active') OR [System.State] = 'Accepted')"
 
-#Set the Project dashboard
-#$projectDashboardConfig = $projectDashboardConfig.Replace("__WITOVERVIEW__", $sharedQueryWorkItemOverview.id);
-#$projectDashboardConfig = $projectDashboardConfig | ConvertFrom-Json;
+#PROJECT DASHBOARDS
+$projectDashboardId = Set-ProjectDashboard -AdoConnection $adoConnection -ProjectName $ProjectName 
 
-#Set-ProjectDashboard -AdoConnection $adoConnection -ProjectName $ProjectName -Widgets $projectDashboardConfig.widgets
-#Set-ProjectDashboardWidgets -Widgets $projectDashboardConfig.widgets -AdoConnection $adoConnection -ProjectName $ProjectName -DashboardId $projectDashboardId.id
+foreach($widget in $projectDashboardConfig.widgets)
+{
+	if( $null -ne $widget.settings)
+	{
+		$widget.settings = $widget.settings.Replace("__WITOVERVIEW__", $witOverview.id);		
+	}
 
-#Create Teams and default dashboards for each
+	Set-ProjectDashboardWidget -AdoConnection $adoConnection -ProjectName $ProjectName -DashboardId $projectDashboardId.id -Widget $widget
+}	 
+
+#TEAM DASHBOARDS
 foreach ($team in $configContent.teams)
 {
 	 $teamid = az devops team create --name $team.name --project $ProjectName --org $orgUrl | ConvertFrom-Json
@@ -87,7 +87,7 @@ foreach ($team in $configContent.teams)
 		}	 
 }
 
-#Create Area
+#AREA CREATION
 foreach ($area in $configContent.areas)
 {
 	if ($null -eq $area.parentPath)
@@ -105,7 +105,7 @@ foreach ($area in $configContent.areas)
 	}
 }
 
-#Create Iterations
+#CREATE ITERATIONS
 foreach ($iteration in $configContent.iterations)
 {
 	if ($null -eq $iteration.parentPath)
@@ -123,7 +123,7 @@ foreach ($iteration in $configContent.iterations)
 	}
 }
 
-#WorkItems
+#WORKITEMS
 #foreach ($workItem in $configContent.workItems)
 #{
 #	az boards work-item create --title $workItem.title --project $ProjectName --org $orgUrl --description $workItem.description --type $workItem.type
