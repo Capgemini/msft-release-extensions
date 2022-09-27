@@ -171,9 +171,9 @@ function Set-ProjectDashboardWidgets{
 
 	$json = ConvertTo-Json -InputObject $myObject
 
-#	$uri = "https://dev.azure.com/$($AdoConnection.AdoAccountName)/$ProjectName/_apis/dashboard/dashboards/$DashboardId`?api-version=6.0-preview.3"
+	$uri = "https://dev.azure.com/$($AdoConnection.AdoAccountName)/$ProjectName/_apis/dashboard/dashboards/$DashboardId`?api-version=6.0-preview.3"
 
-	$uri = "https://dev.azure.com/markcunningham/fd1a5b6c-5fe5-4756-9dc3-e8cc21fc5f1b/_apis/Dashboard/Dashboards/1d11ba33-40af-4d71-9eae-4fb55c40884e`?api-version=6.0-preview.3"
+#	$uri = "https://dev.azure.com/markcunningham/fd1a5b6c-5fe5-4756-9dc3-e8cc21fc5f1b/_apis/Dashboard/Dashboards/1d11ba33-40af-4d71-9eae-4fb55c40884e`?api-version=6.0-preview.3"
 
     $result = Invoke-RestMethod -Uri $uri -Method PUT -ContentType "application/json" -Headers @{Authorization=($($AdoConnection.AdoAuthorizationToken))} -Body $json
 
