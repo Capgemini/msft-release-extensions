@@ -17,7 +17,7 @@ $adoConnection = New-Object PSObject -Property @{
 			};
 
 $configContent = Get-Content -Path "$PSScriptRoot\..\Project\project-templates\$ConfigurationType.json" | ConvertFrom-Json
-$projectDashboardConfig = Get-Content -Path "$PSScriptRoot\..\Project\project-templates\dashboards\$ConfigurationType\Project\dashboards.json" | ConvertFrom-Json
+#$projectDashboardConfig = Get-Content -Path "$PSScriptRoot\..\Project\project-templates\dashboards\$ConfigurationType\Project\dashboards.json" 
 $dashboardConfig = Get-Content -Path "$PSScriptRoot\..\Project\project-templates\dashboards\$ConfigurationType\Team\dashboards.json" | ConvertFrom-Json
 $wikiConfig = Get-Content -Path "$PSScriptRoot\..\Project\project-templates\wiki\$ConfigurationType\wiki.json" | ConvertFrom-Json
 
@@ -49,31 +49,22 @@ foreach ($wikiPage in $wikiConfig.pages)
 #Shared Queries
 $sharedQueryTechDebt = Set-SharedQuery  -AdoConnection $adoConnection -ProjectName $ProjectName  -QueryName "Technical Debt" -Wiql "SELECT [System.Id],[System.WorkItemType],[System.Title],[System.AssignedTo],[System.State],[System.Tags] FROM WorkItems WHERE [System.TeamProject] = '$ProjectName' AND ( [System.WorkItemType] = 'Technical Debt' AND [System.State] IN ('Active') OR [System.State] = 'Accepted')"
 
+Set-SharedQuery  -AdoConnection $adoConnection -ProjectName $ProjectName  -QueryName "Work Item Overview" -Wiql "SELECT [System.Id],[System.WorkItemType],[System.Title],[System.State],[System.AreaPath],[System.IterationPath] FROM workitems WHERE [System.TeamProject] = @project AND System.State NOT IN ('Closed','Resolved')"
+
 #Default Team
-$defaultteam = az devops team list --project $project.id --org $orgUrl | ConvertFrom-Json
+#$defaultteam = az devops team list --project $project.id --org $orgUrl | ConvertFrom-Json
 
 #Dashboards and queries
-$dashboards = Get-TeamDashboard -AdoConnection $adoConnection -ProjectName $ProjectName
+#$dashboards = Get-TeamDashboard -AdoConnection $adoConnection -ProjectName $ProjectName
 
 $sharedQueryBugs = Set-SharedQuery  -AdoConnection $adoConnection -ProjectName $ProjectName  -QueryName "Defects" -Wiql "SELECT [System.Id],[System.WorkItemType],[System.Title],[System.AssignedTo],[System.State],[System.Tags] FROM WorkItems WHERE [System.TeamProject] = '$ProjectName' AND ( [System.WorkItemType] = 'Bug' AND [System.State] IN ('Active') OR [System.State] = 'Accepted')"
 
-foreach($widget in $projectDashboardConfig.widgets)
-{
-	#tokenise settings
-	if( $null -ne $widget.settings)
-	{
-		$widget.settings = $widget.settings.Replace("__TEAMID__", $defaultteam.id);
-		$widget.settings = $widget.settings.Replace("__PROJECTID__", $project.id);
-		$widget.settings = $widget.settings.Replace("__TECH_DEBT_QUERY_ID__", $sharedQueryTechDebt.id);
-		$widget.settings = $widget.settings.Replace("__DEFECTS_QUERY_ID__", $sharedQueryBugs.id);
-	}
+#Set the Project dashboard
+#$projectDashboardConfig = $projectDashboardConfig.Replace("__WITOVERVIEW__", $sharedQueryWorkItemOverview.id);
+#$projectDashboardConfig = $projectDashboardConfig | ConvertFrom-Json;
 
-	Set-DashboardWidget -AdoConnection $adoConnection -ProjectName $ProjectName -TeamName "$ProjectName Team" -DashboardId $dashboards.value[0].id -Widget $widget
-}
-
-#Set the team dashboard
-Set-ProjectDashboard -ProjectName $ProjectName -AdoConnection $adoConnection
-#Set-ProjectDashboardWidgets -DashboardId $teamDashboard.id -AdoConnection $adoConnection -ProjectId $project.id -Widgets $dashboardConfig.widgets -ExistingDashboard $teamDashboard
+#Set-ProjectDashboard -AdoConnection $adoConnection -ProjectName $ProjectName -Widgets $projectDashboardConfig.widgets
+#Set-ProjectDashboardWidgets -Widgets $projectDashboardConfig.widgets -AdoConnection $adoConnection -ProjectName $ProjectName -DashboardId $projectDashboardId.id
 
 #Create Teams and default dashboards for each
 foreach ($team in $configContent.teams)
