@@ -10,3 +10,4 @@ src/extensions/node_modules/*
 
 # Test Results
 [Tt]est[Rr]esult*/
+/.vs/msft-release-extensions
