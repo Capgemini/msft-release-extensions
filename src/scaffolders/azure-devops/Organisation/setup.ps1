@@ -6,6 +6,7 @@ param(
 )
 
 Import-Module "$PSScriptRoot\..\..\..\powershell_modules\AdoHelpers.psm1" -force
+$baseProcessId = "adcc42ab-9882-485e-a3ed-7678f01f66bc" 
 
 $adoAuthorizationToken = "Basic {0}" -f [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f $adoUser,$adoToken)));
 
@@ -20,9 +21,13 @@ $allProcesses = Get-OrganisationProcess -AdoConnection $adoConnection
 
 $exists =  $allProcesses.value |  Where-Object {$_.name -eq $NameOfCustomisedProcess}
 
+$baseProcessName = ""
 foreach($process in $allProcesses.value)
 {
 	Write-Host $process.typeId +  $process.name
+	if ($baseProcessId -eq $process.typeId) {
+		$baseProcessName = $process.name
+	}
 }
 
 if ($null -ne $exists)
@@ -33,7 +38,10 @@ else
 {
 	Write-Host "Creating template" $NameOfCustomisedProcess
 	
-	$newProcess = Set-OrganisationProcess -Name $NameOfCustomisedProcess -BaseTemplateTypeId "adcc42ab-9882-485e-a3ed-7678f01f66bc" -AdoConnection $adoConnection
+	$newProcess = Set-OrganisationProcess -Name $NameOfCustomisedProcess `
+										  -BaseTemplateTypeId $baseProcessId `
+										  -AdoConnection $adoConnection `
+										  -Description "ORGANISATION COMMON PROCESS based on $baseProcessName"
 
 	Write-Host "Created custom template with Id" $newProcess.typeId
 

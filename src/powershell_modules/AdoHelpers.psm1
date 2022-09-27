@@ -202,7 +202,8 @@ function Set-OrganisationProcess{
     param(
        [Parameter(Mandatory=$true)][string]$Name,
 	   [Parameter(Mandatory=$true)][string]$BaseTemplateTypeId,
-       [Parameter(Mandatory=$true)][PSObject]$AdoConnection	   
+       [Parameter(Mandatory=$true)][PSObject]$AdoConnection,
+	   [Parameter(Mandatory=$false)][PSObject]$Description = 'ORGANISATION COMMON CONFIGURATION'
     )
 
 	$uri ="https://dev.azure.com/$($AdoConnection.AdoAccountName)/_apis/work/processes?api-version=6.0-preview.2"
@@ -211,7 +212,7 @@ function Set-OrganisationProcess{
 		name = "$Name"
 		parentProcessTypeId = "$BaseTemplateTypeId"
 		referenceName = "$Name"
-		description = 'DEFRA COMMON CONFIGURATION'
+		description = $Description
 	}
 
 	$json = ConvertTo-Json -InputObject $myObject
