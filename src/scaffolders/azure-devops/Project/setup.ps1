@@ -1,10 +1,10 @@
 [CmdletBinding()] 
 param(
-[string][Parameter(Mandatory=$true)] $AdoAccountName = "markcunningham",
-[string][Parameter(Mandatory=$true)] $AdoToken= "ijkecujgn5g2qd6lksfejo4wuk5q3um2czdnioxexrdwksjfipzq",
-[string][Parameter(Mandatory=$true)] $InheritedProcessName= "Capgemini",
-[string][Parameter(Mandatory=$true)] $ProjectName="DEMO-TEST-1",
-[string][Parameter(Mandatory=$true)] $ConfigurationType ="Capgemini"
+[string][Parameter(Mandatory=$true)] $AdoAccountName,
+[string][Parameter(Mandatory=$true)] $AdoToken,
+[string][Parameter(Mandatory=$true)] $InheritedProcessName,
+[string][Parameter(Mandatory=$true)] $ProjectName,
+[string][Parameter(Mandatory=$true)] $ConfigurationType
 )
 
 Import-Module "$PSScriptRoot\..\..\..\powershell_modules\AdoHelpers.psm1" -force
@@ -72,7 +72,7 @@ foreach($widget in $projectDashboardConfig.widgets)
 }
 
 #Set the team dashboard
-$teamDashboard = Set-ProjectDashboard -ProjectName $ProjectName -AdoConnection $adoConnection
+Set-ProjectDashboard -ProjectName $ProjectName -AdoConnection $adoConnection
 #Set-ProjectDashboardWidgets -DashboardId $teamDashboard.id -AdoConnection $adoConnection -ProjectId $project.id -Widgets $dashboardConfig.widgets -ExistingDashboard $teamDashboard
 
 #Create Teams and default dashboards for each
