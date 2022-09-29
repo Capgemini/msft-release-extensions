@@ -16,8 +16,6 @@ $adoConnection = New-Object PSObject -Property @{
 				AdoAuthorizationToken = $AdoAuthorizationToken
 			};
 
-		
-
 #LOAD JSON FILES
 $configContent = Get-Content -Path "$PSScriptRoot\..\Project\project-templates\$ConfigurationType.json" | ConvertFrom-Json
 $projectDashboardConfig = Get-Content -Path "$PSScriptRoot\..\Project\project-templates\dashboards\$ConfigurationType\Project\dashboards.json" | ConvertFrom-Json
@@ -28,6 +26,12 @@ Write-Host "Connecting to" $adoConnection.AdoAccountName;
 $orgUrl = "https://dev.azure.com/$($adoConnection.AdoAccountName)"
 $env:AZURE_DEVOPS_EXT_PAT = $AdoToken
 $project = az devops project show --project $ProjectName --org $orgUrl | ConvertFrom-Json 
+
+if($null -ne $project)
+{
+	az devops project delete --org $orgUrl --id $project.id --yes
+	$project = $null
+}
 
 #PROJECT CREATION
 if($null -eq $project)
@@ -64,7 +68,38 @@ foreach($widget in $projectDashboardConfig.widgets)
 	}
 
 	Set-ProjectDashboardWidget -AdoConnection $adoConnection -ProjectName $ProjectName -DashboardId $projectDashboardId.id -Widget $widget
-}	 
+}	
+
+#AREA CREATION
+foreach ($area in $configContent.projectAreas)
+{
+	if ($null -eq $area.parentPath)
+	{
+		az boards area project create --name $area.name --project $ProjectName --org $orgUrl
+	}
+	else 
+	{
+		az boards area project create --name $area.name --project $ProjectName --org $orgUrl --path "\$ProjectName\Area\$($area.parentPath)"
+	}
+}
+
+#CREATE PROGRAMME SPRINTS
+foreach ($iteration in $configContent.projectSprints)
+{
+	if ($null -eq $iteration.parentPath)
+	{
+		az boards iteration project create --name $iteration.name --project $ProjectName --org $orgUrl
+	}
+	else 
+	{
+		az boards iteration project create --name $iteration.name --project $ProjectName --org $orgUrl --path "\$ProjectName\Iteration\$($iteration.parentPath)"
+	}
+
+	for ($i=0; $i -le $iteration.numberOfSprints; $i++) 
+	{
+		az boards iteration project create --name "Sprint$i" --project $ProjectName --org $orgUrl --path "\$ProjectName\Iteration\$($iteration.name)"
+	}
+}
 
 #TEAM DASHBOARDS
 foreach ($team in $configContent.teams)
@@ -84,44 +119,37 @@ foreach ($team in $configContent.teams)
 			}
 
 			Set-DashboardWidget -AdoConnection $adoConnection -ProjectName $ProjectName -TeamName $team.name -DashboardId $teamdasboardid.id -Widget $widget
-		}	 
+		}	
+
+		#Default Area
+		az boards area team add --path "\$ProjectName\$($team.defaultArea)" --team $team.name --org $orgUrl --project $ProjectName --set-as-default --include-sub-areas $true
+
+		#Other Areas not default
+		foreach($area in $team.areas)
+		{
+			az boards area team add --path "\$ProjectName\$($area)" --team $team.name --org $orgUrl --project $ProjectName --include-sub-areas $true
+		}	
+
+		$iterationPath = "\$ProjectName\Iteration\$($team.iterationName)"
+		$sprintIterationId = az boards iteration project list --depth 3 --org $orgUrl --path $iterationPath --project $ProjectName | ConvertFrom-Json
+
+		az boards iteration team set-backlog-iteration --id $sprintIterationId.identifier --org $orgUrl --project $ProjectName --team $teamid.id 
+	                       
+		#Other Areas not default
+		foreach($sprint in $team.sprints)
+		{
+			$path = "\$ProjectName\Iteration\$($team.iterationName)\$sprint"
+			$sprintId = az boards iteration project list --depth 3 --org $orgUrl --path $path --project $ProjectName | ConvertFrom-Json
+			az boards iteration team add --id $sprintId.identifier --team $teamid.id --project $ProjectName --org $orgUrl
+		}	
 }
 
-#AREA CREATION
-foreach ($area in $configContent.areas)
-{
-	if ($null -eq $area.parentPath)
-	{
-		az boards area project create --name $area.name --project $ProjectName --org $orgUrl
-	}
-	else 
-	{
-		az boards area project create --name $area.name --project $ProjectName --org $orgUrl --path "\$ProjectName\Area\$($area.parentPath)"
-	}
 
-	foreach($areaTeam in $area.teams)
-	{
-		az boards area team add --path "\$ProjectName\$($area.name)" --team $areaTeam.name --org $orgUrl --project $ProjectName --set-as-default --include-sub-areas $areaTeam.includeSubAreas
-	}
-}
+#foreach($areaTeam in $area.teams)
+#	{
+#		az boards area team add --path "\$ProjectName\$($area.name)" --team $areaTeam.name --org $orgUrl --project $ProjectName --set-as-default --include-sub-areas $areaTeam.includeSubAreas
+#	}
 
-#CREATE ITERATIONS
-foreach ($iteration in $configContent.iterations)
-{
-	if ($null -eq $iteration.parentPath)
-	{
-		az boards iteration project create --name $iteration.name --project $ProjectName --org $orgUrl
-	}
-	else 
-	{
-		az boards iteration project create --name $iteration.name --project $ProjectName --org $orgUrl --path "\$ProjectName\Iteration\$($iteration.parentPath)"
-	}
-
-	for ($i=0; $i -le $iteration.numberOfSprints; $i++) 
-	{
-		az boards iteration project create --name "Sprint$i" --project $ProjectName --org $orgUrl --path "\$ProjectName\Iteration\$($iteration.name)"
-	}
-}
 
 #WORKITEMS
 #foreach ($workItem in $configContent.workItems)

@@ -1,11 +1,6 @@
 {
-    "teams" : [
-        {"name" : "TeamUI"},
-        {"name" : "TeamBackEnd"},
-        {"name" : "UX"}
-    ],
-    "iterations" : [
-        {"name" : "Discovery", "numberOfSprints" : 2},
+    "projectSprints" : [
+        {"name" : "Discovery", "numberOfSprints" : 2, "startDate" : "28/09/2022", "sprintCadenceInWeek" :3},
         {"name" : "User Research", "parentPath" : "Discovery"},
         {"name" : "Alpha", "numberOfSprints" : 12},
         {"name" : "Private Beta", "numberOfSprints" : 3},
@@ -13,34 +8,30 @@
         {"name" : "Live", "numberOfSprints" : 1},
         {"name" : "Retirement", "numberOfSprints" : 0}
     ],
-    "areas" : [
-        {   
-            "name" : "UserExperience", 
-            "teams" : [{"name" : "UX", "includeSubAreas" : true, "setAsDefaultArea" : true}]
-        },
-        {   
-            "name" : "Technical", 
-            "teams" : [
-                        {"name" : "TeamUI", "includeSubAreas" : true, "setAsDefaultArea" : true},
-                        {"name" : "TeamBackEnd", "includeSubAreas" : true, "setAsDefaultArea" : false}
-                      ]
-        },
+    "projectAreas" : [
+        {"name" : "UserExperience"},
+        {"name" : "Technical"},
         {"name" : "Tech Debt", "parentPath" : "Technical"},
         {"name" : "Spike", "parentPath" : "Technical"},
-        {   
-            "name" : "Business", 
-            "teams" : [
-                        {"name" : "TeamUI", "includeSubAreas" : true, "setAsDefaultArea" : true},
-                        {"name" : "TeamBackEnd", "includeSubAreas" : true, "setAsDefaultArea" : false}
-                      ]
+        {"name" : "Business"}
+    ],
+    "teams" : [
+        {
+            "name" : "TeamUI",           
+            "iterationName" : "Alpha",
+            "sprints" : ["Sprint0","Sprint1"],
+            "defaultArea" : "UserExperience",
+            "areas" : ["Technical","Business"]
+        },
+        {
+            "name" : "TeamBackEnd",           
+            "iterationName" : "Live",
+            "sprints" : ["Sprint0"],
+            "defaultArea" : "Technical",
+            "areas" : ["Technical"]
         }
     ],
     "workItems" : [
-        { "title" : "Example NFR1.0", "type" : "User Story", "description" : "Remember to onboard users" },
-        { "title" : "Onboard New Team Members", "type" : "User Story", "description" : "Remember to onboard users" },
-        { "title" : "Solution Overview", "type" : "User Story", "description" : "Remember to produce a solution overview" },
-        { "title" : "ADA Approval", "type" : "User Story", "description" : "Remember ADA Approval" },
-        { "title" : "Approved Tooling Review", "type" : "User Story", "description" : "Remember to get tooling Approved" },
-        { "title" : "Update WIKI", "type" : "User Story", "description" : "Remember to get tooling Approved" }
+        { "title" : "Example NFR1.0", "type" : "User Story", "description" : "Remember to onboard users" }
     ]  
 }

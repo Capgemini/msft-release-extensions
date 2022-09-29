@@ -58,6 +58,22 @@ function Get-TeamDashboard{
 	return $result
 }
 
+
+function Get-ProjectDashboard{
+    [CmdletBinding()]
+    param(
+       [Parameter(Mandatory=$true)][PSObject]$AdoConnection,
+	   [Parameter(Mandatory=$true)][PSObject]$ProjectName,
+	   [Parameter(Mandatory=$true)][string]$DashboardId
+    )
+
+	$uriExisting = "https://dev.azure.com/$($AdoConnection.AdoAccountName)/$ProjectName/_apis/dashboard/dashboards/$DashboardId`?api-version=6.0-preview.3"
+	$existingDashboard = Invoke-RestMethod -Uri $uriExisting -Method GET -ContentType "application/json" -Headers @{Authorization=($($AdoConnection.AdoAuthorizationToken))} -Body $json
+
+	return $existingDashboard
+}
+
+
 #https://dev.azure.com/markcunningham/dd209b33-fba2-48f3-adf3-398a7acf3a65/_apis/Dashboard/Dashboards
 
 
@@ -126,20 +142,35 @@ function Set-DashboardWidget{
 	return $result
 }
 
+function Set-ProjectDashboardWidget{
+    [CmdletBinding()]
+    param(
+       [Parameter(Mandatory=$true)][PSObject]$AdoConnection,
+	   [Parameter(Mandatory=$true)][string]$ProjectName,
+	   [Parameter(Mandatory=$true)][string]$DashboardId,
+	   [Parameter(Mandatory=$true)][psobject]$Widget	  
+    )
+
+	$uri = "https://dev.azure.com/$($AdoConnection.AdoAccountName)/$ProjectName/_apis/dashboard/dashboards/$DashboardId/widgets?api-version=6.0-preview.2"
+	
+	$json = ConvertTo-Json -InputObject $Widget
+	
+    $result = Invoke-RestMethod -Uri $uri -Method POST -ContentType "application/json" -Headers @{Authorization=($($AdoConnection.AdoAuthorizationToken))} -Body $json
+
+	return $result
+}
 
 function Set-ProjectDashboard{
     [CmdletBinding()]
     param(
        [Parameter(Mandatory=$true)][PSObject]$AdoConnection,
-	   [Parameter(Mandatory=$true)][string]$ProjectName,
-	   [Parameter(Mandatory=$true)][psobject]$Widgets  
+	   [Parameter(Mandatory=$true)][string]$ProjectName
     )
 
 	$myObject = [PSCustomObject]@{
 		name = "Project Dashboard"
-		description = "Dashboard for Project"
+		description = "Dashboard for $ProjectName"
 		refreshInterval = 5
-		widgets = @($widgets)
 	}
 
 	$json = ConvertTo-Json -InputObject $myObject
@@ -160,16 +191,12 @@ function Set-ProjectDashboardWidgets{
 	   [Parameter(Mandatory=$true)][psobject]$Widgets	  
     )
 
-	$myObject = [PSCustomObject]@{
-		name = "Project Dashboard"
-		dashboardScope = 2
-		description = "Dashboard for Project"
-		refreshInterval = 5
-		widgets = @($widgets)
-		ownerId= "b26cea44-6f56-482d-b418-2936b9220a7e"
-	}
+	$uriExisting = "https://dev.azure.com/$($AdoConnection.AdoAccountName)/$ProjectName/_apis/dashboard/dashboards/$DashboardId`?api-version=6.0-preview.3"
+	$existingDashboard = Invoke-RestMethod -Uri $uriExisting -Method GET -ContentType "application/json" -Headers @{Authorization=($($AdoConnection.AdoAuthorizationToken))} -Body $json
 
-	$json = ConvertTo-Json -InputObject $myObject
+	$existingDashboard.widgets = @($widgets)
+
+	$json = ConvertTo-Json -InputObject $existingDashboard
 
 	$uri = "https://dev.azure.com/$($AdoConnection.AdoAccountName)/$ProjectName/_apis/dashboard/dashboards/$DashboardId`?api-version=6.0-preview.3"
 
@@ -182,8 +209,7 @@ function Set-ProjectDashboardWidgets{
 
 #https://dev.azure.com/markcunningham/9fc5fb0f-f489-423e-9e16-6091f4c89e13/ef50b0ff-ce05-4b98-8e29-faa701cf57da/_apis/Dashboard/Dashboards/b92f791e-2a45-45f3-ab24-2ec578a1665f
 
-
-  function Set-SharedQuery{
+function Set-SharedQuery{
     [CmdletBinding()]
     param(
        [Parameter(Mandatory=$true)][PSObject]$AdoConnection,
@@ -204,10 +230,33 @@ function Set-ProjectDashboardWidgets{
 
 	$json = ConvertTo-Json -InputObject $myObject
 	
-    $result = Invoke-RestMethod -Uri $uri -Method POST -ContentType "application/json" -Headers @{Authorization=($($AdoConnection.AdoAuthorizationToken))} -Body $json
+	$Stoploop = $false
+	[int]$Retrycount = "0"
+ 
+	do {
+		try {
+		$result = Invoke-RestMethod -Uri $uri -Method POST -ContentType "application/json" -Headers @{Authorization=($($AdoConnection.AdoAuthorizationToken))} -Body $json
+		Write-Host "Job completed"
+		$Stoploop = $true
+		}
+		catch {
+		if ($Retrycount -gt 3){
+		Write-Host "Could not send Information after 3 retrys."
+		$Stoploop = $true
+		}
+		else {
+		Write-Host "Could not send Information retrying in 30 seconds..."
+		Start-Sleep -Seconds 30
+		$Retrycount = $Retrycount + 1
+		}
+		}
+		}
+	While ($Stoploop -eq $false)
+
 
 	return $result
 }
+
 
 function Set-NewWorkItemType{
     [CmdletBinding()]

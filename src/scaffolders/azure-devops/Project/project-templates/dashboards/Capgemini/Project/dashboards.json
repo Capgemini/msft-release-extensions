@@ -1,22 +1,28 @@
 {
-	"widgets": [
-		{
-		  "name": "Team Members renamed",
-		  "position": {
-			"row": 2,
-			"column": 2
-		  },
-		  "size": {
-			"rowSpan": 1,
-			"columnSpan": 2
-		  },
-		  "settings": null,
-		  "settingsVersion": {
-			"major": 1,
-			"minor": 0,
-			"patch": 0
-		  },
-		  "contributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.TeamMembersWidget"
-		}
-	  ]
-  }
+	"widgets" : 
+	[
+			{
+			"id": "LOCAL0000000000000000000000000000001",
+			"name": "Work Item Overview by Iteration Path",
+			"settings": "{\"scope\":\"WorkitemTracking.Queries\",\"groupKey\":\"__WITOVERVIEW__\",\"title\":\"Work Item Overview by Iteration Path\",\"chartType\":\"PieChart\",\"transformOptions\":{\"filter\":\"__WITOVERVIEW__\",\"groupBy\":\"System.IterationPath\",\"orderBy\":{\"direction\":\"descending\",\"propertyName\":\"value\"},\"measure\":{\"aggregation\":\"count\",\"propertyName\":\"\"},\"historyRange\":null,\"groupByTags\":false},\"userColors\":[],\"lastArtifactName\":\"Work Item Overview by Iteration Path\"}",
+			"settingsVersion": {
+				"major": 3,
+				"minor": 0,
+				"patch": 0
+			},
+			"size": {
+				"rowSpan": 3,
+				"columnSpan": 3
+			},
+			"contributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.WitChartWidget",
+			"position": {
+				"row": 1,
+				"column": 1
+			},
+			"areSettingsBlockedForUser": false,
+			"configurationContributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.WitChartWidget.Configuration",
+			"isNameConfigurable": true,
+			"isEnabled": true
+			}
+	]
+}
