@@ -86,18 +86,26 @@ foreach ($area in $configContent.projectAreas)
 #CREATE PROGRAMME SPRINTS
 foreach ($iteration in $configContent.projectSprints)
 {
+	$start = [Datetime]::ParseExact($iteration.startDate, 'dd/MM/yyyy', $null)
+	$finishDateDaysToAdd = ($iteration.sprintCadenceInWeeks * 7 * $iteration.numberOfSprints)
+	$endDate = $start.AddDays($finishDateDaysToAdd)
+
 	if ($null -eq $iteration.parentPath)
-	{
-		az boards iteration project create --name $iteration.name --project $ProjectName --org $orgUrl
+	{		
+		az boards iteration project create --name $iteration.name --project $ProjectName --org $orgUrl --start-date $start --finish-date $endDate 
 	}
 	else 
 	{
-		az boards iteration project create --name $iteration.name --project $ProjectName --org $orgUrl --path "\$ProjectName\Iteration\$($iteration.parentPath)"
+		az boards iteration project create --name $iteration.name --project $ProjectName --org $orgUrl --path "\$ProjectName\Iteration\$($iteration.parentPath)" --start-date $start --finish-date $endDate 
 	}
 
-	for ($i=0; $i -le $iteration.numberOfSprints; $i++) 
+	$start = [Datetime]::ParseExact($iteration.startDate, 'dd/MM/yyyy', $null)
+	$end = $start.AddDays($iteration.sprintCadenceInWeeks * 7 -1)
+	for ($i=1; $i -le $iteration.numberOfSprints; $i++) 
 	{
-		az boards iteration project create --name "Sprint$i" --project $ProjectName --org $orgUrl --path "\$ProjectName\Iteration\$($iteration.name)"
+		az boards iteration project create --name "Sprint$i" --project $ProjectName --org $orgUrl --path "\$ProjectName\Iteration\$($iteration.name)" --start-date $start --finish-date $end 
+		$start = $start.AddDays($iteration.sprintCadenceInWeeks * 7 -1);
+		$end = $end.AddDays($iteration.sprintCadenceInWeeks * 7 -1);
 	}
 }
 
@@ -144,15 +152,8 @@ foreach ($team in $configContent.teams)
 		}	
 }
 
-
-#foreach($areaTeam in $area.teams)
-#	{
-#		az boards area team add --path "\$ProjectName\$($area.name)" --team $areaTeam.name --org $orgUrl --project $ProjectName --set-as-default --include-sub-areas $areaTeam.includeSubAreas
-#	}
-
-
 #WORKITEMS
-#foreach ($workItem in $configContent.workItems)
-#{
-#	az boards work-item create --title $workItem.title --project $ProjectName --org $orgUrl --description $workItem.description --type $workItem.type
-#}
+foreach ($workItem in $configContent.workItems)
+{
+	az boards work-item create --title $workItem.title --project $ProjectName --org $orgUrl --description $workItem.description --type $workItem.type
+}

@@ -1,12 +1,12 @@
 {
     "projectSprints" : [
-        {"name" : "Discovery", "numberOfSprints" : 2, "startDate" : "28/09/2022", "sprintCadenceInWeek" :3},
-        {"name" : "User Research", "parentPath" : "Discovery"},
-        {"name" : "Alpha", "numberOfSprints" : 12},
-        {"name" : "Private Beta", "numberOfSprints" : 3},
-        {"name" : "Public Beta", "numberOfSprints" : 2},
-        {"name" : "Live", "numberOfSprints" : 1},
-        {"name" : "Retirement", "numberOfSprints" : 0}
+        {"name" : "Discovery", "numberOfSprints" : 2, "startDate" : "28/09/2022", "sprintCadenceInWeeks" :3},
+        {"name" : "User Research", "parentPath" : "Discovery", "startDate" : "28/09/2022", "sprintCadenceInWeeks" :3},
+        {"name" : "Alpha", "numberOfSprints" : 12, "startDate" : "28/09/2022", "sprintCadenceInWeeks" :3},
+        {"name" : "Private Beta", "numberOfSprints" : 3, "startDate" : "28/09/2022", "sprintCadenceInWeeks" :3},
+        {"name" : "Public Beta", "numberOfSprints" : 2, "startDate" : "28/09/2022", "sprintCadenceInWeeks" :3},
+        {"name" : "Live", "numberOfSprints" : 1, "startDate" : "28/09/2022", "sprintCadenceInWeeks" :3},
+        {"name" : "Retirement", "numberOfSprints" : 0, "startDate" : "28/09/2022", "sprintCadenceInWeeks" :3}
     ],
     "projectAreas" : [
         {"name" : "UserExperience"},
@@ -25,7 +25,7 @@
         },
         {
             "name" : "TeamBackEnd",           
-            "iterationName" : "Live",
+            "iterationName" : "Discovery",
             "sprints" : ["Sprint0"],
             "defaultArea" : "Technical",
             "areas" : ["Technical"]
