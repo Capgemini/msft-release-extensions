@@ -1,13 +1,13 @@
 {
     "projectSprints" : [
-        {"name" : "Discovery", "numberOfSprints" : 2, "startDate" : "28/09/2022", "sprintCadenceInWeeks" :3},
-        {"name" : "User Research", "parentPath" : "Discovery", "startDate" : "28/09/2022", "sprintCadenceInWeeks" :3},
-        {"name" : "Alpha", "numberOfSprints" : 12, "startDate" : "28/09/2022", "sprintCadenceInWeeks" :3},
-        {"name" : "Private Beta", "numberOfSprints" : 3, "startDate" : "28/09/2022", "sprintCadenceInWeeks" :3},
-        {"name" : "Public Beta", "numberOfSprints" : 2, "startDate" : "28/09/2022", "sprintCadenceInWeeks" :3},
-        {"name" : "Live", "numberOfSprints" : 1, "startDate" : "28/09/2022", "sprintCadenceInWeeks" :3},
-        {"name" : "Retirement", "numberOfSprints" : 0, "startDate" : "28/09/2022", "sprintCadenceInWeeks" :3}
-    ],
+        {"name" : "Discovery", "numberOfSprints" : 2, "startDate" : "03/01/2022", "sprintCadenceInWeeks" :1},
+        {"name" : "User Research", "parentPath" : "Discovery", "startDate" : "08/01/2022", "sprintCadenceInWeeks" :1},
+        {"name" : "Alpha", "numberOfSprints" : 5, "startDate" : "28/02/2022", "sprintCadenceInWeeks" :1},
+        {"name" : "Private Beta", "numberOfSprints" : 3, "startDate" : "28/05/2022", "sprintCadenceInWeeks" :1},
+        {"name" : "Public Beta", "numberOfSprints" : 2, "startDate" : "28/07/2022", "sprintCadenceInWeeks" :1},
+        {"name" : "Live", "numberOfSprints" : 1, "startDate" : "28/08/2022", "sprintCadenceInWeeks" :1},
+        {"name" : "Retirement", "numberOfSprints" : 0, "startDate" : "28/09/2022", "sprintCadenceInWeeks" :1}
+    ],   
     "projectAreas" : [
         {"name" : "UserExperience"},
         {"name" : "Technical"},
@@ -17,21 +17,18 @@
     ],
     "teams" : [
         {
-            "name" : "TeamUI",           
+            "name" : "TeamUI",   
             "iterationName" : "Alpha",
-            "sprints" : ["Sprint0","Sprint1"],
+            "sprints" : ["Sprint1","Sprint2"],
             "defaultArea" : "UserExperience",
             "areas" : ["Technical","Business"]
         },
         {
             "name" : "TeamBackEnd",           
             "iterationName" : "Discovery",
-            "sprints" : ["Sprint0"],
+            "sprints" : ["Sprint1"],
             "defaultArea" : "Technical",
             "areas" : ["Technical"]
         }
-    ],
-    "workItems" : [
-        { "title" : "Example NFR1.0", "type" : "User Story", "description" : "Remember to onboard users" }
-    ]  
+    ]
 }

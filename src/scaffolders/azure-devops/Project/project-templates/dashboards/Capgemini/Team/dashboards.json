@@ -1,190 +1,232 @@
-{
-"widgets" : 
-[
-	{
-	  "id": "LOCAL0000000000000000000000000000001",
-	  "name": "Sprint Capacity",
-	  "size": {
-		"rowSpan": 1,
-		"columnSpan": 2
-	  },
-	  "position": {
-		"row": 1,
-		"column": 5
-	  },
-	  "settings": "{\"teamId\":\"__TEAMID__\"}",
-	  "settingsVersion": {
-		"major": 1,
-		"minor": 0,
-		"patch": 0
-	  },
-	  "contributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.SprintCapacityWidget",
-	  "configurationContributionId": null,
-	  "isNameConfigurable": false,
-	  "isEnabled": true,
-	  "eTag": "4"
-	},
-	{
-	  "id": "LOCAL0000000000000000000000000000002",
-	  "name": "Burndown",
-	  "size": {
-		"rowSpan": 2,
-		"columnSpan": 3
-	  },
-	  "position": {
-		"row": 4,
-		"column": 1
-	  },
-	  "settings": "{\"teams\":[{\"projectId\":\"__PROJECTID__\",\"teamId\":\"__TEAMID__\"}],\"aggregation\":{\"identifier\":0,\"settings\":\"\"},\"completedWorkEnabled\":true,\"fieldFilters\":[],\"stackByWorkItemTypeEnabled\":true,\"burndownTrendlineEnabled\":true,\"workItemTypeFilter\":{\"identifier\":\"BacklogCategory\",\"settings\":\"Microsoft.RequirementCategory\"},\"includeBugsForRequirementCategory\":false,\"timePeriodConfiguration\":{\"startDate\":\"2022-03-20\",\"samplingConfiguration\":{\"identifier\":0,\"settings\":{\"endDate\":\"2022-04-03\",\"lastDayOfWeek\":5,\"sampleInterval\":1}}},\"totalScopeTrendlineEnabled\":true}",
-	  "settingsVersion": {
-		"major": 1,
-		"minor": 0,
-		"patch": 0
-	  },
-	  "contributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.BurndownWidget",
-	  "configurationContributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.BurndownWidget.Configuration",
-	  "isNameConfigurable": true,
-	  "isEnabled": true,
-	  "eTag": "3"
-	},
-	{
-	  "id": "LOCAL0000000000000000000000000000003",
-	  "name": "Technical Debt",
-	  "size": {
-		"rowSpan": 1,
-		"columnSpan": 1
-	  },
-	  "position": {
-		"row": 1,
-		"column": 1
-	  },
-	  "settings": "{\"defaultBackgroundColor\":\"#e60017\",\"queryId\":\"__TECH_DEBT_QUERY_ID__\",\"queryName\":\"Technical Debt\",\"colorRules\":[{\"isEnabled\":true,\"backgroundColor\":\"#339947\",\"thresholdCount\":10,\"operator\":\"<=\"}],\"lastArtifactName\":\"Technical Debt\"}",
-	  "settingsVersion": {
-		"major": 1,
-		"minor": 0,
-		"patch": 0
-	  },
-	  "contributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.QueryScalarWidget",
-	  "configurationContributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.QueryScalarWidget.Configuration",
-	  "isNameConfigurable": true,
-	  "isEnabled": true,
-	  "eTag": "10"
-	},
-	{
-	  "id": "LOCAL0000000000000000000000000000004",
-	  "name": "Defects",
-	  "size": {
-		"rowSpan": 1,
-		"columnSpan": 1
-	  },
-	  "position": {
-		"row": 1,
-		"column": 2
-	  },
-	  "settings": "{\"defaultBackgroundColor\":\"#e60017\",\"queryId\":\"__DEFECTS_QUERY_ID__\",\"queryName\":\"Technical Debt\",\"colorRules\":[],\"lastArtifactName\":\"Technical Debt\"}",
-	  "settingsVersion": {
-		"major": 1,
-		"minor": 0,
-		"patch": 0
-	  },
-	  "contributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.QueryScalarWidget",
-	  "configurationContributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.QueryScalarWidget.Configuration",
-	  "isNameConfigurable": true,
-	  "isEnabled": true,
-	  "eTag": "3"
-	},
-	{
-	  "id": "LOCAL0000000000000000000000000000005",
-	  "name": "Cumulative Flow Diagram (CFD)",
-	  "size": {
-		"rowSpan": 2,
-		"columnSpan": 3
-	  },
-	  "position": {
-		"row": 2,
-		"column": 4
-	  },
-	  "settings": null,
-	  "settingsVersion": {
-		"major": 1,
-		"minor": 0,
-		"patch": 0
-	  },
-	  "contributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.CumulativeFlowDiagramWidget",
-	  "configurationContributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.CumulativeFlowDiagramWidget.Configuration",
-	  "isNameConfigurable": true,
-	  "isEnabled": true,
-	  "eTag": "7"
-	},
-	{
-	  "id": "LOCAL0000000000000000000000000000006",
-	  "name": "Lead Time",
-	  "size": {
-		"rowSpan": 2,
-		"columnSpan": 3
-	  },
-	  "position": {
-		"row": 2,
-		"column": 1
-	  },
-	  "settings": null,
-	  "settingsVersion": {
-		"major": 1,
-		"minor": 0,
-		"patch": 0
-	  },
-	  "contributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.LeadTimeWidget",
-	  "configurationContributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.LeadTimeWidget.Configuration",
-	  "isNameConfigurable": true,
-	  "isEnabled": true,
-	  "eTag": "8"
-	},
-	{
-	  "id": "LOCAL0000000000000000000000000000007",
-	  "name": "Sprint Overview",
-	  "size": {
-		"rowSpan": 1,
-		"columnSpan": 2
-	  },
-	  "position": {
-		"row": 1,
-		"column": 3
-	  },
-	  "settings": null,
-	  "settingsVersion": {
-		"major": 1,
-		"minor": 0,
-		"patch": 0
-	  },
-	  "contributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.SprintOverviewWidget",
-	  "configurationContributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.SprintOverviewWidget.Configuration",
-	  "isNameConfigurable": false,
-	  "isEnabled": true,
-	  "eTag": "2"
-	},
-	{
-	  "id": "LOCAL0000000000000000000000000000008",
-	  "name": "Velocity",
-	  "size": {
-		"rowSpan": 2,
-		"columnSpan": 3
-	  },
-	  "position": {
-		"row": 4,
-		"column": 4
-	  },
-	  "settings": null,
-	  "settingsVersion": {
-		"major": 1,
-		"minor": 0,
-		"patch": 0
-	  },
-	  "contributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.VelocityWidget",
-	  "configurationContributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.VelocityWidget.Configuration",
-	  "isNameConfigurable": true,
-	  "isEnabled": true,
-	  "eTag": "1"
-	}
-  ]
+{ "widgets" :[
+    {
+        "id": "LOCAL0000000000000000000000000000001",
+        "name": "Sprint Overview",
+        "size": {
+            "rowSpan": 1,
+            "columnSpan": 2
+        },
+        "position": {
+            "row": 9,
+            "column": 4
+        },
+        "settings": null,
+        "settingsVersion": {
+            "major": 1,
+            "minor": 0,
+            "patch": 0
+        },
+        "contributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.SprintOverviewWidget",
+        "configurationContributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.SprintOverviewWidget.Configuration",
+        "isNameConfigurable": false,
+        "isEnabled": true,
+        "eTag": "1"
+    },
+    {
+        "id": "LOCAL0000000000000000000000000000004",
+        "name": "Delivery Team __TEAMNAME__ Velocity",
+        "size": {
+            "rowSpan": 2,
+            "columnSpan": 4
+        },
+        "position": {
+            "row": 6,
+            "column": 1
+        },
+        "settings": "{\"projectId\":\"__PROJECTID__\",\"teamId\":\"__TEAMID__\",\"workItemTypeFilter\":{\"identifier\":\"BacklogCategory\",\"settings\":\"Microsoft.RequirementCategory\"},\"aggregation\":{\"identifier\":0,\"settings\":\"\"},\"numberOfIterations\":10,\"plannedWorkDelay\":0,\"lateWorkDelay\":0,\"lastArtifactName\":null}",
+        "settingsVersion": {
+            "major": 1,
+            "minor": 0,
+            "patch": 0
+        },
+        "contributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.VelocityWidget",
+        "configurationContributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.VelocityWidget.Configuration",
+        "isNameConfigurable": true,
+        "isEnabled": true,
+        "eTag": "5"
+    },
+    {
+        "id": "LOCAL0000000000000000000000000000005",
+        "name": "Delivery Team __TEAMNAME__ Cycle Time",
+        "size": {
+            "rowSpan": 2,
+            "columnSpan": 4
+        },
+        "position": {
+            "row": 1,
+            "column": 1
+        },
+        "settings": "{\"dataSettings\":{\"project\":\"__PROJECTID__\",\"teamIds\":[\"__TEAMID__\"],\"witSelector\":{\"identifier\":\"BacklogCategory\",\"settings\":\"Microsoft.RequirementCategory\"},\"swimLane\":null,\"fieldFilters\":[],\"timePeriod\":{\"identifier\":\"RollingPeriod\",\"settings\":180}},\"lastArtifactName\":\"Delivery Team __TEAMNAME__ Cycle Time\"}",
+        "settingsVersion": {
+            "major": 2,
+            "minor": 0,
+            "patch": 0
+        },
+        "contributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.CycleTimeWidget",
+        "configurationContributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.CycleTimeWidget.Configuration",
+        "isNameConfigurable": true,
+        "isEnabled": true,
+        "eTag": "5"
+    },
+    {
+        "id": "LOCAL0000000000000000000000000000006",
+        "name": "Cumulative Flow Diagram (CFD)",
+        "size": {
+            "rowSpan": 2,
+            "columnSpan": 3
+        },
+        "position": {
+            "row": 8,
+            "column": 6
+        },
+        "settings": null,
+        "settingsVersion": {
+            "major": 1,
+            "minor": 0,
+            "patch": 0
+        },
+        "contributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.CumulativeFlowDiagramWidget",
+        "configurationContributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.CumulativeFlowDiagramWidget.Configuration",
+        "isNameConfigurable": true,
+        "isEnabled": true,
+        "eTag": "1"
+    },
+    {
+        "id": "LOCAL0000000000000000000000000000007",
+        "name": "Requirements quality",
+        "size": {
+            "rowSpan": 2,
+            "columnSpan": 3
+        },
+        "position": {
+            "row": 8,
+            "column": 1
+        },
+        "settingsVersion": {
+            "major": 1,
+            "minor": 0,
+            "patch": 0
+        },
+        "contributionId": "ms.vss-test-web.Microsoft.VisualStudioTeamServices.Dashboards.TestResultsTraceabilityWidget",
+        "configurationContributionId": "ms.vss-test-web.Microsoft.VisualStudioTeamServices.Dashboards.TestResults.TraceabilityWidget.Configuration",
+        "isNameConfigurable": true,
+        "isEnabled": true,
+        "eTag": "3"
+    },
+    {
+        "id": "LOCAL0000000000000000000000000000008",
+        "name": "__TEAMNAME__ Full Backlog Query by Work Item Type",
+        "size": {
+            "rowSpan": 3,
+            "columnSpan": 4
+        },
+        "position": {
+            "row": 3,
+            "column": 1
+        },
+        "settings": "{\"chartType\":\"PieChart\",\"groupKey\":\"__FULLBACKLOGTEAMQUERY__\",\"scope\":\"WorkitemTracking.Queries\",\"title\":\"__TEAMNAME__ Full Backlog Query by Work Item Type\",\"transformOptions\":{\"filter\":\"__FULLBACKLOGTEAMQUERY__\",\"groupBy\":\"System.WorkItemType\",\"orderBy\":{\"direction\":\"descending\",\"propertyName\":\"value\"},\"measure\":{\"aggregation\":\"count\",\"propertyName\":\"\"},\"historyRange\":null,\"groupByTags\":true,\"FilteredGroups\":[]},\"userColors\":[{\"value\":\"Feature\",\"backgroundColor\":\"#5c197b\"},{\"value\":\"Bug\",\"backgroundColor\":\"#b20b1e\"},{\"value\":\"Epic\",\"backgroundColor\":\"#f7a24b\"},{\"value\":\"Risk\",\"backgroundColor\":\"#7f1725\"},{\"value\":\"Issue\",\"backgroundColor\":\"#ec008c\"},{\"value\":\"Assurance\",\"backgroundColor\":\"#00643a\"},{\"value\":\"Test Suite\",\"backgroundColor\":\"#cccccc\"},{\"value\":\"Test Plan\",\"backgroundColor\":\"#8874c2\"},{\"value\":\"Test Case\",\"backgroundColor\":\"#c0b6e9\"}],\"lastArtifactName\":\"__TEAMNAME__ Full Backlog Query by Work Item Type\"}",
+        "settingsVersion": {
+            "major": 3,
+            "minor": 0,
+            "patch": 0
+        },
+        "contributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.WitChartWidget",
+        "configurationContributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.WitChartWidget.Configuration",
+        "isNameConfigurable": true,
+        "isEnabled": true,
+        "eTag": "5"
+    },
+    {
+        "id": "LOCAL0000000000000000000000000000009",
+        "name": "__TEAMNAME__ Non-Closed Backlog by Work Item Type",
+        "size": {
+            "rowSpan": 3,
+            "columnSpan": 4
+        },
+        "position": {
+            "row": 3,
+            "column": 5
+        },
+        "settings": "{\"scope\":\"WorkitemTracking.Queries\",\"groupKey\":\"__FULLBACKLOGNONCLOSEDTEAMQUERY__\",\"title\":\"__TEAMNAME__ Non-Closed Backlog by Work Item Type\",\"chartType\":\"PieChart\",\"transformOptions\":{\"filter\":\"__FULLBACKLOGNONCLOSEDTEAMQUERY__\",\"groupBy\":\"System.WorkItemType\",\"orderBy\":{\"direction\":\"descending\",\"propertyName\":\"value\"},\"measure\":{\"aggregation\":\"count\",\"propertyName\":\"\"},\"historyRange\":null,\"groupByTags\":false},\"userColors\":[{\"value\":\"Bug\",\"backgroundColor\":\"#b20b1e\"},{\"value\":\"Feature\",\"backgroundColor\":\"#5c197b\"},{\"value\":\"Epic\",\"backgroundColor\":\"#f7a24b\"},{\"value\":\"Issue\",\"backgroundColor\":\"#ec008c\"},{\"value\":\"Test Suite\",\"backgroundColor\":\"#aaaaaa\"},{\"value\":\"Test Plan\",\"backgroundColor\":\"#8874c2\"},{\"value\":\"Test Case\",\"backgroundColor\":\"#aa9cdf\"},{\"value\":\"Risk\",\"backgroundColor\":\"#7f1725\"},{\"value\":\"Assurance\",\"backgroundColor\":\"#00643a\"}],\"lastArtifactName\":\"__TEAMNAME__ Non-Closed Backlog by Work Item Type\"}",
+        "settingsVersion": {
+            "major": 3,
+            "minor": 0,
+            "patch": 0
+        },
+        "contributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.WitChartWidget",
+        "configurationContributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.WitChartWidget.Configuration",
+        "isNameConfigurable": true,
+        "isEnabled": true,
+        "eTag": "3"
+    },
+    {
+        "id": "LOCAL0000000000000000000000000000010",
+        "name": "Delivery Team __TEAMNAME__ Lead Time",
+        "size": {
+            "rowSpan": 2,
+            "columnSpan": 4
+        },
+        "position": {
+            "row": 1,
+            "column": 5
+        },
+        "settings": "{\"dataSettings\":{\"project\":\"__PROJECTID\",\"teamIds\":[\"__TEAMID__\"],\"witSelector\":{\"identifier\":\"BacklogCategory\",\"settings\":\"Microsoft.RequirementCategory\"},\"swimLane\":null,\"fieldFilters\":[],\"timePeriod\":{\"identifier\":\"RollingPeriod\",\"settings\":30}},\"lastArtifactName\":\"Delivery Team __TEAMNAME__ Lead Time\"}",
+        "settingsVersion": {
+            "major": 2,
+            "minor": 0,
+            "patch": 0
+        },
+        "contributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.LeadTimeWidget",
+        "configurationContributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.LeadTimeWidget.Configuration",
+        "isNameConfigurable": true,
+        "isEnabled": true,
+        "eTag": "4"
+    },
+    {
+        "id": "LOCAL0000000000000000000000000000011",
+        "name": "Sprint Capacity",
+        "size": {
+            "rowSpan": 1,
+            "columnSpan": 2
+        },
+        "position": {
+            "row": 8,
+            "column": 4
+        },
+        "settings": null,
+        "settingsVersion": {
+            "major": 1,
+            "minor": 0,
+            "patch": 0
+        },
+        "contributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.SprintCapacityWidget",
+        "configurationContributionId": null,
+        "isNameConfigurable": false,
+        "isEnabled": true,
+        "eTag": "1"
+    },
+    {
+        "id": "LOCAL0000000000000000000000000000012",
+        "name": "__TEAMNAME__ Current & Previous Sprint Work Item Breakdown by Iteration Path",
+        "size": {
+            "rowSpan": 2,
+            "columnSpan": 4
+        },
+        "position": {
+            "row": 6,
+            "column": 5
+        },
+        "settings": "{\"chartType\":\"stackBarChart\",\"groupKey\":\"__SPRINTBREAKDOWN__\",\"scope\":\"WorkitemTracking.Queries\",\"title\":\"__TEAMNAME__ Current & Previous Sprint Work Item Breakdown by Iteration Path\",\"transformOptions\":{\"filter\":\"__SPRINTBREAKDOWN__\",\"groupBy\":\"System.WorkItemType\",\"orderBy\":{\"propertyName\":\"value\",\"direction\":\"descending\"},\"measure\":{\"aggregation\":\"count\",\"propertyName\":\"\"},\"historyRange\":null,\"series\":\"System.IterationPath\",\"groupByTags\":true,\"FilteredGroups\":[]},\"userColors\":[{\"value\":\"Task\",\"backgroundColor\":\"#fbbc3d\"},{\"value\":\"Risk\",\"backgroundColor\":\"#b20b1e\"},{\"value\":\"Bug\",\"backgroundColor\":\"#e60017\"},{\"value\":\"Issue\",\"backgroundColor\":\"#71338d\"},{\"value\":\"Assurance\",\"backgroundColor\":\"#00643a\"},{\"value\":\"Feature\",\"backgroundColor\":\"#5c197b\"},{\"value\":\"Epic\",\"backgroundColor\":\"#e87025\"},{\"value\":\"User Story\",\"backgroundColor\":\"#009ccc\"}],\"lastArtifactName\":\"__TEAMNAME__ Current & Previous Sprint Work Item Breakdown by Iteration Path\"}",
+        "settingsVersion": {
+            "major": 3,
+            "minor": 0,
+            "patch": 0
+        },
+        "contributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.WitChartWidget",
+        "configurationContributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.WitChartWidget.Configuration",
+        "isNameConfigurable": true,
+        "isEnabled": true,
+        "eTag": "8"
+    }
+]
 }
-

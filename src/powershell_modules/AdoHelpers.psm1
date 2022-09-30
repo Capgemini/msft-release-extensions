@@ -236,7 +236,6 @@ function Set-SharedQuery{
 	do {
 		try {
 		$result = Invoke-RestMethod -Uri $uri -Method POST -ContentType "application/json" -Headers @{Authorization=($($AdoConnection.AdoAuthorizationToken))} -Body $json
-		Write-Host "Job completed"
 		$Stoploop = $true
 		}
 		catch {
@@ -245,8 +244,8 @@ function Set-SharedQuery{
 		$Stoploop = $true
 		}
 		else {
-		Write-Host "Could not send Information retrying in 30 seconds..."
-		Start-Sleep -Seconds 30
+		Write-Host "Could not send Information retrying in 5 seconds..."
+		Start-Sleep -Seconds 5
 		$Retrycount = $Retrycount + 1
 		}
 		}

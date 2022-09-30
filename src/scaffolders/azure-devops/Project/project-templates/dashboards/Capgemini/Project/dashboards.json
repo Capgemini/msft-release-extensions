@@ -1,28 +1,51 @@
 {
 	"widgets" : 
 	[
-			{
-			"id": "LOCAL0000000000000000000000000000001",
-			"name": "Work Item Overview by Iteration Path",
-			"settings": "{\"scope\":\"WorkitemTracking.Queries\",\"groupKey\":\"__WITOVERVIEW__\",\"title\":\"Work Item Overview by Iteration Path\",\"chartType\":\"PieChart\",\"transformOptions\":{\"filter\":\"__WITOVERVIEW__\",\"groupBy\":\"System.IterationPath\",\"orderBy\":{\"direction\":\"descending\",\"propertyName\":\"value\"},\"measure\":{\"aggregation\":\"count\",\"propertyName\":\"\"},\"historyRange\":null,\"groupByTags\":false},\"userColors\":[],\"lastArtifactName\":\"Work Item Overview by Iteration Path\"}",
+		{
+			"id": "LOCAL0000000000000000000000000000002",
+			"name": "Backlog Health - Work Items Missing Story Points",
+			"size": {
+				"rowSpan": 2,
+				"columnSpan": 2
+			},
+			"position": {
+				"row": 1,
+				"column": 1
+			},
+			"settings": "{\"scope\":\"WorkitemTracking.Queries\",\"groupKey\":\"__WITOVERVIEWNOSTORYPOINTS__\",\"title\":\"Work Items Missing Story Points\",\"chartType\":\"PieChart\",\"transformOptions\":{\"filter\":\"__WITOVERVIEWNOSTORYPOINTS__\",\"groupBy\":\"System.WorkItemType\",\"orderBy\":{\"direction\":\"descending\",\"propertyName\":\"value\"},\"measure\":{\"aggregation\":\"count\",\"propertyName\":\"\"},\"historyRange\":null,\"groupByTags\":false},\"userColors\":[],\"lastArtifactName\":\"Backlog Health - Un-pointed Stories by Work Item Type\"}",
 			"settingsVersion": {
 				"major": 3,
 				"minor": 0,
 				"patch": 0
 			},
-			"size": {
-				"rowSpan": 3,
-				"columnSpan": 3
-			},
 			"contributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.WitChartWidget",
-			"position": {
-				"row": 1,
-				"column": 1
-			},
-			"areSettingsBlockedForUser": false,
 			"configurationContributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.WitChartWidget.Configuration",
 			"isNameConfigurable": true,
-			"isEnabled": true
-			}
+			"isEnabled": true,
+			"eTag": "2"
+		},
+		{
+			"id": "LOCAL0000000000000000000000000000003",
+			"name": "Backlog Health - Work Items without Descriptions",
+			"size": {
+				"rowSpan": 2,
+				"columnSpan": 2
+			},
+			"position": {
+				"row": 1,
+				"column": 3
+			},
+			"settings": "{\"scope\":\"WorkitemTracking.Queries\",\"groupKey\":\"__WITOVERVIEWNODESCRIPTION__\",\"title\":\"Work Items without Descriptions\",\"chartType\":\"PieChart\",\"transformOptions\":{\"filter\":\"__WITOVERVIEWNODESCRIPTION__\",\"groupBy\":\"System.WorkItemType\",\"orderBy\":{\"direction\":\"descending\",\"propertyName\":\"value\"},\"measure\":{\"aggregation\":\"count\",\"propertyName\":\"\"},\"historyRange\":null,\"groupByTags\":false},\"userColors\":[],\"lastArtifactName\":\"Backlog Health - Unhealthy Stories by Work Item Type\"}",
+			"settingsVersion": {
+				"major": 3,
+				"minor": 0,
+				"patch": 0
+			},
+			"contributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.WitChartWidget",
+			"configurationContributionId": "ms.vss-dashboards-web.Microsoft.VisualStudioOnline.Dashboards.WitChartWidget.Configuration",
+			"isNameConfigurable": true,
+			"isEnabled": true,
+			"eTag": "2"
+		}
 	]
 }

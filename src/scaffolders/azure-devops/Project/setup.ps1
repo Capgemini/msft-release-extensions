@@ -50,21 +50,18 @@ foreach ($wikiPage in $wikiConfig.pages)
 	Set-WikiPageContent -AdoConnection $adoConnection -WikiId $projectWiki.id -PagePath $wikiPage.path -PageContent $wikicontent -ProjectName $ProjectName
 }
 
-#SHARED QUERIES
-$sharedQueryTechDebt = Set-SharedQuery  -AdoConnection $adoConnection -ProjectName $ProjectName  -QueryName "Technical Debt" -Wiql "SELECT [System.Id],[System.WorkItemType],[System.Title],[System.AssignedTo],[System.State],[System.Tags] FROM WorkItems WHERE [System.TeamProject] = '$ProjectName' AND ( [System.WorkItemType] = 'Technical Debt' AND [System.State] IN ('Active') OR [System.State] = 'Accepted')"
-
-$witOverview = Set-SharedQuery -AdoConnection $adoConnection -ProjectName $ProjectName  -QueryName "Work Item Overview" -Wiql "SELECT [System.Id],[System.WorkItemType],[System.Title],[System.State],[System.AreaPath],[System.IterationPath] FROM workitems WHERE [System.TeamProject] = @project AND System.State NOT IN ('Closed','Resolved')"
-
-$sharedQueryBugs = Set-SharedQuery  -AdoConnection $adoConnection -ProjectName $ProjectName  -QueryName "Defects" -Wiql "SELECT [System.Id],[System.WorkItemType],[System.Title],[System.AssignedTo],[System.State],[System.Tags] FROM WorkItems WHERE [System.TeamProject] = '$ProjectName' AND ( [System.WorkItemType] = 'Bug' AND [System.State] IN ('Active') OR [System.State] = 'Accepted')"
-
 #PROJECT DASHBOARDS
 $projectDashboardId = Set-ProjectDashboard -AdoConnection $adoConnection -ProjectName $ProjectName 
+
+$nostorypointsquery = Set-SharedQuery  -AdoConnection $adoConnection -ProjectName $ProjectName  -QueryName "Backlog Health - No Story Points" -Wiql "SELECT [System.Id],[System.WorkItemType],[System.Title],[System.AssignedTo],[System.State],[System.Tags] FROM workitems WHERE [System.TeamProject] = '$ProjectName' AND [System.WorkItemType] <> '' AND [Microsoft.VSTS.Scheduling.StoryPoints] = ''"
+$nodescriptionquery = Set-SharedQuery  -AdoConnection $adoConnection -ProjectName $ProjectName  -QueryName "Backlog Health - No Description" -Wiql "SELECT [System.Id],[System.WorkItemType],[System.Title],[System.AssignedTo],[System.State],[System.Tags] FROM WorkItems WHERE [System.TeamProject] = '$ProjectName' AND [System.WorkItemType] <> '' AND [System.Description] IS EMPTY"
 
 foreach($widget in $projectDashboardConfig.widgets)
 {
 	if( $null -ne $widget.settings)
 	{
-		$widget.settings = $widget.settings.Replace("__WITOVERVIEW__", $witOverview.id);		
+		$widget.settings = $widget.settings.Replace("__WITOVERVIEWNOSTORYPOINTS__", $nostorypointsquery.id);	
+		$widget.settings = $widget.settings.Replace("__WITOVERVIEWNODESCRIPTION__", $nodescriptionquery.id);		
 	}
 
 	Set-ProjectDashboardWidget -AdoConnection $adoConnection -ProjectName $ProjectName -DashboardId $projectDashboardId.id -Widget $widget
@@ -87,7 +84,7 @@ foreach ($area in $configContent.projectAreas)
 foreach ($iteration in $configContent.projectSprints)
 {
 	$start = [Datetime]::ParseExact($iteration.startDate, 'dd/MM/yyyy', $null)
-	$finishDateDaysToAdd = ($iteration.sprintCadenceInWeeks * 7 * $iteration.numberOfSprints)
+	$finishDateDaysToAdd = ($iteration.sprintCadenceInWeeks * 7 * $iteration.numberOfSprints) - $iteration.numberOfSprints #Lose a day for each sprint for retro
 	$endDate = $start.AddDays($finishDateDaysToAdd)
 
 	if ($null -eq $iteration.parentPath)
@@ -99,7 +96,6 @@ foreach ($iteration in $configContent.projectSprints)
 		az boards iteration project create --name $iteration.name --project $ProjectName --org $orgUrl --path "\$ProjectName\Iteration\$($iteration.parentPath)" --start-date $start --finish-date $endDate 
 	}
 
-	$start = [Datetime]::ParseExact($iteration.startDate, 'dd/MM/yyyy', $null)
 	$end = $start.AddDays($iteration.sprintCadenceInWeeks * 7 -1)
 	for ($i=1; $i -le $iteration.numberOfSprints; $i++) 
 	{
@@ -113,17 +109,30 @@ foreach ($iteration in $configContent.projectSprints)
 foreach ($team in $configContent.teams)
 {
 	 $teamid = az devops team create --name $team.name --project $ProjectName --org $orgUrl | ConvertFrom-Json
-	 Write-Host "Created Team with id $teamid.id"
-	 $teamdasboardid = Set-TeamDashboard -AdoConnection $adoConnection -ProjectName $ProjectName -TeamName $team.name
 	
+	 #Team Specific Queries
+	 $fullbacklogQuery = Set-SharedQuery  -AdoConnection $adoConnection -ProjectName $ProjectName  -QueryName "$($team.name) Team - Full Backlog Query" -Wiql "SELECT [System.Id],[System.WorkItemType],[System.Title],[System.AssignedTo],[System.State],[System.Tags] FROM WorkItems WHERE [System.TeamProject] = @project AND [System.WorkItemType] <> '' AND [System.AreaPath] UNDER '$ProjectName\$($team.defaultArea)'"
+	 $fullbacklogNonClosedQuery = Set-SharedQuery  -AdoConnection $adoConnection -ProjectName $ProjectName  -QueryName "$($team.name) Team - Full Backlog Query Non Closed" -Wiql "SELECT [System.Id],[System.WorkItemType],[System.Title],[System.AssignedTo],[System.State],[System.Tags] FROM WorkItems WHERE [System.TeamProject] = @project AND [System.WorkItemType] <> '' AND [System.AreaPath] UNDER '$ProjectName\$($team.defaultArea)' AND [System.State] <> 'Closed'"
+	 $lastSprintCurrentSprintBreakdown = Set-SharedQuery  -AdoConnection $adoConnection -ProjectName $ProjectName  -QueryName "$($team.name) Team - Sprint and Current Sprint Breakdown" -Wiql "SELECT [System.Id],[System.WorkItemType],[System.Title],[System.AssignedTo],[System.State],[System.Tags],[System.IterationPath],[System.AreaPath],[Microsoft.VSTS.Scheduling.StoryPoints] FROM WorkItems WHERE [System.TeamProject] = @project AND [System.WorkItemType] <> '' AND ( [System.IterationPath] UNDER @currentIteration('[$ProjectName]\$($team.defaultArea) <id:$($teamid.id)>') OR [System.IterationPath] UNDER @currentIteration('[$ProjectName]\$($team.defaultArea) <id:$($teamid.id)>') - 1 ) ORDER BY [System.Id]"
+
+	 $teamdasboardid = Set-TeamDashboard -AdoConnection $adoConnection -ProjectName $ProjectName -TeamName $team.name
+		 
 	 foreach($widget in $dashboardConfig.widgets)
 		{
 			if( $null -ne $widget.settings)
-			{
+			{		
+				$widget.name = $widget.name.Replace("__PROJECTNAME__", $ProjectName);
+				$widget.name = $widget.name.Replace("__TEAMNAME__", $team.name);
+
+				$widget.settings = $widget.settings.Replace("__FULLBACKLOGTEAMQUERY__", $fullbacklogQuery.id);
+				$widget.settings = $widget.settings.Replace("__FULLBACKLOGNONCLOSEDTEAMQUERY__", $fullbacklogNonClosedQuery.id);
+				$widget.settings = $widget.settings.Replace("__SPRINTBREAKDOWN__", $lastSprintCurrentSprintBreakdown.id);
+				
+				$widget.settings = $widget.settings.Replace("__PROJECTNAME__", $ProjectName);
+				$widget.settings = $widget.settings.Replace("__TEAMNAME__", $team.name);
 				$widget.settings = $widget.settings.Replace("__TEAMID__", $teamid.id);
 				$widget.settings = $widget.settings.Replace("__PROJECTID__", $project.id);
-				$widget.settings = $widget.settings.Replace("__TECH_DEBT_QUERY_ID__", $sharedQueryTechDebt.id);
-				$widget.settings = $widget.settings.Replace("__DEFECTS_QUERY_ID__", $sharedQueryBugs.id);
+
 			}
 
 			Set-DashboardWidget -AdoConnection $adoConnection -ProjectName $ProjectName -TeamName $team.name -DashboardId $teamdasboardid.id -Widget $widget
