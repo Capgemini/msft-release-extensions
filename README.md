@@ -3,6 +3,8 @@
 ## Introduction
 A set of Azure DevOps task extensions created by the Capgemini UK MACE team. We work on many projects and technologies and we endeavour to share our experiences and solutions with the community where we can. We are sure you will find something useful within this library.
 
+Each extension is documented below and structured in the Table of Contents
+
 ## Table of contents
 
 - [Table of contents](#table-of-contents)
