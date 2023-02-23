@@ -1,5 +1,8 @@
 [![Build Status](https://capgeminiuk.visualstudio.com/GitHub%20Support/_apis/build/status/CI-Builds/Azure%20DevOps%20Extensions/Capgemini.msft-release-extensions?branchName=master)](https://capgeminiuk.visualstudio.com/GitHub%20Support/_build/latest?definitionId=218&branchName=master)
 
+## Introduction
+A set of Azure DevOps task extensions created by the Capgemini UK MACE team. We work on many projects and technologies and we endeavour to share our experiences and solutions with the community where we can. We are sure you will find something useful within this library.
+
 ## Table of contents
 
 - [Table of contents](#table-of-contents)
