@@ -1,0 +1,79 @@
+﻿@page "/"
+@using Capgemini.CapabilityCatalog.Shared.Models
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Capgemini.CapabilityCatalog.Shared
+@using Microsoft.AspNetCore.Components.Authorization
+
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
+@attribute [Authorize]
+@inject HttpClient Http
+
+<PageTitle>Home</PageTitle>
+
+<h1>PACE Offer Scaffolders</h1>
+
+<di class="top-row ">
+    <div class="container-fluid">
+    <input placeholder="PowerApps" /><button class="nav-link btn btn-link">Search</button>
+  </div>
+</di>
+
+@if (scaffolders == null)
+{
+        <p><em>Loading...</em></p>
+}
+else
+{
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Link</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var scaffolder in scaffolders)
+            {
+                        <tr>
+
+                            <td>@scaffolder.Name</td>
+                            <td>@scaffolder.Description</td>
+                            <td>
+                                         <button class="btn btn-primary" @onclick="ShowDetailedView">more...</button>
+                            </td>
+                        </tr>
+            }
+            </tbody>
+        </table>
+}
+
+@code {
+    private Scaffolder[]? scaffolders;   
+
+    private DataService dataService = new DataService();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            scaffolders = dataService.Scaffolders;
+            //TODO: get data from server
+            //  scaffolders = await Http.GetFromJsonAsync<Scaffolder[]>("Scaffolder");
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+
+    @code{
+    private void ShowDetailedView(MouseEventArgs args)
+    {
+        Navigation.NavigateTo("scaffolderdetails");
+    }
+}
+}
+
