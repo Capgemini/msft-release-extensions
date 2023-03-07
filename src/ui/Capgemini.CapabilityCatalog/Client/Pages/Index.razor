@@ -12,22 +12,11 @@
 
 <PageTitle>Home</PageTitle>
 
-<h1>PACE Offer Scaffolders</h1>
-
-<di class="top-row ">
+@*<di class="top-row ">
     <div class="container-fluid">
     <input placeholder="PowerApps" /><button class="nav-link btn btn-link">Search</button>
   </div>
-</di>
-
- <RadzenText TextStyle="TextStyle.Body2">
-        <strong>Radzen Body 2</strong> Radzen Blazor Components are open source and free for commercial use. You can install them from nuget or build your own copy from source.
-<RadzenButton Text="EXPLORE DEMOS" ButtonStyle="ButtonStyle.Primary" Shade="Shade.Default"></RadzenButton>
-    </RadzenText>
-
-
-
-
+</di>*@
 
 @if (scaffolders == null)
 {
@@ -35,7 +24,17 @@
 }
 else
 {
-        <table class="table">
+
+    <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+    Data="@scaffolders" TItem="Scaffolder" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or">
+    <Columns>
+        <RadzenDataGridColumn TItem="Scaffolder" Property="Name" Title="Name" Width="160px" />
+        <RadzenDataGridColumn TItem="Scaffolder" Property="Description" Title="Description" Width="300px" />
+    </Columns>
+</RadzenDataGrid>
+
+
+       @* <table class="table">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -56,7 +55,7 @@ else
                         </tr>
             }
             </tbody>
-        </table>
+        </table>*@
 }
 
 @code {
@@ -88,31 +87,6 @@ else
 
 
 
-<RadzenLayout style="height: 300px">
-    <RadzenHeader>
-        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0">
-            <RadzenSidebarToggle Click="@(() => sidebar1Expanded = !sidebar1Expanded)" />
-            <RadzenLabel Text="Header" />
-        </RadzenStack>
-    </RadzenHeader>
-    <RadzenSidebar @bind-Expanded="@sidebar1Expanded">
-        <RadzenPanelMenu>
-            <RadzenPanelMenuItem Text="Home" Icon="home" />
-            <RadzenPanelMenuItem Text="Users" Icon="account_box" />
-        </RadzenPanelMenu>
-        <div class="rz-p-4">
-            Sidebar
-        </div>
-    </RadzenSidebar>
-    <RadzenBody>
-        <div class="rz-p-4">
-            Body
-        </div>
-    </RadzenBody>
-    <RadzenFooter>
-        Footer
-    </RadzenFooter>
-</RadzenLayout>
 
 @code {
     bool sidebar1Expanded = true;
