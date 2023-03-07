@@ -10,3 +10,14 @@ src/extensions/node_modules/*
 
 # Test Results
 [Tt]est[Rr]esult*/
+/.vs/
+#/src/
+/src/ui/Capgemini.CapabilityCatalog/Client/.vs/
+/src/ui/Capgemini.CapabilityCatalog/Client/bin/
+/src/ui/Capgemini.CapabilityCatalog/Client/obj/
+/src/ui/Capgemini.CapabilityCatalog/.vs/
+/src/ui/Capgemini.CapabilityCatalog/Server/bin/
+/src/ui/Capgemini.CapabilityCatalog/Server/obj/
+/src/ui/Capgemini.CapabilityCatalog/Server/Properties/serviceDependencies.local.json
+/src/ui/Capgemini.CapabilityCatalog/Server/Properties/serviceDependencies.local.json.user
+/src/ui/Capgemini.CapabilityCatalog/Shared/bin/Debug/net6.0
