@@ -21,12 +21,23 @@ namespace Capgemini.CapabilityCatalog.Server.Controllers
         [HttpGet]
         public IEnumerable<Scaffolder> Get()
         {
-            return Enumerable.Range(1, 5).Select(index => new Scaffolder
-            {
-                Name = $"Scaffolder {index}",
-                Description = $"Scaffolder {index}"
-            })
-            .ToArray();
+            return new List<Scaffolder>
+                        {
+                            new Scaffolder {Name="DevOps Common Scaffolder", Description="A Scaffolder to setup Azure DevOps to match Capgemini standard delivery"//, Parameters = new List<ScaffoldParameter>
+                           // {
+                                //new ScaffoldParameter{ DataType= typeof(String), Name="adoAccountName", Value="" },
+                                //new ScaffoldParameter{ DataType= typeof(String), Name="adoProjectName", Value="" },
+                                //new ScaffoldParameter{ DataType= typeof(String), Name="repositoryName", Value="" }
+                        //   }
+                        }
+            }.ToArray();
+
+            //return Enumerable.Range(1, 5).Select(index => new Scaffolder
+            //{
+            //    Name = $"Scaffolder {index}",
+            //    Description = $"Scaffolder {index}"
+            //})
+            //.ToArray();
         }
     }
 }

@@ -12,54 +12,29 @@
 
 <PageTitle>Home</PageTitle>
 
-@*<di class="top-row ">
-    <div class="container-fluid">
-    <input placeholder="PowerApps" /><button class="nav-link btn btn-link">Search</button>
-  </div>
-</di>*@
-
 @if (scaffolders == null)
 {
-        <p><em>Loading...</em></p>
+    <p><em>Loading...</em></p>
 }
 else
 {
-
     <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
-    Data="@scaffolders" TItem="Scaffolder" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or">
-    <Columns>
-        <RadzenDataGridColumn TItem="Scaffolder" Property="Name" Title="Name" Width="160px" />
-        <RadzenDataGridColumn TItem="Scaffolder" Property="Description" Title="Description" Width="300px" />
-    </Columns>
-</RadzenDataGrid>
-
-
-       @* <table class="table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Link</th>
-                </tr>
-            </thead>
-            <tbody>
-            @foreach (var scaffolder in scaffolders)
-            {
-                        <tr>
-
-                            <td>@scaffolder.Name</td>
-                            <td>@scaffolder.Description</td>
-                            <td>
-                                         <button class="btn btn-primary" @onclick="ShowDetailedView">more...</button>
-                            </td>
-                        </tr>
-            }
-            </tbody>
-        </table>*@
+                Data="@scaffolders" TItem="Scaffolder" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or">
+        <Columns>
+            <RadzenDataGridColumn TItem="Scaffolder" Property="Name" Title="Name" Width="160px" />
+            <RadzenDataGridColumn TItem="Scaffolder" Property="Description" Title="Description" Width="300px" />
+            <RadzenDataGridColumn Width="70px" TItem="Scaffolder" Title="" Filterable="false">
+                <Template Context="data">
+                    <RadzenButton ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Shade="Shade.Default" class="m-1" Click="ShowDetailedView" Text="Explore" />
+                </Template>
+            </RadzenDataGridColumn>
+        </Columns>
+    </RadzenDataGrid>
+    
 }
 
 @code {
-    private Scaffolder[]? scaffolders;   
+    private Scaffolder[]? scaffolders;
 
     private DataService dataService = new DataService();
 
@@ -67,9 +42,10 @@ else
     {
         try
         {
-            scaffolders = dataService.Scaffolders;
+          //  scaffolders = dataService.Scaffolders;
             //TODO: get data from server
-            //  scaffolders = await Http.GetFromJsonAsync<Scaffolder[]>("Scaffolder");
+              scaffolders = await Http.GetFromJsonAsync<Scaffolder[]>("Scaffolder");
+            //scaffolders 
         }
         catch (AccessTokenNotAvailableException exception)
         {
@@ -77,15 +53,13 @@ else
         }
     }
 
-    @code{
-    private void ShowDetailedView(MouseEventArgs args)
-    {
-        Navigation.NavigateTo("scaffolderdetails");
+    @code {
+        private void ShowDetailedView(MouseEventArgs args)
+        {
+            Navigation.NavigateTo("scaffolderdetails");
+        }
     }
 }
-}
-
-
 
 
 @code {
