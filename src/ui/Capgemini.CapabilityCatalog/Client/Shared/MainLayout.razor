@@ -6,8 +6,20 @@
             <LoginDisplay />
         </div>
 
-        <article class="content px-4">
-            @Body
-        </article>
+        <RadzenLayout>
+            <RadzenSidebar>
+                <RadzenPanelMenu>
+                    <RadzenPanelMenuItem Text="Scaffolders" Icon="rocket_launch" />
+                    <RadzenPanelMenuItem Text="Repositories" Icon="call_merge" />
+                    <RadzenPanelMenuItem Text="Packages" Icon="token" />
+                    <RadzenPanelMenuItem Text="Admin" Icon="settings" />
+                </RadzenPanelMenu>
+            </RadzenSidebar>
+            <RadzenBody>
+                <div class="rz-p-4">
+                    @Body
+                </div>
+            </RadzenBody>
+        </RadzenLayout>
     </main>
 </div>

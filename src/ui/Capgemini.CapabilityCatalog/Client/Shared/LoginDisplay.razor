@@ -6,8 +6,9 @@
 
 <AuthorizeView>
     <Authorized>
-        Logged in as @context.User.Identity?.Name
-        <button class="nav-link btn btn-link" @onclick="BeginLogout">Log out</button>
+        <span>Logged in as <b> @context.User.Identity?.Name</b></span>
+        <button class="nav-link btn btn-link" @onclick="BeginLogout">Sign out</button>
+        <div><RadzenIcon Icon="logout" /><span></span></div>
     </Authorized>
     <NotAuthorized>
         <a href="authentication/login">Log in</a>
