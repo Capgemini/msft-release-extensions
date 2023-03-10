@@ -22,8 +22,8 @@ else
     <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true" RowSelect="@Grid0RowSelect"
                 Data="@scaffolders" TItem="Scaffolder" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or">
         <Columns>
-            <RadzenDataGridColumn TItem="Scaffolder" Property="Name" Title="Name" Width="160px" />
-            <RadzenDataGridColumn TItem="Scaffolder" Property="Description" Title="Description" Width="300px" />
+            <RadzenDataGridColumn TItem="Scaffolder" Property="Name" Title="Name" />
+            <RadzenDataGridColumn TItem="Scaffolder" Property="Description" Title="Description"/>
            @* <RadzenDataGridColumn Width="70px" TItem="Scaffolder" Title="" Filterable="false">
                 <Template Context="data">
                     <RadzenButton ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Shade="Shade.Default" class="m-1" Click="ShowDetailedView" Text="Explore" />
