@@ -1,0 +1,64 @@
+﻿@page "/Component/{Id}"
+@layout MainLayout
+
+<RadzenContent Container="main">
+    <ChildContent>
+        <div class="row">
+            <div class="col-md-12">
+                <RadzenTemplateForm TItem="Scaffolder" Data="@scaffolder">
+                    <ChildContent>                        
+                            <div class="col-md-3">
+                                <RadzenLabel Text="Title" Component="Title" style="width: 100%">
+                                </RadzenLabel>
+                            </div>
+                            <div class="col-md-9">
+                                <RadzenTextBox MaxLength="256" style="width: 100%" @bind-Value="@(scaffolder.Name)" Name="Title">
+                                </RadzenTextBox>
+                            </div>
+                        <div class="col-md-9">
+                            <RadzenTextBox MaxLength="256" style="width: 100%" @bind-Value="@(scaffolder.Description)" Name="Title">
+                            </RadzenTextBox>
+                        </div>
+                    </ChildContent>
+                </RadzenTemplateForm>
+            </div>
+        </div>
+    </ChildContent>
+</RadzenContent>
+
+@code {
+
+    [Parameter]
+
+    public dynamic Id { get; set; }
+
+    protected override async System.Threading.Tasks.Task OnInitializedAsync()
+    {
+
+        await Load();
+
+    }
+
+    protected async System.Threading.Tasks.Task Load()
+    {
+        _scaffolder = Id;
+    }
+
+    Scaffolder _scaffolder;
+    protected Scaffolder scaffolder
+    {
+        get
+        {
+            return _scaffolder;
+        }
+        set
+        {
+            if (!object.Equals(_scaffolder, value))
+            {
+                _scaffolder = value;
+                InvokeAsync(() => { StateHasChanged(); });
+            }
+        }
+    }
+
+}
