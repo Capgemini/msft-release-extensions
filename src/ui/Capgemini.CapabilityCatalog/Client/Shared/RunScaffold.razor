@@ -16,6 +16,15 @@
                             <RadzenTextBox MaxLength="256" style="width: 100%" @bind-Value="@(scaffolder.Description)" Name="Title">
                             </RadzenTextBox>
 
+                            @{
+                                foreach (var item in @scaffolder.Parameters)
+                                {
+                                    <p>@item.Name</p>
+                        <RadzenTextBox MaxLength="256" style="width: 100%" @bind-Value="@(item.Name)" Name="Title">
+                        </RadzenTextBox>
+                    }
+                            }
+
                     </ChildContent>
                 </RadzenTemplateForm>
 

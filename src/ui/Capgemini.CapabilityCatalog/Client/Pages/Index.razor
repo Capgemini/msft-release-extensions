@@ -52,11 +52,8 @@ else
 
         try
         {
-            //  scaffolders = dataService.Scaffolders;
-            //TODO: get data from server
             scaffolders = await Load();
-            //scaffolders 
-        }
+         }
         catch (AccessTokenNotAvailableException exception)
         {
             exception.Redirect();
@@ -76,7 +73,8 @@ else
         var obj = new Scaffolder
             {
                 Name = args.Name,
-                Description = args.Description
+                Description = args.Description,
+                Parameters = args.Parameters
             };
 
         var dialogResult = await dialogService.OpenAsync<RunScaffold>("Run Scaffolder", new Dictionary<string, object>() { { "Id", obj }, {"OnSave", EventCallback.Factory.Create<string>(this,onDetailRecordSaved) } });
