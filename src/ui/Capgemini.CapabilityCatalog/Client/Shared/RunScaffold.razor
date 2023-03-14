@@ -3,40 +3,43 @@
 
 <RadzenContent Container="main">
     <ChildContent>
-        <div class="row">
-            <div class="col-md-12">
+       
                 <RadzenTemplateForm TItem="Scaffolder" Data="@scaffolder">
                     <ChildContent>                        
-                            <div class="col-md-3">
+                            
                                 <RadzenLabel Text="Title" Component="Title" style="width: 100%">
                                 </RadzenLabel>
-                            </div>
-                            <div class="col-md-9">
+                          
                                 <RadzenTextBox MaxLength="256" style="width: 100%" @bind-Value="@(scaffolder.Name)" Name="Title">
                                 </RadzenTextBox>
-                            </div>
-                        <div class="col-md-9">
+                  
                             <RadzenTextBox MaxLength="256" style="width: 100%" @bind-Value="@(scaffolder.Description)" Name="Title">
                             </RadzenTextBox>
-                        </div>
+
                     </ChildContent>
                 </RadzenTemplateForm>
-            </div>
-        </div>
+
+        <RadzenButton ButtonStyle="ButtonStyle.Success" Shade="Shade.Default" Click="ExecuteScaffolder"  Text="Run" /> 
+        
+        <RadzenButton ButtonStyle="ButtonStyle.Warning" Shade="Shade.Default"  Text="Cancel" /> 
     </ChildContent>
+
 </RadzenContent>
 
 @code {
 
     [Parameter]
 
-    public dynamic Id { get; set; }
+    public dynamic Id { get; set; }   
+
+    [Parameter] 
+    
+    public EventCallback<string> OnSave { get; set; }
+
 
     protected override async System.Threading.Tasks.Task OnInitializedAsync()
     {
-
         await Load();
-
     }
 
     protected async System.Threading.Tasks.Task Load()
@@ -59,6 +62,13 @@
                 InvokeAsync(() => { StateHasChanged(); });
             }
         }
+    }
+
+    private async Task  ExecuteScaffolder()
+    {
+        var res = _scaffolder;
+
+       await  OnSave.InvokeAsync("refresh");        
     }
 
 }

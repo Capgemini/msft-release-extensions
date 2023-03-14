@@ -14,3 +14,8 @@ headers = {'Authorization': 'token YOUR_TOKEN_HERE'}
 
 ### Nuget Get All Packages
 
+
+
+
+### Cosmosdb 
+Located under cap subscription in resource group called PACE_Offer
