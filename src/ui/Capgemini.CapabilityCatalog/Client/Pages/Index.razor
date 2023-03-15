@@ -77,7 +77,7 @@ else
                 Parameters = args.Parameters
             };
 
-        var dialogResult = await dialogService.OpenAsync<RunScaffold>("Run Scaffolder", new Dictionary<string, object>() { { "Id", obj }, {"OnSave", EventCallback.Factory.Create<string>(this,onDetailRecordSaved) } });
+        var dialogResult = await dialogService.OpenAsync<RunScaffold>("", new Dictionary<string, object>() { { "Id", obj }, {"OnSave", EventCallback.Factory.Create<string>(this,onDetailRecordSaved) } });
 
         await InvokeAsync(() => { StateHasChanged(); });
     }

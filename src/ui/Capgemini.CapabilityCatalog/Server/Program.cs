@@ -1,12 +1,15 @@
+using Capgemini.CapabilityCatalog.Shared.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Identity.Web;
+using Capgemini.CapabilityCatalog.Server;
 
 namespace Capgemini.CapabilityCatalog
 {
     public class Program
     {
+      
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +20,15 @@ namespace Capgemini.CapabilityCatalog
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
+
+            builder.Services.AddSingleton<IRepository<Scaffolder>>(provider =>
+            {
+                var endpoint = builder.Configuration["CosmosAccount"];
+                var key = builder.Configuration["CosmosKey"];
+                var database = builder.Configuration["Test"];
+                var container = builder.Configuration["PACE"];
+                return new CosmosDBRepository<Scaffolder>(endpoint, key, database, container);
+            });
 
             var app = builder.Build();
 
@@ -31,6 +43,7 @@ namespace Capgemini.CapabilityCatalog
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
 
             app.UseHttpsRedirection();
 
