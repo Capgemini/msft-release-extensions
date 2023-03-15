@@ -5,24 +5,16 @@
     <ChildContent>
        
                 <RadzenTemplateForm TItem="Scaffolder" Data="@scaffolder">
-                    <ChildContent>                        
-                            
-                                <RadzenLabel Text="Title" Component="Title" style="width: 100%">
-                                </RadzenLabel>
-                          
-                                <RadzenTextBox MaxLength="256" style="width: 100%" @bind-Value="@(scaffolder.Name)" Name="Title">
-                                </RadzenTextBox>
-                  
-                            <RadzenTextBox MaxLength="256" style="width: 100%" @bind-Value="@(scaffolder.Description)" Name="Title">
-                            </RadzenTextBox>
-
+                    <ChildContent>       
                             @{
                                 foreach (var item in @scaffolder.Parameters)
                                 {
-                                    <p>@item.Name</p>
-                        <RadzenTextBox MaxLength="256" style="width: 100%" @bind-Value="@(item.Name)" Name="Title">
-                        </RadzenTextBox>
-                    }
+                                    <RadzenLabel Text="@item.Name" Component="Title" style="width: 100%">
+                                    </RadzenLabel>
+
+                                    <RadzenTextBox MaxLength="256" style="width: 100%" @bind-Value="@(item.Value)" Name="Title">
+                                    </RadzenTextBox>
+                                }
                             }
 
                     </ChildContent>
@@ -31,6 +23,7 @@
         <RadzenButton ButtonStyle="ButtonStyle.Success" Shade="Shade.Default" Click="ExecuteScaffolder"  Text="Run" /> 
         
         <RadzenButton ButtonStyle="ButtonStyle.Warning" Shade="Shade.Default"  Text="Cancel" /> 
+
     </ChildContent>
 
 </RadzenContent>
