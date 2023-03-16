@@ -1,4 +1,5 @@
 using Capgemini.CapabilityCatalog.Client;
+using Capgemini.CapabilityCatalog.Server.Services;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -18,6 +19,9 @@ namespace Capgemini.CapabilityCatalog.Client
                 .AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
             builder.Services.AddScoped<DialogService>();
+
+
+        //    builder.Services.AddScoped<CapabilityDataService>();
 
             // Supply HttpClient instances that include access tokens when making requests to the server project
             builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("Capgemini.CapabilityCatalog.ServerAPI"));

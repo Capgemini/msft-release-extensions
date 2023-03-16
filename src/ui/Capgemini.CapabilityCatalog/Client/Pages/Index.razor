@@ -40,7 +40,6 @@ else
 @code {
     private Scaffolder[]? scaffolders;
 
-    private DataService dataService = new DataService();
 
     protected override async Task OnInitializedAsync()
     {
@@ -60,12 +59,6 @@ else
         }
     }
 
-
-    //private void ShowDetailedView(MouseEventArgs args)
-    //{
-    //    dialogService.Open<Component>("Test", new Dictionary<string, object>() { { "Id", "1323323323" } }, null);
-
-    //}
 
     protected async System.Threading.Tasks.Task Grid0RowSelect(Scaffolder args)
     {

@@ -1,9 +1,9 @@
 using Capgemini.CapabilityCatalog.Shared.Models;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Identity.Web;
 using Capgemini.CapabilityCatalog.Server;
+using Capgemini.CapabilityCatalog.Server.Services;
+
 
 namespace Capgemini.CapabilityCatalog
 {
@@ -21,14 +21,17 @@ namespace Capgemini.CapabilityCatalog
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();
 
+        //    builder.Services.AddTransient<CapabilityDataService>();
+             
+
             builder.Services.AddSingleton<IRepository<Scaffolder>>(provider =>
             {
                 var endpoint = builder.Configuration["CosmosAccount"];
                 var key = builder.Configuration["CosmosKey"];
-                var database = builder.Configuration["Test"];
-                var container = builder.Configuration["PACE"];
-                return new CosmosDBRepository<Scaffolder>(endpoint, key, database, container);
+                return new CosmosDBRepository<Scaffolder>(endpoint, key, "Test", "PACE");
             });
+
+            builder.Services.AddTransient<ICapabilityDataService, CapabilityDataService>();
 
             var app = builder.Build();
 
