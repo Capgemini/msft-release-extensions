@@ -27,27 +27,6 @@ namespace Capgemini.CapabilityCatalog.Server.Controllers
 
             return await _service.GetScaffolders();
 
-            //return new List<Scaffolder>
-            //            {
-            //                new Scaffolder
-            //                {
-            //                    Name="DevOps Common Scaffolder",
-            //                    Description="A Scaffolder to setup Azure DevOps to match Capgemini standard delivery",
-            //                    Parameters = new List<ScaffoldParameter>
-            //                        {
-            //                            new ScaffoldParameter{  Name="adoProjectName", Value="" },
-            //                            new ScaffoldParameter{  Name="repositoryName", Value="" }
-            //                       }
-            //                },
-            //               new Scaffolder {Name="A", Description="b"}
-            //}.ToArray();
-
-            //return Enumerable.Range(1, 5).Select(index => new Scaffolder
-            //{
-            //    Name = $"Scaffolder {index}",
-            //    Description = $"Scaffolder {index}"
-            //})
-            //.ToArray();
         }
     }
 }
