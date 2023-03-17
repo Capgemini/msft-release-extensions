@@ -5,5 +5,9 @@
         public string Name { get; set; } = string.Empty;
         public string Value { get; set; } = string.Empty;
 
+        public string ValidationMessage { get; set; }
+        public string ValidationRegex { get; set; }
+
+
     }
 }
