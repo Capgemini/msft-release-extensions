@@ -1,39 +1,43 @@
 ﻿@page "/Component/{Id}"
 @layout MainLayout
+@using Radzen
+@using System.Text.Json
 
 <RadzenContent Container="main">
-    <ChildContent>
-       
-                <RadzenTemplateForm TItem="Scaffolder" Data="@scaffolder">
+
+
+        <RadzenTemplateForm TItem="Scaffolder" Data="@scaffolder" Submit="@OnSubmit" InvalidSubmit="@OnInvalidSubmit">
                     <ChildContent>    
                         
-                        <RadzenLabel Text="@scaffolder.Name" Component="Title" style="width: 100%">
-                                    </RadzenLabel>
-
-                <RadzenTextBox style="display: block" Name="@scaffolder.Name.GetHashCode().ToString()" @bind-Value="@scaffolder.Name" class="w-100" />
-                <RadzenRequiredValidator Component="scaffolder.Name.GetHashCode().ToString()" Text="Required" Popup="true" Style="position: absolute" />
+                        <RadzenLabel Text="Name" Component="Title"></RadzenLabel>
+                        <RadzenTextBox style="display: block" Name="Name" @bind-Value="@scaffolder.Name" class="w-100" />
+                        <RadzenRequiredValidator Component="Name" Text="Required" Popup="true" Style="position: absolute" />
 
                 @{                  
                     foreach (var item in @scaffolder.Parameters)
-                                {
-                                    <RadzenLabel Text="@item.Name" Component="Title" style="width: 100%">
-                                    </RadzenLabel>
-
-                                    <RadzenTextBox style="display: block" Name="@item.Name.GetHashCode().ToString()" @bind-Value="@item.Name" class="w-100" />
+                    {
+                        <RadzenLabel Text="@item.Name" Component="Title"></RadzenLabel>
+                        <RadzenTextBox style="display: block" Name="@item.Name.GetHashCode().ToString()" @bind-Value="@item.Value" class="w-100" />
                         <RadzenRequiredValidator Component="@item.Name.GetHashCode().ToString()" Text="Required" Popup="true" Style="position: absolute" />
+                    }
+                }
 
-                                }
-                            }
-                    </ChildContent>
+           
+            <RadzenButton ButtonType="ButtonType.Submit" Text="Submit"></RadzenButton>
+            </ChildContent>
+
+              
+
                 </RadzenTemplateForm>
 
-        <RadzenButton ButtonStyle="ButtonStyle.Success" Shade="Shade.Default" Click="ExecuteScaffolder"  Text="Run" /> 
-        
-        <RadzenButton ButtonStyle="ButtonStyle.Warning" Shade="Shade.Default"  Text="Cancel" /> 
 
-    </ChildContent>
+ 
+
+ 
 
 </RadzenContent>
+
+<EventConsole @ref=@console />
 
 @code {
 
@@ -42,7 +46,7 @@
     public dynamic Id { get; set; }   
 
     [Parameter] 
-    
+
     public EventCallback<string> OnSave { get; set; }
 
 
@@ -73,11 +77,23 @@
         }
     }
 
-    private async Task  ExecuteScaffolder()
-    {
-        var res = _scaffolder;
+    EventConsole console;
 
-       await  OnSave.InvokeAsync("refresh");        
+    void OnSubmit(Scaffolder model)
+    {
+        console.Log($"Submit: {JsonSerializer.Serialize(model, new JsonSerializerOptions() { WriteIndented = true })}");
     }
+
+    void OnInvalidSubmit(FormInvalidSubmitEventArgs args)
+    {
+        console.Log($"InvalidSubmit: {JsonSerializer.Serialize(args, new JsonSerializerOptions() { WriteIndented = true })}");
+    }
+
+    //private async Task  ExecuteScaffolder()
+    //{
+    //    var res = _scaffolder;
+
+    //   await  OnSave.InvokeAsync("refresh");        
+    //}
 
 }
