@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Capgemini.CapabilityCatalog.Server.Services;
 using Microsoft.Identity.Web.Resource;
+using System.Security.Permissions;
 
 namespace Capgemini.CapabilityCatalog.Server.Controllers
 {
@@ -28,5 +29,12 @@ namespace Capgemini.CapabilityCatalog.Server.Controllers
             return await _service.GetScaffolders();
 
         }
+
+        [HttpPost]
+        public async void RunScaffolder()
+        {
+            
+        }
+
     }
 }
