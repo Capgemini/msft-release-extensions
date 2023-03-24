@@ -83,7 +83,7 @@
 
         using (HttpClient client = new HttpClient())
         {
-            var personalaccesstoken = "wvvkgzjexmd2aymxchxklxxnubtpkl2vytnxcmtmgarpxslcduka";
+            var personalaccesstoken = Environment.GetEnvironmentVariable("PACE_PAT");
 
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(string.Format("{0}:{1}", "", personalaccesstoken))));
