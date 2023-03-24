@@ -28,7 +28,8 @@ namespace Capgemini.CapabilityCatalog.Server
 
         public async Task<IEnumerable<T>> GetAllAsync()
         {
-            var query = _container.GetItemQueryIterator<T>(new QueryDefinition("SELECT * FROM c"));
+            var query = _container.GetItemQueryIterator<T>(new QueryDefinition($"SELECT * FROM c where c.Type='{typeof(T).Name}'"));
+            Console.WriteLine("Test fair : " + nameof(T));
             var results = new List<T>();
             while (query.HasMoreResults)
             {

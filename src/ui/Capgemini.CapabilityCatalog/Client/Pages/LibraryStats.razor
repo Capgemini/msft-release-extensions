@@ -1,0 +1,52 @@
+﻿@page "/LibraryStats/{Library}"
+@layout MainLayout
+@using Newtonsoft.Json.Linq;
+@using Radzen
+@using System.Text.Json
+@using System.Net.Http.Headers;
+@using System.Text;
+@using Newtonsoft.Json;
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            Downloads Year on Year
+            <RadzenChart>
+                <RadzenColumnSeries Data="@myArray" CategoryProperty="Downloads" Title="2022" ValueProperty="Downloads" />
+                <RadzenColumnSeries Data="@myArray" CategoryProperty="Downloads" Title="2023" ValueProperty="Downloads" />
+            </RadzenChart>
+        </div>
+        <div class="col-md-6">
+            Downloads Per Day
+            <RadzenChart>
+                <RadzenDonutSeries Data="@myArray" CategoryProperty="Downloads" ValueProperty="Downloads">
+                    <ChildContent>
+                        <RadzenSeriesDataLabels Visible="false" />
+                    </ChildContent>
+                                   </RadzenDonutSeries>
+            </RadzenChart>
+        </div>
+    </div>
+    <div class="row">
+        
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+
+    public Library Library { get; set; }
+
+
+    Library[] myArray;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        myArray = new Library[] { Library };
+    }
+
+
+}

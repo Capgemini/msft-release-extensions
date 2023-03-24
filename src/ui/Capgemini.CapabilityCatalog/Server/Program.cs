@@ -31,6 +31,20 @@ namespace Capgemini.CapabilityCatalog
                 return new CosmosDBRepository<Scaffolder>(endpoint, key, "Test", "PACE");
             });
 
+            builder.Services.AddSingleton<IRepository<Repository>>(provider =>
+            {
+                var endpoint = builder.Configuration["CosmosAccount"];
+                var key = builder.Configuration["CosmosKey"];
+                return new CosmosDBRepository<Repository>(endpoint, key, "Test", "PACE");
+            });
+
+            builder.Services.AddSingleton<IRepository<Library>>(provider =>
+            {
+                var endpoint = builder.Configuration["CosmosAccount"];
+                var key = builder.Configuration["CosmosKey"];
+                return new CosmosDBRepository<Library>(endpoint, key, "Test", "PACE");
+            });
+
             builder.Services.AddTransient<ICapabilityDataService, CapabilityDataService>();
 
             var app = builder.Build();

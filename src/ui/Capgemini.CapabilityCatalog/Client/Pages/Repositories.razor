@@ -1,0 +1,85 @@
+﻿@page "/Repositories"
+@using Capgemini.CapabilityCatalog.Shared.Models
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Capgemini.CapabilityCatalog.Shared
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Text
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@using Radzen
+
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
+@attribute [Authorize]
+@inject HttpClient Http
+@inject DialogService dialogService
+
+@if (repos == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                Data="@repos" TItem="Repository" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or">
+        <Columns>
+            <RadzenDataGridColumn TItem="Repository" Property="Name" Title="Name" />
+            <RadzenDataGridColumn TItem="Repository" Property="Description" Title="Description" />
+
+            <RadzenDataGridColumn TItem="Repository" Property="Url" Title="Url">
+                <Template Context="data">
+                    <a href="@data.Url" target="_blank">@data.Url</a>
+                </Template>
+            </RadzenDataGridColumn>
+        </Columns>
+    </RadzenDataGrid>
+
+}
+
+@code {
+    private Repository[]? repos;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var options = new JsonSerializerOptions()
+            {
+                ReferenceHandler = ReferenceHandler.Preserve,
+                PropertyNameCaseInsensitive = true
+            };
+
+        try
+        {
+            repos = await Load();
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+
+
+    protected async System.Threading.Tasks.Task Grid0RowSelect(Repository args)
+    {
+        //    Automapper
+        var obj = args;
+
+        var dialogResult = await dialogService.OpenAsync<ViewRepo>("", new Dictionary<string, object>() { });
+
+        await InvokeAsync(() => { StateHasChanged(); });
+    }
+
+
+    public async void onDetailRecordSaved(string message)
+    {
+        repos = await Load();
+    }
+
+    public async Task<Repository[]?> Load()
+    {
+        return await Http.GetFromJsonAsync<Repository[]>("Repository");
+    }
+
+}
+

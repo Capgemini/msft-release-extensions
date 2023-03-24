@@ -1,0 +1,97 @@
+﻿@page "/Libraries"
+@using Capgemini.CapabilityCatalog.Shared.Models
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using Capgemini.CapabilityCatalog.Shared
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Text
+@using System.Text.Json
+@using System.Text.Json.Serialization
+
+@inject NavigationManager Navigation
+@inject SignOutSessionStateManager SignOutManager
+@attribute [Authorize]
+@inject HttpClient Http
+@inject DialogService dialogService
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Home</PageTitle>
+
+@if (packageItems == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                Data="@packageItems" TItem="Library" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or">
+        <Columns>
+            <RadzenDataGridColumn TItem="Library" Property="Name" Title="Name" />
+            <RadzenDataGridColumn TItem="Library" Property="Description" Width="50" Title="Description" />
+            <RadzenDataGridColumn TItem="Library" Property="PackageType" Width="80" Title="Package Feed / Type" />
+            <RadzenDataGridColumn TItem="Library" Property="Downloads" Width="80" Title="Downloads" />
+            <RadzenDataGridColumn TItem="Library" Property="Url" Title="Url">
+                <Template Context="data">
+                    <a href="@data.Url" target="_blank">@data.Url</a>
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Library" Width="40" Property="RepoUrl" Title="Source Code">
+                <Template Context="data">
+                    <a href="@data.RepoUrl" target="_blank">link</a>
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="Library" Width="40" Property="RepoUrl" Title="View Stats">
+                <Template Context="data">
+                    <RadzenButton Click="()=> CallMe(data)" Text="Stats"></RadzenButton>
+                </Template>
+            </RadzenDataGridColumn>
+        </Columns>
+    </RadzenDataGrid>
+
+
+ 
+
+}
+
+@code {
+    private Library[]? packageItems;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var options = new JsonSerializerOptions()
+            {
+                ReferenceHandler = ReferenceHandler.Preserve,
+                PropertyNameCaseInsensitive = true
+            };
+
+        try
+        {
+            packageItems = await Load();
+        }
+        catch (AccessTokenNotAvailableException exception)
+        {
+            exception.Redirect();
+        }
+    }
+
+    protected async void CallMe(Library lib)
+    {
+        var dialogResult = await dialogService.OpenAsync<LibraryStats>("", new Dictionary<string, object>() { { "Library", lib } });
+
+          await InvokeAsync(() => { StateHasChanged(); });
+     
+    }
+     
+
+    public async void onDetailRecordSaved(string message)
+    {
+        packageItems = await Load();
+    }
+
+    public async Task<Library[]?> Load()
+    {
+        return await Http.GetFromJsonAsync<Library[]>("Library");
+    }
+
+}
+

@@ -13,6 +13,7 @@
 @attribute [Authorize]
 @inject HttpClient Http
 @inject DialogService dialogService
+@inject IJSRuntime JSRuntime
 
 <PageTitle>Home</PageTitle>
 
@@ -26,33 +27,26 @@ else
                 Data="@scaffolders" TItem="Scaffolder" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or">
         <Columns>
             <RadzenDataGridColumn TItem="Scaffolder" Property="Name" Title="Name" />
-            <RadzenDataGridColumn TItem="Scaffolder" Property="Description" Title="Description"/>
-           @* <RadzenDataGridColumn Width="70px" TItem="Scaffolder" Title="" Filterable="false">
-                <Template Context="data">
-                    <RadzenButton ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Shade="Shade.Default" class="m-1" Click="ShowDetailedView" Text="Explore" />
-                </Template>
-            </RadzenDataGridColumn>*@
+            <RadzenDataGridColumn TItem="Scaffolder" Property="Description" Title="Description" />
         </Columns>
     </RadzenDataGrid>
-    
 }
 
 @code {
     private Scaffolder[]? scaffolders;
 
-
     protected override async Task OnInitializedAsync()
     {
         var options = new JsonSerializerOptions()
-    {
-        ReferenceHandler = ReferenceHandler.Preserve,
-        PropertyNameCaseInsensitive = true
-    };
+            {
+                ReferenceHandler = ReferenceHandler.Preserve,
+                PropertyNameCaseInsensitive = true
+            };
 
         try
         {
             scaffolders = await Load();
-         }
+        }
         catch (AccessTokenNotAvailableException exception)
         {
             exception.Redirect();
@@ -62,7 +56,6 @@ else
 
     protected async System.Threading.Tasks.Task Grid0RowSelect(Scaffolder args)
     {
-        //Automapper
         var obj = new Scaffolder
             {
                 Name = args.Name,
@@ -70,11 +63,11 @@ else
                 Parameters = args.Parameters
             };
 
-        var dialogResult = await dialogService.OpenAsync<RunScaffold>("", new Dictionary<string, object>() { { "Id", obj }, {"OnSave", EventCallback.Factory.Create<string>(this,onDetailRecordSaved) } });
+        var dialogResult = await dialogService.OpenAsync<RunScaffold>("", new Dictionary<string, object>() { { "Id", obj }, { "OnSave", EventCallback.Factory.Create<string>(this, onDetailRecordSaved) } });
 
         await InvokeAsync(() => { StateHasChanged(); });
     }
-      
+
 
     public async void onDetailRecordSaved(string message)
     {
@@ -83,7 +76,7 @@ else
 
     public async Task<Scaffolder[]?> Load()
     {
-         return await Http.GetFromJsonAsync<Scaffolder[]>("Scaffolder");
+        return await Http.GetFromJsonAsync<Scaffolder[]>("Scaffolder");
     }
 
 }
