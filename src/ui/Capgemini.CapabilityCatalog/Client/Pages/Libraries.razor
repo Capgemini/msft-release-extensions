@@ -26,15 +26,16 @@ else
     <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
                 Data="@packageItems" TItem="Library" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or">
         <Columns>
-            <RadzenDataGridColumn TItem="Library" Property="Name" Title="Name" />
-            <RadzenDataGridColumn TItem="Library" Property="Description" Width="50" Title="Description" />
-            <RadzenDataGridColumn TItem="Library" Property="PackageType" Width="80" Title="Package Feed / Type" />
-            <RadzenDataGridColumn TItem="Library" Property="Downloads" Width="80" Title="Downloads" />
-            <RadzenDataGridColumn TItem="Library" Property="Url" Title="Url">
+            <RadzenDataGridColumn TItem="Library" Property="Name" Title="Name">
                 <Template Context="data">
-                    <a href="@data.Url" target="_blank">@data.Url</a>
+                    <a href="@data.Url" target="_blank">@data.Name</a>
                 </Template>
             </RadzenDataGridColumn>
+
+            <RadzenDataGridColumn TItem="Library" Property="Description" Width="50" Title="Description" />
+            <RadzenDataGridColumn TItem="Library" Property="PackageType" Width="80" Title="Package Feed / Type" />
+            <RadzenDataGridColumn TItem="Library" Property="Downloads" Width="80" FormatString="{0:N0}" Title="Downloads" />
+         
             <RadzenDataGridColumn TItem="Library" Width="40" Property="RepoUrl" Title="Source Code">
                 <Template Context="data">
                     <a href="@data.RepoUrl" target="_blank">link</a>

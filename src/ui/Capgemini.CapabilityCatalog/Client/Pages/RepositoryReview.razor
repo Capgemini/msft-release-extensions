@@ -1,0 +1,89 @@
+﻿@page "/RepositoryReview/{RepoToReview}"
+@layout MainLayout
+@using Newtonsoft.Json.Linq;
+@using Radzen
+@using System.Text.Json
+@using System.Net.Http.Headers;
+@using System.Text;
+@using Newtonsoft.Json;
+
+@inject HttpClient Http
+@inject DialogService dialogService
+@inject IJSRuntime JSRuntime
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NotificationService NotificationService
+
+<RadzenContent Container="main">
+
+    <RadzenStack Orientation="Orientation.Vertical" Style="height:100%;">
+
+        <RadzenTemplateForm TItem="Repository" Data="@RepoToReview" Submit="@OnSubmit">
+            <ChildContent>
+                <RadzenRow>
+                    <RadzenLabel Text="Reviewer Comments"></RadzenLabel>
+                </RadzenRow>
+
+                <RadzenRow>
+                    <RadzenTextArea Name="ReviewCommentText" @bind-Value="@ReviewCommentText" class="w-100"></RadzenTextArea>
+                    <RadzenRequiredValidator Component="ReviewCommentText" Text="Required" Popup="false" />
+                </RadzenRow>
+                <RadzenRow Style="margin-left: auto;">
+                    <RadzenButton ButtonType="ButtonType.Submit" Text="Submit"></RadzenButton>
+                </RadzenRow>
+            </ChildContent>
+        </RadzenTemplateForm>
+
+        <RadzenRow>
+            <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                            Data="@RepoToReview.Reviews" TItem="Review" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or">
+                <Columns>
+                    <RadzenDataGridColumn TItem="Review" Property="Reviewer" Title="Reviewed By" />
+                    <RadzenDataGridColumn TItem="Review" Property="Comments" Title="Comments" />
+                </Columns>
+            </RadzenDataGrid>
+        </RadzenRow>
+    </RadzenStack>
+
+
+</RadzenContent>
+
+
+
+@code {
+    private string ReviewCommentText { get; set; }
+
+    [Parameter]
+
+    public Repository RepoToReview { get; set; }
+
+
+    private async Task<Repository> OnSubmit(Repository model)
+    {
+
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        if (model.Reviews == null)
+        {
+            model.Reviews = new List<Review> { new Review { Comments = ReviewCommentText, Reviewer = authState.User.Identity.Name } };
+        }
+        else
+        {
+            model.Reviews.Add(new Review { Comments = ReviewCommentText, Reviewer = authState.User.Identity.Name });
+        }
+
+        model.LastReviewedOn = DateTime.UtcNow.ToUniversalTime();
+        model.LastReviewedBy = authState.User.Identity.Name;
+
+
+        await Http.PostAsJsonAsync<Repository>("Repository", model);
+
+        //TODO get this working with http interceptor
+        NotificationService.Notify(NotificationSeverity.Success, "Review Submitted Successfully");
+
+        dialogService.Close();
+
+        return model;
+
+    }
+}
+

@@ -7,5 +7,6 @@ namespace Capgemini.CapabilityCatalog.Server.Services
         Task<IEnumerable<Library>> GetPackages();
         Task<IEnumerable<Repository>> GetRepositories();
         Task<IEnumerable<Scaffolder>> GetScaffolders();
+        void UpdateRepository(Repository value);
     }
 }

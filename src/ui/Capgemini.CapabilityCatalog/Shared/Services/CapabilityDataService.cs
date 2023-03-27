@@ -31,5 +31,9 @@ namespace Capgemini.CapabilityCatalog.Server.Services
             return await scaffoldRepo.GetAllAsync();
         }
 
+        public async void UpdateRepository(Repository value)
+        {
+             await repositoryRepo.UpdateAsync(value.id,value);
+        }
     }
 }

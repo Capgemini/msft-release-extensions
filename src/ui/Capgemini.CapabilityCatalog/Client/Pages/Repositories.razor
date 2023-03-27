@@ -22,16 +22,37 @@
 else
 {
     <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
-                Data="@repos" TItem="Repository" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or">
+                Data="@repos" TItem="Repository" LogicalFilterOperator="LogicalFilterOperator.Or">
         <Columns>
-            <RadzenDataGridColumn TItem="Repository" Property="Name" Title="Name" />
-            <RadzenDataGridColumn TItem="Repository" Property="Description" Title="Description" />
-
-            <RadzenDataGridColumn TItem="Repository" Property="Url" Title="Url">
+            <RadzenDataGridColumn TItem="Repository" Property="Name" Width="20" Title="Name">
                 <Template Context="data">
-                    <a href="@data.Url" target="_blank">@data.Url</a>
+                    <a href="@data.Url" target="_blank">@data.Name</a>
                 </Template>
             </RadzenDataGridColumn>
+
+            <RadzenDataGridColumn TItem="Repository" Property="Description" Title="Description" />
+            <RadzenDataGridColumn TItem="Repository" Property="LastReviewedBy" Title="Last Reviewed By" />
+            <RadzenDataGridColumn TItem="Repository" Property="LastReviewedOn" Filterable="false" Title="Last Reviewed On" />
+
+            <RadzenDataGridColumn TItem="Repository" Filterable=false Sortable=false Width="15" Property="LastReviewedOn" Title="Review Status" TextAlign="TextAlign.Center">
+                <Template Context="review">
+                    @if (review.LastReviewedOn <= DateTime.Now.AddMonths(-3))
+                    {
+                        <RadzenIcon Icon="report_problem" />
+                    }
+                    else
+                    {
+                        <RadzenIcon Icon="verified" />
+                    }
+                </Template>
+            </RadzenDataGridColumn>
+
+            <RadzenDataGridColumn Filterable="false" Width="30" TItem="Repository">
+                <Template Context="data">
+                  <RadzenButton Click="()=> SubmitReview(data)" Text="Submit Review"></RadzenButton>
+                </Template>
+            </RadzenDataGridColumn>
+
         </Columns>
     </RadzenDataGrid>
 
@@ -59,17 +80,14 @@ else
         }
     }
 
-
-    protected async System.Threading.Tasks.Task Grid0RowSelect(Repository args)
+    public async void SubmitReview(Repository repo)
     {
-        //    Automapper
-        var obj = args;
+        var obj = repo;
 
-        var dialogResult = await dialogService.OpenAsync<ViewRepo>("", new Dictionary<string, object>() { });
+        var dialogResult = await dialogService.OpenAsync<RepositoryReview>("", new Dictionary<string, object>() { { "RepoToReview", obj } }, new DialogOptions { Style = "width: 70%;" });
 
         await InvokeAsync(() => { StateHasChanged(); });
     }
-
 
     public async void onDetailRecordSaved(string message)
     {

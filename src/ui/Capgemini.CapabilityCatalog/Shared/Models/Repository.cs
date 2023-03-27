@@ -9,5 +9,12 @@ namespace Capgemini.CapabilityCatalog.Shared.Models
     public class Repository : BaseDocument
     {
         public string? Url { get; set; }
+
+        public string LastReviewedBy { get; set; }
+
+        public DateTime LastReviewedOn { get; set; }
+
+        public List<Review>? Reviews { get; set; }
+
     }
 }

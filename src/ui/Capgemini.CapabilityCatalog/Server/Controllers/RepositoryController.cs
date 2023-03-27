@@ -34,9 +34,9 @@ namespace Capgemini.CapabilityCatalog.Server.Controllers
         /// </summary>
         /// <param name="value"></param>
         [HttpPost]
-        public async void RunScaffolder([FromBody] string value)
+        public async void UpdateRepo([FromBody] Repository value)
         {
-            
+            _service.UpdateRepository(value);
         }
     }
 }
