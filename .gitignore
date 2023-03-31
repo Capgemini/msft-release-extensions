@@ -22,3 +22,5 @@ src/extensions/node_modules/*
 /src/ui/Capgemini.CapabilityCatalog/Server/Properties/serviceDependencies.local.json.user
 /src/ui/Capgemini.CapabilityCatalog/Shared/bin/
 /src/ui/Capgemini.CapabilityCatalog/Shared/obj/
+/src/ui/Capgemini.CapabilityCatalog/Capgemini.Developer.Portal/bin
+/src/ui/Capgemini.CapabilityCatalog/Capgemini.Developer.Portal/obj
