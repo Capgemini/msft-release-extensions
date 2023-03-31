@@ -1,0 +1,97 @@
+﻿@page "/Repositories"
+@using Capgemini.CapabilityCatalog.Server.Services;
+@using Capgemini.CapabilityCatalog.Shared.Models
+@using Microsoft.AspNetCore.Authorization
+@using Capgemini.CapabilityCatalog.Shared
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Text
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@using Radzen
+
+@inject NavigationManager Navigation
+@attribute [Authorize]
+@inject HttpClient Http
+@inject DialogService dialogService
+@inject ICapabilityDataService service
+
+@if (repos == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true"
+                Data="@repos" TItem="Repository" LogicalFilterOperator="LogicalFilterOperator.Or">
+        <Columns>
+            <RadzenDataGridColumn TItem="Repository" Property="Name" Width="20" Title="Name">
+                <Template Context="data">
+                    <a href="@data.Url" target="_blank">@data.Name</a>
+                </Template>
+            </RadzenDataGridColumn>
+
+            <RadzenDataGridColumn TItem="Repository" Property="Description" Title="Description" />
+            <RadzenDataGridColumn TItem="Repository" Property="LastReviewedBy" Title="Last Reviewed By" />
+            <RadzenDataGridColumn TItem="Repository" Property="LastReviewedOn" Filterable="false" Title="Last Reviewed On" />
+
+            <RadzenDataGridColumn TItem="Repository" Filterable=false Sortable=false Width="15" Property="LastReviewedOn" Title="Review Status" TextAlign="TextAlign.Center">
+                <Template Context="review">
+                    @if (review.LastReviewedOn <= DateTime.Now.AddMonths(-3))
+                    {
+                        <RadzenIcon Icon="report_problem" />
+                    }
+                    else
+                    {
+                        <RadzenIcon Icon="verified" />
+                    }
+                </Template>
+            </RadzenDataGridColumn>
+
+            <RadzenDataGridColumn Filterable="false" Width="30" TItem="Repository">
+                <Template Context="data">
+                  <RadzenButton Click="()=> SubmitReview(data)" Text="Submit Review"></RadzenButton>
+                </Template>
+            </RadzenDataGridColumn>
+
+        </Columns>
+    </RadzenDataGrid>
+
+}
+
+@code {
+    private IEnumerable<Repository>? repos;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var options = new JsonSerializerOptions()
+            {
+                ReferenceHandler = ReferenceHandler.Preserve,
+                PropertyNameCaseInsensitive = true
+            };
+
+        repos = await Load();
+
+    }
+
+    public async void SubmitReview(Repository repo)
+    {
+        var obj = repo;
+
+        var dialogResult = await dialogService.OpenAsync<RepositoryReview>("", new Dictionary<string, object>() { { "RepoToReview", obj } }, new DialogOptions { Style = "width: 70%;" });
+
+        await InvokeAsync(() => { StateHasChanged(); });
+    }
+
+    public async void onDetailRecordSaved(string message)
+    {
+        repos = await Load();
+    }
+
+    public async Task<IEnumerable<Repository>?> Load()
+    {
+        return await service.GetRepositories();
+    }
+
+}
+

@@ -1,0 +1,79 @@
+﻿@page "/Scaffolders"
+@using Capgemini.CapabilityCatalog.Server.Services;
+@using Capgemini.CapabilityCatalog.Shared.Models
+@using Microsoft.AspNetCore.Authorization
+
+@using Capgemini.CapabilityCatalog.Shared
+@using Microsoft.AspNetCore.Components.Authorization
+@using System.Text
+@using System.Text.Json
+@using System.Text.Json.Serialization
+
+@inject NavigationManager Navigation
+
+@attribute [Authorize]
+@inject ICapabilityDataService service
+@inject HttpClient Http
+@inject DialogService dialogService
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Home</PageTitle>
+
+@if (scaffolders == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <RadzenDataGrid AllowFiltering="true" AllowColumnResize="true" AllowAlternatingRows="false" FilterMode="FilterMode.Advanced" AllowSorting="true" PageSize="5" AllowPaging="true" PagerHorizontalAlign="HorizontalAlign.Left" ShowPagingSummary="true" RowSelect="@Grid0RowSelect"
+                Data="@scaffolders" TItem="Scaffolder" ColumnWidth="300px" LogicalFilterOperator="LogicalFilterOperator.Or">
+        <Columns>
+            <RadzenDataGridColumn TItem="Scaffolder" Property="Name" Title="Name" />
+            <RadzenDataGridColumn TItem="Scaffolder" Property="Description" Title="Description" />
+        </Columns>
+    </RadzenDataGrid>
+}
+
+@code {
+    private IEnumerable<Scaffolder>? scaffolders;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var options = new JsonSerializerOptions()
+            {
+                ReferenceHandler = ReferenceHandler.Preserve,
+                PropertyNameCaseInsensitive = true
+            };
+
+        scaffolders = await Load();       
+    }
+
+
+    protected async System.Threading.Tasks.Task Grid0RowSelect(Scaffolder args)
+    {
+        var obj = new Scaffolder
+            {
+                Name = args.Name,
+                Description = args.Description,
+                Parameters = args.Parameters
+            };
+
+        var dialogResult = await dialogService.OpenAsync<RunScaffold>("", new Dictionary<string, object>() { { "Id", obj }, { "OnSave", EventCallback.Factory.Create<string>(this, onDetailRecordSaved) } });
+
+        await InvokeAsync(() => { StateHasChanged(); });
+    }
+
+
+    public async void onDetailRecordSaved(string message)
+    {
+        scaffolders = await Load();
+    }
+
+    public async Task<IEnumerable<Scaffolder>> Load()
+    {
+        return await service.GetScaffolders();
+//        return await Http.GetFromJsonAsync<Scaffolder[]>("Scaffolder");
+    }
+
+}
+

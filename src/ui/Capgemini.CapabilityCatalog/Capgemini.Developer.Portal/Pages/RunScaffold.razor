@@ -1,0 +1,136 @@
+﻿@page "/Component/{Id}"
+@layout MainLayout
+@using Newtonsoft.Json.Linq;
+@using Capgemini.CapabilityCatalog.Shared.Models;
+@using Radzen
+@using System.Text.Json
+@using System.Net.Http.Headers;
+@using System.Text;
+@using Newtonsoft.Json;
+
+<RadzenContent Container="main">
+
+    <RadzenTemplateForm TItem="Scaffolder" Data="@scaffolder" Submit="@OnSubmit" InvalidSubmit="@OnInvalidSubmit">
+        <ChildContent>
+
+                @{
+                    foreach (var item in @scaffolder.Parameters)
+                    {                        
+                        <div class="row mb-1">
+                            <div class="col-md-4">
+                                <RadzenLabel Text="@item.Name" />
+                            </div>
+                            <div class="col">
+                                <span>
+                                    <RadzenTextBox Name="@item.Name.GetHashCode().ToString()" @bind-Value="@item.Value" class="w-75" />
+                                    <RadzenRequiredValidator Component="@item.Name.GetHashCode().ToString()" Text="Required" Popup="false" />
+                                </span>
+                            </div>
+                        </div>
+                    }
+                }
+
+                <RadzenButton ButtonType="ButtonType.Submit" Text="Submit"></RadzenButton>    
+        </ChildContent>
+    </RadzenTemplateForm>
+
+
+</RadzenContent>
+
+<EventConsole @ref=@console />
+
+@code {
+
+    [Parameter]
+
+    public dynamic Id { get; set; }
+
+    [Parameter]
+
+    public EventCallback<string> OnSave { get; set; }
+
+
+    protected override async System.Threading.Tasks.Task OnInitializedAsync()
+    {
+        await Load();
+    }
+
+    protected async System.Threading.Tasks.Task Load()
+    {
+        _scaffolder = Id;
+    }
+
+    Scaffolder _scaffolder;
+    protected Scaffolder scaffolder
+    {
+        get
+        {
+            return _scaffolder;
+        }
+        set
+        {
+            if (!object.Equals(_scaffolder, value))
+            {
+                _scaffolder = value;
+                InvokeAsync(() => { StateHasChanged(); });
+            }
+        }
+    }
+
+    EventConsole console;
+
+    private async void OnSubmit(Scaffolder model)
+    {
+
+        using (HttpClient client = new HttpClient())
+        {
+            var personalaccesstoken = Environment.GetEnvironmentVariable("PACE_PAT");
+
+            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(string.Format("{0}:{1}", "", personalaccesstoken))));
+
+            string apiUrl = $"https://dev.azure.com/Capgeminiuk/Github Support/_apis/pipelines/291/runs?api-version=6.1-preview.1";
+
+            var formattedObject = new JObject();
+
+            foreach (var item in model.Parameters)
+            {
+                formattedObject.Add(item.Name, item.Value);
+            }
+
+         
+            var wrappedObject = new JObject();
+            wrappedObject.Add("templateParameters", formattedObject);
+         
+            string jsonString = JsonConvert.SerializeObject(wrappedObject, Formatting.Indented);
+
+            console.Log(jsonString);
+
+            var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
+
+            console.Log(content);
+                  
+            HttpResponseMessage response = await client.PostAsync(apiUrl, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                console.Log("Pipeline invoked successfully");
+                console.Log(response.StatusCode);
+            }
+            else
+            {
+                console.Log("Error invoking pipeline");
+                console.Log(response.Content);
+            }
+        }
+
+
+
+    }
+
+    void OnInvalidSubmit(FormInvalidSubmitEventArgs args)
+    {
+        console.Log($"InvalidSubmit: {System.Text.Json.JsonSerializer.Serialize(args, new JsonSerializerOptions() { WriteIndented = true })}");
+    }
+
+}

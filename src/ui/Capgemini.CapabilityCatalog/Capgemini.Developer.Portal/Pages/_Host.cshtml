@@ -1,0 +1,22 @@
+﻿@page "/"
+@namespace Capgemini.Developer.Portal.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_Layout";
+}
+
+<link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+<link href="css/app.css" rel="stylesheet" />
+<link rel="stylesheet" href="_content/Radzen.Blazor/css/material-base.css">
+@*
+<script src="_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js"></script>*@
+<script src="_framework/blazor.webassembly.js"></script>
+<script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
+
+
+<environment include="Staging,Production">
+    <component render-mode="ServerPrerendered" type="typeof(App)" />
+</environment>
+<environment include="Development">
+    <component render-mode="Server" type="typeof(App)" />
+</environment>

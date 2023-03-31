@@ -1,0 +1,31 @@
+﻿@inherits LayoutComponentBase
+<RadzenDialog></RadzenDialog>
+<RadzenNotification />
+
+@inject NotificationService NotificationService
+
+<div id="page">
+    <main>
+        <div class="top-row px-4 auth">
+            <LoginDisplay />
+        </div>
+
+        <RadzenLayout>
+            <RadzenSidebar>
+                <RadzenPanelMenu>
+                    <RadzenPanelMenuItem Text="Scaffolders" Icon="rocket_launch" Path="/Scaffolders" />
+                    <RadzenPanelMenuItem Text="Repositories" Icon="call_merge" Path="/Repositories" />
+                    <RadzenPanelMenuItem Text="Packages" Icon="widgets" Path="/Libraries" />
+                    <RadzenPanelMenuItem Text="Dashboards" Icon="dashboard" />
+                    <RadzenPanelMenuItem Text="Admin" Icon="settings" />
+                    <RadzenPanelMenuItem Text="Samples and Demos" Icon="preview" />
+                </RadzenPanelMenu>
+            </RadzenSidebar>
+            <RadzenBody>
+                <div class="rz-p-4">
+                    @Body
+                </div>
+            </RadzenBody>
+        </RadzenLayout>
+    </main>
+</div>

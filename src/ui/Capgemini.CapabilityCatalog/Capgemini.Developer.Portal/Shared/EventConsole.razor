@@ -1,0 +1,61 @@
+﻿@using Radzen
+@using System.Text.Json
+@inject IJSRuntime JSRuntime
+<RadzenStack Orientation="Orientation.Vertical" Gap="0.5rem" Class="rz-mt-4 rz-p-4 rz-border-radius-1" @attributes=@Attributes Style="border: var(--rz-grid-cell-border)">
+    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+        <RadzenText TextStyle="TextStyle.Subtitle1" Class="rz-m-0">Console log</RadzenText>
+        <RadzenButton Click=@OnClearClick Text="Clear console" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Small" />
+    </RadzenStack>
+    <RadzenStack Orientation="Orientation.Vertical" Gap="0" ID="event-console" Class="rz-pt-1" Style="border-top: var(--rz-grid-cell-border); min-height: 2rem; max-height: 12rem; overflow: auto;">
+        @foreach (var message in messages)
+        {
+            <RadzenAlert ShowIcon="false" Variant="Variant.Flat" AlertStyle="AlertStyle.Info" Size="AlertSize.ExtraSmall" Shade="Shade.Lighter" AllowClose="false" Style="font-size: 0.75rem">
+                @message.Date.ToString("HH:mm:ss.ff") <span Style="color: var(--rz-text-color)">@message.Text</span>
+            </RadzenAlert>
+        }
+    </RadzenStack>
+</RadzenStack>
+
+@code {
+    class Message
+    {
+        public DateTime Date { get; set; }
+        public string Text { get; set; }
+    }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IDictionary<string, object> Attributes { get; set; }
+    IList<Message> messages = new List<Message>();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("eval", $"document.getElementById('event-console').scrollTop = document.getElementById('event-console').scrollHeight");
+        }
+    }
+
+    void OnClearClick()
+    {
+        Clear();
+    }
+
+    public void Clear()
+    {
+        messages.Clear();
+
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Log(string message)
+    {
+        messages.Add(new Message { Date = DateTime.Now, Text = message });
+
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Log(object value)
+    {
+        Log(JsonSerializer.Serialize(value));
+    }
+}
