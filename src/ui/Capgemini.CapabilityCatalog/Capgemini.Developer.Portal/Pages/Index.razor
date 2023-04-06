@@ -1,6 +1,32 @@
 ﻿@page "/"
+@using Microsoft.FeatureManagement;
 <h3>Index</h3>
 
+@inject IConfiguration Config
+
+@inject IFeatureManagerSnapshot FeatureManager
+
 @code {
+    private bool isMyFeatureEnabled;
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        isMyFeatureEnabled = await FeatureManager.IsEnabledAsync("EnhancedAdmin");
+    }
 
 }
+
+@if (isMyFeatureEnabled)
+{
+    <h1>Super Admin feature is enabled!</h1>
+}
+else
+{
+    <h1>My feature is disabled.</h1>
+}
+
+<h1>@Config["IsBeta"]</h1>
+
+
+NEW CODE

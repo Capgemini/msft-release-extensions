@@ -13,6 +13,8 @@ namespace Capgemini.CapabilityCatalog.Server
             _container = database.GetContainer(containerName);
         }
 
+
+
         public async Task<T> GetByIdAsync(string id)
         {
             try

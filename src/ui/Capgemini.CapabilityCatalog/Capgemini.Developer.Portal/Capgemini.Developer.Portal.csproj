@@ -10,8 +10,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.2.2" />
+    <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.13" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.13" NoWarn="NU1605" />
+    <PackageReference Include="Microsoft.Azure.AppConfiguration.AspNetCore" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.AzureAppConfiguration" Version="6.0.0" />
+    <PackageReference Include="Microsoft.FeatureManagement" Version="2.5.1" />
     <PackageReference Include="Microsoft.Identity.Web" Version="1.24.1" />
     <PackageReference Include="Microsoft.Identity.Web.MicrosoftGraph" Version="1.24.1" />
     <PackageReference Include="Microsoft.Identity.Web.UI" Version="1.16.0" />
