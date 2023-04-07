@@ -64,28 +64,6 @@ builder.Services.AddSingleton<IRepository<Library>>(provider =>
 
 builder.Services.AddTransient<ICapabilityDataService, CapabilityDataService>();
 
-//var appConfigurationEndpoint = builder.Configuration.GetValue<string>("AppConfigurationEndpoint");
-//if (!string.IsNullOrEmpty(appConfigurationEndpoint))
-//{
-//    builder.Configuration.AddAzureAppConfiguration(options =>
-//    {
-//        var azureCredentialOptions = new DefaultAzureCredentialOptions()
-//        {
-//            VisualStudioTenantId = builder.Configuration.GetSection("AzureAD").GetValue<string>("TenantId")
-//        };
-
-//        var credential = new DefaultAzureCredential(azureCredentialOptions);
-//        options.Connect(new Uri(appConfigurationEndpoint), credential)
-//               .ConfigureKeyVault(kv => kv.SetCredential(credential))
-//               .Select("*")
-//               .ConfigureRefresh(config =>
-//               {
-//                   config.Register("*", refreshAll: true);
-//               });
-//    });
-//}
-
-//builder.Services.AddFeatureManagement();
 
 builder.Configuration.AddAzureAppConfiguration(options =>
     {
@@ -101,10 +79,6 @@ builder.Configuration.AddAzureAppConfiguration(options =>
 
 builder.Services.AddAzureAppConfiguration();
 builder.Services.AddFeatureManagement();
-
-//WORKS
-//builder.Configuration.AddAzureAppConfiguration("Endpoint=https://paceappconfig.azconfig.io;Id=CEMt-lo-s0:PSogafo1Csz4XdIPR8ul;Se");
-
 
 
 var app = builder.Build();
