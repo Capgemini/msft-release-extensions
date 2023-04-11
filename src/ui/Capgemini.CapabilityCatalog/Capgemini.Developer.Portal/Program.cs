@@ -2,12 +2,7 @@ using Capgemini.CapabilityCatalog.Server.Services;
 using Capgemini.CapabilityCatalog.Server;
 using Capgemini.CapabilityCatalog.Shared.Models;
 using Capgemini.Developer.Portal.Data;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using Radzen;
@@ -29,7 +24,6 @@ builder.Services.AddControllersWithViews()
 
 builder.Services.AddAuthorization(options =>
 {
-    // By default, all incoming requests will be authorized according to the default policy
     options.FallbackPolicy = options.DefaultPolicy;
 });
 
@@ -41,25 +35,24 @@ builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddScoped<DialogService>();
 builder.Services.AddScoped<NotificationService>();
 
+var endpoint = builder.Configuration["CosmosAccount"];
+var key = builder.Configuration["CosmosKey"];
+var databaseName = "PACE";
+var containerName = "PACE";
+
 builder.Services.AddSingleton<IRepository<Scaffolder>>(provider =>
-{
-    var endpoint = builder.Configuration["CosmosAccount"];
-    var key = builder.Configuration["CosmosKey"];
-    return new CosmosDBRepository<Scaffolder>(endpoint, key, "Test", "PACE");
+{  
+    return new CosmosDBRepository<Scaffolder>(endpoint,key, databaseName, containerName);
 });
 
 builder.Services.AddSingleton<IRepository<Repository>>(provider =>
-{
-    var endpoint = builder.Configuration["CosmosAccount"];
-    var key = builder.Configuration["CosmosKey"];
-    return new CosmosDBRepository<Repository>(endpoint, key, "Test", "PACE");
+{  
+    return new CosmosDBRepository<Repository>(endpoint,key, databaseName, containerName);
 });
 
 builder.Services.AddSingleton<IRepository<Library>>(provider =>
 {
-    var endpoint = builder.Configuration["CosmosAccount"];
-    var key = builder.Configuration["CosmosKey"];
-    return new CosmosDBRepository<Library>(endpoint, key, "Test", "PACE");
+    return new CosmosDBRepository<Library>(endpoint,key, databaseName, containerName);
 });
 
 builder.Services.AddTransient<ICapabilityDataService, CapabilityDataService>();
@@ -67,7 +60,7 @@ builder.Services.AddTransient<ICapabilityDataService, CapabilityDataService>();
 
 builder.Configuration.AddAzureAppConfiguration(options =>
     {
-         options.Connect(new Uri("https://paceappconfig.azconfig.io"), new DefaultAzureCredential())
+         options.Connect(new Uri(builder.Configuration["AppConfigurationEndpoint"]), new DefaultAzureCredential())
                .Select("*")
                .ConfigureRefresh(config =>
                {

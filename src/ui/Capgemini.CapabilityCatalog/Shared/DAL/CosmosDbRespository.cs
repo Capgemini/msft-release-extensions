@@ -1,4 +1,5 @@
-﻿using Microsoft.Azure.Cosmos;
+﻿using Azure.Identity;
+using Microsoft.Azure.Cosmos;
 
 namespace Capgemini.CapabilityCatalog.Server
 {
@@ -13,7 +14,12 @@ namespace Capgemini.CapabilityCatalog.Server
             _container = database.GetContainer(containerName);
         }
 
-
+        public CosmosDBRepository(string endpoint, string databaseName, string containerName)
+        {
+            var client = new CosmosClient(endpoint, new DefaultAzureCredential());
+            var database = client.GetDatabase(databaseName);
+            _container = database.GetContainer(containerName);
+        }
 
         public async Task<T> GetByIdAsync(string id)
         {

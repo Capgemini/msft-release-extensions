@@ -12,10 +12,11 @@
 
     <RadzenTemplateForm TItem="Scaffolder" Data="@scaffolder" Submit="@OnSubmit" InvalidSubmit="@OnInvalidSubmit">
         <ChildContent>
-
-                @{
+            @{
+                if (@scaffolder.Parameters != null)
+                {
                     foreach (var item in @scaffolder.Parameters)
-                    {                        
+                    {
                         <div class="row mb-1">
                             <div class="col-md-4">
                                 <RadzenLabel Text="@item.Name" />
@@ -29,12 +30,10 @@
                         </div>
                     }
                 }
-
-                <RadzenButton ButtonType="ButtonType.Submit" Text="Submit"></RadzenButton>    
+            }
+            <RadzenButton ButtonType="ButtonType.Submit" Text="Submit"></RadzenButton>
         </ChildContent>
     </RadzenTemplateForm>
-
-
 </RadzenContent>
 
 <EventConsole @ref=@console />
@@ -50,15 +49,12 @@
     public EventCallback<string> OnSave { get; set; }
 
 
-    protected override async System.Threading.Tasks.Task OnInitializedAsync()
+    protected override void OnParametersSet()
     {
-        await Load();
-    }
-
-    protected async System.Threading.Tasks.Task Load()
-    {
+        base.OnParametersSet();
         _scaffolder = Id;
     }
+
 
     Scaffolder _scaffolder;
     protected Scaffolder scaffolder
@@ -87,7 +83,7 @@
             var personalaccesstoken = Environment.GetEnvironmentVariable("PACE_PAT");
 
             client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(string.Format("{0}:{1}", "", personalaccesstoken))));
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(string.Format("{0}:{1}", "", personalaccesstoken))));
 
             string apiUrl = $"https://dev.azure.com/Capgeminiuk/Github Support/_apis/pipelines/291/runs?api-version=6.1-preview.1";
 
@@ -98,10 +94,10 @@
                 formattedObject.Add(item.Name, item.Value);
             }
 
-         
+
             var wrappedObject = new JObject();
             wrappedObject.Add("templateParameters", formattedObject);
-         
+
             string jsonString = JsonConvert.SerializeObject(wrappedObject, Formatting.Indented);
 
             console.Log(jsonString);
@@ -109,22 +105,24 @@
             var content = new StringContent(jsonString, Encoding.UTF8, "application/json");
 
             console.Log(content);
-                  
+
             HttpResponseMessage response = await client.PostAsync(apiUrl, content);
 
             if (response.IsSuccessStatusCode)
             {
                 console.Log("Pipeline invoked successfully");
                 console.Log(response.StatusCode);
+           
             }
             else
             {
                 console.Log("Error invoking pipeline");
                 console.Log(response.Content);
             }
+
+                 console.Log(response.Content);
+
         }
-
-
 
     }
 
