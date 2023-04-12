@@ -38,11 +38,11 @@ extends:
         deploymentBranches:
           - 'refs/heads/main'
     variableFiles:
-      - /pipeline/vars/common.yaml@self
-      - /pipeline/vars/{environment}.yaml@self
+      - /src/infra/shared/vars/common.yaml@self
+      - /src/infra/shared/vars/{environment}.yaml@self
       - ${{ each file in parameters.additionalVariablesFileList }}:
         - ${{ file }}
     regionalVariableFiles:
-      - /pipeline/vars/regional/{environment}-{region}.yaml@self
+      - /src/infra/shared/vars/regional/{environment}-{region}.yaml@self
     deployFromFeature: ${{ parameters.deployFromFeature }}
     keyVaultName: '${{ parameters.keyVaultName }}'
