@@ -21,7 +21,7 @@ resources:
       type: github
       endpoint: Capgemini
       name: Capgemini/patterns-devops
-      ref: features/new-changes
+      ref: main
 
 extends:
   template: /templates/pipelines/common-infrastructure-deploy.yaml@PipelineCommon
