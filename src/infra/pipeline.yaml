@@ -15,7 +15,7 @@ parameters:
     default: false
 
 extends:
-  template: /infra/shared/template.yaml
+  template: /src/infra/shared/template.yaml
   parameters:
     templates:
       - path: keyvault
