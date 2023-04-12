@@ -1,0 +1,54 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vaultName": {
+            "value": "#{{ region }}#{{ projectName }}#{{ environment }}#{{ nc_keyvault }}01"
+        },
+        "vnetInfra": {
+            "value": {
+                "name": "#{{ region }}-#{{ projectName }}-#{{ environment }}-#{{ nc_virtualnetwork }}-01",
+                "subnets": [
+                    "#{{ region }}-#{{ projectName }}-#{{ environment }}-#{{ nc_apimanagement }}-#{{ nc_subnet }}-01"
+                ]
+            }
+        },
+        "resourceGroups": {
+            "value": {
+                "infraRg": "#{{ region }}-#{{ projectName }}-#{{ environment }}-#{{ nc_resourcegroup }}-02"
+            }
+        },
+        "customTags": {
+            "value": {
+                "name": ""
+            }
+        },
+        "aadTenantId": {
+            "value": "#{{ tenantId }}"
+        },
+        "accessPolicies": {
+            "value": [
+                {
+                    "tenantId": "#{{ tenantId }}",
+                    "objectId": "#{{ spnObjectId }}",
+                    "permissions": {
+                        "secrets": [ "get", "list", "set" ],
+                        "certificates": [ "get", "list" ]
+                    }
+                }
+            ]
+        },
+        "defaultTags": {
+            "value": {
+                "costCentre": "csd",
+                "chargeCode": "api-patterns",
+                "productName": "api-patterns",
+                "productOwner": "dan.roszkowski@capgemini.com",
+                "businessOwner": "dan.roszkowski@capgemini.com",
+                "service": "Azure-Intiative",
+                "environment": "#{{ environment }}",
+                "businessUnit": "csd"
+            }
+        }
+    }
+}

@@ -1,0 +1,14 @@
+variables:
+
+  environment: dev
+  azureResourceManagerConnection: ADO-SPN-DEPLOYMENTS-CSD-UK
+  tenantId: 'f6dd1854-a44d-45a5-9537-c809a5d76c74'
+
+  skuCode: P1v2
+  skuTier: premium  
+  skuFamily: P1v2
+  skuCapacity: 1
+
+  lawSku: pergb2018
+  lawRetentionInDays: 120
+  lawResourcePermissions: true

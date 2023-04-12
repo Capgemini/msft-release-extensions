@@ -1,0 +1,31 @@
+name: 'V1-B$(Date:yyyyMMdd)-$(BuildID)'
+
+trigger:
+  branches:
+    include:
+    - '*'
+  paths:
+    include:
+    - /src/infra/*
+
+parameters:
+  - name: deployFromFeature
+    displayName: "Deploy to DEV?"
+    type: boolean
+    default: false
+
+extends:
+  template: /infra/shared/template.yaml
+  parameters:
+    templates:
+      - path: keyvault
+        name: keyvault
+        type: bicep
+        scope: Resource Group
+        resourceGroupName: '$(environment)-$(projectName)-$(nc_infrastructure)-$(nc_resourcegroup)-$(region)-01'
+      - path: appServicePlans
+        name: functionASP
+        type: bicep
+        scope: Resource Group
+        resourceGroupName: '$(environment)-$(projectName)-$(nc_infrastructure)-$(nc_resourcegroup)-$(region)-01'
+    deployFromFeature: ${{ parameters.deployFromFeature }}

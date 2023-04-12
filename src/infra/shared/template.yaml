@@ -1,0 +1,48 @@
+parameters:
+  - name: templates
+    displayName: List of ARM templates
+    type: object
+  - name: projectName
+    type: string
+    default: ''
+  - name: additionalVariablesFileList
+    type: object
+    default: []
+  - name: deployFromFeature
+    type: boolean
+    default: false
+  - name: keyVaultName
+    type: string
+    default: ''
+
+resources:
+  repositories:
+    - repository: PipelineCommon
+      type: github
+      endpoint: Capgemini
+      name: Capgemini/patterns-devops
+      ref: features/new-changes
+
+extends:
+  template: /templates/pipelines/common-infrastructure-deploy.yaml@PipelineCommon
+  parameters:
+    groupedTemplates:
+      - defaultGroup:
+        templates: ${{ parameters.templates }}
+    projectName: ${{ parameters.projectName }}
+    environments:
+      - name: 'dev'
+        developmentEnvironment: true
+        azureRegions:
+          primary: 'euw'
+        deploymentBranches:
+          - 'refs/heads/main'
+    variableFiles:
+      - /pipeline/vars/common.yaml@self
+      - /pipeline/vars/{environment}.yaml@self
+      - ${{ each file in parameters.additionalVariablesFileList }}:
+        - ${{ file }}
+    regionalVariableFiles:
+      - /pipeline/vars/regional/{environment}-{region}.yaml@self
+    deployFromFeature: ${{ parameters.deployFromFeature }}
+    keyVaultName: '${{ parameters.keyVaultName }}'
