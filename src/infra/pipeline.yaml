@@ -18,12 +18,12 @@ extends:
   template: /src/infra/shared/template.yaml
   parameters:
     templates:
-      - path: keyvault
+      - path: src/infra/keyvault
         name: keyvault
         type: bicep
         scope: Resource Group
         resourceGroupName: '$(environment)-$(projectName)-$(nc_infrastructure)-$(nc_resourcegroup)-$(region)-01'
-      - path: appServicePlans
+      - path: src/infra/appServicePlans
         name: functionASP
         type: bicep
         scope: Resource Group
