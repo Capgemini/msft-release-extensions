@@ -5,19 +5,6 @@
         "vaultName": {
             "value": "#{{ region }}#{{ projectName }}#{{ environment }}#{{ nc_keyvault }}01"
         },
-        "vnetInfra": {
-            "value": {
-                "name": "#{{ region }}-#{{ projectName }}-#{{ environment }}-#{{ nc_virtualnetwork }}-01",
-                "subnets": [
-                    "#{{ region }}-#{{ projectName }}-#{{ environment }}-#{{ nc_apimanagement }}-#{{ nc_subnet }}-01"
-                ]
-            }
-        },
-        "resourceGroups": {
-            "value": {
-                "infraRg": "#{{ region }}-#{{ projectName }}-#{{ environment }}-#{{ nc_resourcegroup }}-02"
-            }
-        },
         "customTags": {
             "value": {
                 "name": ""

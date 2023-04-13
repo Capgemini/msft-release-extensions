@@ -3,6 +3,7 @@ variables:
   environment: dev
   azureResourceManagerConnection: ADO-SPN-DEPLOYMENTS-CSD-UK
   tenantId: 'f6dd1854-a44d-45a5-9537-c809a5d76c74'
+  spnObjectId: '30db50f3-274d-44bc-b3ee-e47f15cc1a3d'
 
   skuCode: P1v2
   skuTier: premium  
