@@ -24,7 +24,7 @@ extends:
         scope: Resource Group
         resourceGroupName: '$(environment)-$(projectName)-$(nc_infrastructure)-$(nc_resourcegroup)-$(region)-01'
       - path: src/infra/appServicePlans
-        name: functionASP
+        name: asp
         type: bicep
         scope: Resource Group
         resourceGroupName: '$(environment)-$(projectName)-$(nc_infrastructure)-$(nc_resourcegroup)-$(region)-01'
