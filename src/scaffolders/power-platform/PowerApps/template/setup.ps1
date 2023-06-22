@@ -5,10 +5,6 @@ $RepoName = "__repositoryName__"
 
 $orgUrl = "https://dev.azure.com/$AdoAccountName"
 
-#$ProjectName = "PP-SCAFFOLDER1"
-#$AdoToken = "nkojuuhritiml6qobf2ajpiwuju5lpv4yrduvmvah7ipyxebs5lq"
-#$orgUrl = "https://dev.azure.com/markcunningham"
-
 $env:AZURE_DEVOPS_EXT_PAT = $AdoToken
 
 $existingProject = az devops project show --project $ProjectName --org $orgUrl
