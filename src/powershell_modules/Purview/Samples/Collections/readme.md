@@ -102,5 +102,5 @@ foreach ($file in $jsonFiles) {
 ## Example Usage
 
 ```powershell
-ConfigureCollections.ps1 -AccountName DEVPRV1001 -ConfigFilePath C:\Temp\GlossaryExample.json
+ConfigureCollections.ps1 -AccountName DEVPRV1001 -ConfigFilePath C:\Temp\CollectionExample.json
 ```
