@@ -48,8 +48,6 @@ foreach ($file in $jsonFiles) {
   Write-Host $file.FullName
   $config = Get-Content $file.FullName | ConvertFrom-Json
 
-  Write-Host $config
-
   foreach ($classification in $config.Classifications) 
   {      
       Write-Host $classification.Name "----------" $classification.Description
